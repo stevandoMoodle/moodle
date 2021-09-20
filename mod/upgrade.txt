@@ -1,6 +1,11 @@
 This files describes API changes in /mod/* - activity modules,
 information provided here is intended especially for developers.
 
+=== 4.2 ===
+
+* The mod_assignment plugin has been completely removed from core. It has been moved to the plugins database repository, so
+it can still be installed as a third-party plugin.
+
 === 4.1 ===
 
 * The callback get_shortcuts() is now removed. Please use get_course_content_items and get_all_content_items instead.
@@ -16,6 +21,7 @@ information provided here is intended especially for developers.
 * There is a new callback ..._calculate_question_stats which needs to be implemented by components which want
   to contribute statistics to the display in the question bank. There is an example implementation in mod_quiz.
   (Added in 4.0.4 / 4.1.)
+=== 4.0 ===
 
 === 3.9 ===
 
@@ -270,4 +276,3 @@ optional - no changes needed in older code:
   (http://docs.moodle.org/dev/Comments_2.0)
 * new ratings API
   (http://docs.moodle.org/dev/Ratings_2.0)
-

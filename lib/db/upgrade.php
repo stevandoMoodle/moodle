@@ -3031,5 +3031,19 @@ privatefiles,moodle|/user/files.php';
         upgrade_main_savepoint(true, 2022110600.00);
     }
 
+    if ($oldversion < 2022112800.00) {
+        // Remove mod_assignment (unless it has manually been added back).
+        if (!file_exists($CFG->dirroot . '/mod/assignment/lib.php')) {
+            unset_all_config_for_plugin('assignment_offline');
+            unset_all_config_for_plugin('assignment_online');
+            unset_all_config_for_plugin('assignment_upload');
+            unset_all_config_for_plugin('assignment_uploadsingle');
+            unset_all_config_for_plugin('mod_assignment');
+        }
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2022112800.00);
+    }
+
     return true;
 }
