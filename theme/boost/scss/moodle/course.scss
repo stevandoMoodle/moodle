@@ -729,6 +729,11 @@ span.editinstructions {
         display: flex;
         align-items: center;
     }
+    .moreinfo {
+        .icon {
+            margin-right: 0;
+        }
+    }
 }
 
 #frontpage-available-course-list,
