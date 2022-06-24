@@ -14292,6 +14292,8 @@ span.editinstructions {
   .coursebox .info {
     display: flex;
     align-items: center; }
+  .coursebox .moreinfo .icon {
+    margin-right: 0; }
 
 #frontpage-available-course-list,
 #frontpage-course-list,
