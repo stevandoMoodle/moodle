@@ -63,12 +63,12 @@
             <div class="commands float-sm-right">
                 {{#canedit}}
                     {{#candelete}}
-                        <a href="{{deleteurl}}" data-action="delete">
+                        <a href="{{deleteurl}}" data-action="delete" class="delete">
                             {{#pix}}t/delete, core, {{#str}}delete{{/str}}{{/pix}}
                         </a>
                     {{/candelete}}
                     {{^isactionevent}}
-                        <a href="{{editurl}}" data-action="edit">
+                        <a href="{{editurl}}" data-action="edit" class="edit">
                             {{#pix}}t/edit, core, {{#str}}edit{{/str}}{{/pix}}
                         </a>
                     {{/isactionevent}}

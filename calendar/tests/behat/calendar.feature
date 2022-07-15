@@ -266,3 +266,47 @@ Feature: Perform basic calendar functionality
     And I should not see "Event 1:1"
     And I hover over day "1" of this month in the full calendar page
     And I should see "Event 1:1"
+
+  @javascript
+  Scenario: Create and view a course event without enrolling any course.
+    Given I log in as "admin"
+    And I am viewing site calendar
+    And I click on "New event" "button"
+    When I click on "select#id_eventtype" "css_element"
+    Then I should see "User" in the "select#id_eventtype" "css_element"
+    And I should not see "Group" in the "select#id_eventtype" "css_element"
+    And I should not see "Course" in the "select#id_eventtype" "css_element"
+    And I should see "Category" in the "select#id_eventtype" "css_element"
+    And I should see "Site" in the "select#id_eventtype" "css_element"
+    When I click on "Close" "button" in the "New event" "dialogue"
+    # Enrol admin to Course 2 while admin sees all = 0.
+    Then I am on "Course 2" course homepage
+    And I enrol "admin" user as "Teacher"
+    # Testing against enroled course.
+    And I am viewing site calendar
+    And I create a calendar event:
+      | Type of event  | course                  |
+      | Event title    | Event in enroled course |
+      | timestart[day] | 31                      |
+    When I expand the "Course" autocomplete
+    Then "Course 1" "autocomplete_suggestions" should not exist
+    And "Course 2" "autocomplete_suggestions" should exist
+    And "Course 3" "autocomplete_suggestions" should not exist
+    And I click on "Course 2" "autocomplete_suggestions"
+    When I click on "Save" "button" in the "New event" "dialogue"
+    Then I should see "Event in enroled course"
+    And I click on "Event in enroled course" "link"
+    When I click on "Edit" "button" in the "Event in enroled course" "dialogue"
+    Then the field "Type of event" matches value "Course"
+    And I click on "Close" "button" in the "Editing event" "dialogue"
+    # Unenrol admin from Course 2.
+    When I am on "Course 2" course homepage
+    Then I click on "Participants" "link"
+    And I click on "a.unenrollink" "css_element"
+    And I click on "Unenrol" "button" in the "Unenrol" "dialogue"
+    # View and verify created course event still has the course option selected
+    And I am on "Course 2" course homepage with editing mode on
+    And I add the "Upcoming events" block
+    And I click on "Go to calendar..." "link"
+    And I click on "a.edit" "css_element"
+    And the field "Type of event" matches value "Course"

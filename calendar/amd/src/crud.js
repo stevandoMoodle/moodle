@@ -202,6 +202,7 @@ function(
                 modal.setEventId(eventWrapper.data('eventId'));
 
                 modal.setContextId(calendarWrapper.data('contextId'));
+                modal.setCourseId(calendarWrapper.data('courseid'));
                 modal.show();
 
                 e.stopImmediatePropagation();
