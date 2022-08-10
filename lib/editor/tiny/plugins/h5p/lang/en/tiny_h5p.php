@@ -22,6 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$string['helplinktext'] = 'Moodle H5P Helper';
 $string['modaltitle'] = 'Insert H5P content';
 $string['buttontitle'] = 'Configure H5P content';
 $string['insert'] = 'Insert H5P content';
