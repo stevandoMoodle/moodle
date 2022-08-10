@@ -50,7 +50,8 @@ class plugininfo extends plugin implements
     public static function get_plugin_configuration_for_context(
         context $context,
         array $options,
-        array $fpoptions
+        array $fpoptions,
+        ?\editor_tiny\editor $editor = null
     ): array {
         $permissions = [
             'embed' => has_capability('atto/h5p:addembed', $context),
