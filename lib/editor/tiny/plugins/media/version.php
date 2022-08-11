@@ -15,15 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Tiny text editor version file.
+ * Tiny media plugin version details.
  *
- * @package    editor_tiny
- * @copyright  2021 Andrew Lyons <andrew@nicols.co.uk>
+ * @package    tiny_media
+ * @copyright  2022 Huong Nguyen <huongnv13@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2022062700;
-$plugin->requires  = 2021051700;
+$plugin->requires  = 2021052500;
 $plugin->component = 'tiny_media';
