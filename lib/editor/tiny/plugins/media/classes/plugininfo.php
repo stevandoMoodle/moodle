@@ -54,12 +54,46 @@ class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menu
 
     public static function get_plugin_configuration_for_context(context $context, array $options, array $fpoptions,
         ?editor $editor = null): array {
-        $permissions = [
-            'upload' => true,
-        ];
-        return [
-            'permissions' => $permissions,
-            'storeinrepo' => true,
-        ];
+            global $CFG;
+            require_once($CFG->dirroot . '/repository/lib.php');  // Load constants.
+
+            // Disabled if:
+            // - Not logged in or guest.
+            // - Files are not allowed.
+            // - Only URL are supported.
+            $disabled = !isloggedin() || isguestuser() ||
+                    (!isset($options['maxfiles']) || $options['maxfiles'] == 0) ||
+                    (isset($options['return_types']) && !($options['return_types'] & ~FILE_EXTERNAL));
+
+            $params = ['disabled' => $disabled, 'area' => [], 'usercontext' => null];
+
+            if (!$disabled) {
+                foreach (['itemid', 'context', 'areamaxbytes', 'maxbytes', 'subdirs', 'return_types',
+                               'removeorphaneddrafts'] as $key) {
+                    if (isset($options[$key])) {
+                        if ($key === 'context' && is_object($options[$key])) {
+                            // Just context id is enough.
+                            $params['area'][$key] = $options[$key]->id;
+                        } else {
+                            $params['area'][$key] = $options[$key];
+                        }
+                    }
+                }
+            }
+
+            $data = [
+                'params' => $params,
+                'fpoptions' => $fpoptions
+            ];
+
+            $permissions = [
+                'upload' => true
+            ];
+
+            return [
+                'permissions' => $permissions,
+                'storeinrepo' => true,
+                'data' => $data
+            ];
     }
 }
