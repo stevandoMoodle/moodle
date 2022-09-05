@@ -230,23 +230,23 @@ Feature: Perform basic calendar functionality
     And "Course 3" "autocomplete_suggestions" should exist
 
   @javascript
-  Scenario: Students can not see event type by default.
+  Scenario: Students can not see event type field by default.
     Given I log in as "student1"
     And I am viewing site calendar
     When I click on "New event" "button"
     Then "Type of event" "select" should not exist
-    And I click on "Close" "button" in the "New event" "dialogue"
-    And I log out
-    # Login as admin to set the adminseesall = 1.
-    And I log in as "admin"
-    And I navigate to "Appearance > Calendar" in site administration
-    And I set the field "Admins see all" to "1"
-    And I log out
-    # Login back as student.
+
+  @javascript
+  Scenario: Students can see event types field with "calendar:manageentries" capability.
+    Given the following "permission overrides" exist:
+      | capability                    | permission | role    | contextlevel | reference |
+      | moodle/calendar:manageentries | Allow      | student | System       |           |
     And I log in as "student1"
     And I am viewing site calendar
-    And I click on "New event" "button"
-    And "Type of event" "select" should not exist
+    When I click on "New event" "button"
+    Then "Type of event" "select" should exist
+    And I should see "User" in the "Type of event" "select"
+    And I should see "Course" in the "Type of event" "select"
 
   @javascript @accessibility
   Scenario: The calendar page must be accessible
