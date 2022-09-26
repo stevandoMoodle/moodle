@@ -30,6 +30,12 @@ require_once($CFG->dirroot . '/lib/editor/tiny/plugins/recordrtc/classes/plugini
 $ADMIN->add('editortiny', new admin_category('tiny_recordrtc', new lang_string('pluginname', 'tiny_recordrtc')));
 
 if ($ADMIN->fulltree) {
+    if (!in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']) && !isset($_SERVER['HTTPS'])) {
+        $warning = html_writer::div(get_string('insecurealert', 'tiny_recordrtc'), 'box py-3 generalbox alert alert-danger');
+        $setting = new admin_setting_description('tiny_recordrtc/warning', null, $warning);
+        $settings->add($setting);
+    }
+
     // Types allowed.
     $options = [
         'both' => new lang_string('audioandvideo', 'tiny_recordrtc'),
