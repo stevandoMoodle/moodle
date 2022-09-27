@@ -37,3 +37,7 @@
 .tiny_recordrtc #upload {
     white-space: normal;
 }
+
+.tiny_recordrtc video {
+    border-radius: 8px;
+}
