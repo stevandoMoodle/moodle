@@ -30,11 +30,12 @@ require_once($CFG->dirroot . '/lib/editor/tiny/plugins/recordrtc/classes/plugini
 $ADMIN->add('editortiny', new admin_category('tiny_recordrtc', new lang_string('pluginname', 'tiny_recordrtc')));
 
 if ($ADMIN->fulltree) {
+    $url = parse_url($CFG->wwwroot);
     $hostname = parse_url($CFG->wwwroot, PHP_URL_HOST);
     $isvalid = in_array($hostname, ['localhost', '127.0.0.1', '::1']);
     $isvalid = $isvalid || preg_match("/^*\.localhost$/", $hostname);
 
-    if (!$isvalid && !isset($_SERVER['HTTPS'])) {
+    if (!$isvalid && $url['scheme'] == 'http') {
         $warning = html_writer::div(get_string('insecurealert', 'tiny_recordrtc'), 'box py-3 generalbox alert alert-danger');
         $setting = new admin_setting_description('tiny_recordrtc/warning', null, $warning);
         $settings->add($setting);
