@@ -24,4 +24,25 @@
 
     }
 }}
-<div class="warning-desc">{{{warning}}}</div>
+<div class="warning-desc">
+    {{#data}}
+        <p>
+            {{{description}}}
+            {{#dataobject}}
+                {{^nowarning}}
+                    <ol class="accessibilitywarnings">
+                        <li>
+                            {{#text}}
+                                {{text}}
+                            {{/text}}
+                            {{#img}}
+                                <img src="{{img}}" width="100"/>
+                            {{/img}}
+                            - <a href="#" sourceNode="{{sourceNode}}" nodeId="{{nodeId}}">{{#str}} viewissue, tiny_accessibilitychecker {{/str}}</a>
+                        </li>
+                    </ol>
+                {{/nowarning}}
+            {{/dataobject}}
+        </p>
+    {{/data}}
+</div>
