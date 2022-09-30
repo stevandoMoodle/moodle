@@ -25,24 +25,30 @@
     }
 }}
 <div class="warning-desc">
-    {{#data}}
+    {{#warnings}}
         <p>
             {{{description}}}
-            {{#dataobject}}
-                {{^nowarning}}
-                    <ol class="accessibilitywarnings">
-                        <li>
-                            {{#text}}
-                                {{text}}
-                            {{/text}}
-                            {{#img}}
-                                <img src="{{img}}" width="100"/>
-                            {{/img}}
-                            - <a href="#" sourceNode="{{sourceNode}}" nodeId="{{nodeId}}">{{#str}} viewissue, tiny_accessibilitychecker {{/str}}</a>
-                        </li>
-                    </ol>
-                {{/nowarning}}
-            {{/dataobject}}
+            {{#nodeData}}
+                <ol class="accessibilitywarnings">
+                    <li>
+                        {{#text}}
+                            {{text}}
+                        {{/text}}
+                        {{#src}}
+                            <img src="{{src}}" width="100"/>
+                        {{/src}}
+                        - <a href="#" data-action="highlightfault" data-node-name="{{nodeName}}" data-node-index="{{nodeIndex}}">{{#str}} viewissue, tiny_accessibilitychecker {{/str}}</a>
+                    </li>
+                </ol>
+            {{/nodeData}}
         </p>
-    {{/data}}
+    {{/warnings}}
+    {{^warnings}}
+        {{#isNodeSelected}}
+            <p>{{#str}} nowarningonselected, tiny_accessibilitychecker {{/str}}</p>
+        {{/isNodeSelected}}
+        {{^isNodeSelected}}
+            <p>{{#str}} nowarnings, tiny_accessibilitychecker {{/str}}</p>
+        {{/isNodeSelected}}
+    {{/warnings}}
 </div>
