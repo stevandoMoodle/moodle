@@ -44,11 +44,6 @@
         </p>
     {{/warnings}}
     {{^warnings}}
-        {{#isNodeSelected}}
-            <p>{{#str}} nowarningonselected, tiny_accessibilitychecker {{/str}}</p>
-        {{/isNodeSelected}}
-        {{^isNodeSelected}}
-            <p>{{#str}} nowarnings, tiny_accessibilitychecker {{/str}}</p>
-        {{/isNodeSelected}}
+        <p>{{#str}} nowarnings, tiny_accessibilitychecker {{/str}}</p>
     {{/warnings}}
 </div>
