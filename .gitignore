@@ -1,3 +1,6 @@
 local.yml
 .idea/
 .env
+homeserver.db
+media_store/
+keycloak_data/h2/
