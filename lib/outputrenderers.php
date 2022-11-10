@@ -4192,14 +4192,16 @@ EOD;
      * @param array $customattribs Array of custom attributes for the support email anchor tag.
      * @return string The html code for the support email link.
      */
-    public function supportemail(array $customattribs = []): string {
+    public function supportemail(array $customattribs = [], $emailauthoverride = false): string {
         global $CFG;
 
         // Do not provide a link to contact site support if it is unavailable to this user. This would be where the site has
         // disabled support, or limited it to authenticated users and the current user is a guest or not logged in.
         if (!isset($CFG->supportavailability) ||
                 $CFG->supportavailability == CONTACT_SUPPORT_DISABLED ||
-                ($CFG->supportavailability == CONTACT_SUPPORT_AUTHENTICATED && (!isloggedin() || isguestuser()))) {
+                ($CFG->supportavailability == CONTACT_SUPPORT_AUTHENTICATED && (!isloggedin() || isguestuser())) ||
+                ($CFG->supportavailability == CONTACT_SUPPORT_AUTHENTICATED &&
+                !$emailauthoverride && (!isloggedin() || isguestuser()))) {
             return '';
         }
 
