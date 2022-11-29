@@ -3031,7 +3031,7 @@ privatefiles,moodle|/user/files.php';
         upgrade_main_savepoint(true, 2022110600.00);
     }
 
-    if ($oldversion < 2022112800.00) {
+    if ($oldversion < 2021091700.01) {
         // Remove mod_assignment (unless it has manually been added back).
         if (!file_exists($CFG->dirroot . '/mod/assignment/lib.php')) {
             unset_all_config_for_plugin('assignment_offline');
@@ -3042,7 +3042,7 @@ privatefiles,moodle|/user/files.php';
         }
 
         // Main savepoint reached.
-        upgrade_main_savepoint(true, 2022112800.00);
+        upgrade_main_savepoint(true, 2021091700.01);
     }
 
     return true;
