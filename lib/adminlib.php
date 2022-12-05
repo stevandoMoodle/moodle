@@ -2591,7 +2591,7 @@ class admin_setting_configtextarea extends admin_setting_configtext {
      * @return string XHTML string for the editor
      */
     public function output_html($data, $query='') {
-        global $OUTPUT;
+        global $OUTPUT, $CFG;
 
         $default = $this->get_defaultsetting();
         $defaultinfo = $default;
@@ -2604,7 +2604,7 @@ class admin_setting_configtextarea extends admin_setting_configtext {
             'rows' => $this->rows,
             'id' => $this->get_id(),
             'name' => $this->get_full_name(),
-            'value' => $data,
+            'value' => $CFG->summary ?? $data,
             'forceltr' => $this->get_force_ltr(),
             'readonly' => $this->is_readonly(),
         ];
