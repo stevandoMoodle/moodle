@@ -64,24 +64,30 @@ class administration_display_helper extends \core_cache\administration_helper {
         if (has_capability('moodle/site:config', $context)) {
             $actions = array();
             // Edit mappings.
-            $actions[] = $OUTPUT->action_link(
+            $actions[] = $OUTPUT->single_button(
                 new \moodle_url('/cache/admin.php', array('action' => 'editdefinitionmapping',
                     'definition' => $definitionsummary['id'], 'sesskey' => sesskey())),
-                get_string('editmappings', 'cache')
+                get_string('editmappings', 'cache'),
+                'post',
+                ['class' => 'btn-to-link']
             );
             // Edit sharing.
             if (count($definitionsummary['sharingoptions']) > 1) {
-                $actions[] = $OUTPUT->action_link(
+                $actions[] = $OUTPUT->single_button(
                     new \moodle_url('/cache/admin.php', array('action' => 'editdefinitionsharing',
                         'definition' => $definitionsummary['id'], 'sesskey' => sesskey())),
-                    get_string('editsharing', 'cache')
+                    get_string('editsharing', 'cache'),
+                    'post',
+                    ['class' => 'btn-to-link']
                 );
             }
             // Purge.
-            $actions[] = $OUTPUT->action_link(
+            $actions[] = $OUTPUT->single_button(
                 new \moodle_url('/cache/admin.php', array('action' => 'purgedefinition',
                     'definition' => $definitionsummary['id'], 'sesskey' => sesskey())),
-                get_string('purge', 'cache')
+                get_string('purge', 'cache'),
+                'post',
+                ['class' => 'btn-to-link']
             );
             return $actions;
         }
@@ -100,22 +106,30 @@ class administration_display_helper extends \core_cache\administration_helper {
         global $OUTPUT;
         $actions = array();
         if (has_capability('moodle/site:config', \context_system::instance())) {
-            $baseurl = new \moodle_url('/cache/admin.php', array('store' => $name, 'sesskey' => sesskey()));
+            $baseurl = new \moodle_url('/cache/admin.php', array('store' => $name));
             if (empty($storedetails['default'])) {
-                $actions[] = $OUTPUT->action_link(
-                    new \moodle_url($baseurl, array('action' => 'editstore', 'plugin' => $storedetails['plugin'])),
-                    get_string('editstore', 'cache')
+                $actions[] = $OUTPUT->single_button(
+                    new \moodle_url($baseurl, array(
+                        'action' => 'editstore', 'plugin' => $storedetails['plugin'], 'sesskey' => sesskey())
+                    ),
+                    get_string('editstore', 'cache'),
+                    'post',
+                    ['class' => 'btn-to-link']
                 );
 
-                $actions[] = $OUTPUT->action_link(
-                    new \moodle_url($baseurl, array('action' => 'deletestore')),
-                    get_string('deletestore', 'cache')
+                $actions[] = $OUTPUT->single_button(
+                    new \moodle_url($baseurl, array('action' => 'deletestore', 'sesskey' => sesskey())),
+                    get_string('deletestore', 'cache'),
+                    'post',
+                    ['class' => 'btn-to-link']
                 );
             }
 
-            $actions[] = $OUTPUT->action_link(
-                new \moodle_url($baseurl, array('action' => 'purgestore')),
-                get_string('purge', 'cache')
+            $actions[] = $OUTPUT->single_button(
+                new \moodle_url($baseurl, array('action' => 'purgestore', 'sesskey' => sesskey())),
+                get_string('purge', 'cache'),
+                'post',
+                ['class' => 'btn-to-link']
             );
         }
         return $actions;
@@ -136,9 +150,8 @@ class administration_display_helper extends \core_cache\administration_helper {
             if (!empty($plugindetails['canaddinstance'])) {
                 $url = new \moodle_url('/cache/admin.php',
                     array('action' => 'addstore', 'plugin' => $name, 'sesskey' => sesskey()));
-                $actions[] = $OUTPUT->action_link(
-                    $url,
-                    get_string('addinstance', 'cache')
+                $actions[] = $OUTPUT->single_button(
+                    $url, get_string('addinstance', 'cache'), 'post', ['class' => 'btn-to-link']
                 );
             }
         }
@@ -524,7 +537,7 @@ class administration_display_helper extends \core_cache\administration_helper {
         if ($notifysuccess) {
             if (!$confirm) {
                 $title = get_string('confirmstoredeletion', 'cache');
-                $params = array('store' => $store, 'confirm' => 1, 'action' => $action, 'sesskey' => sesskey());
+                $params = array('store' => $store, 'confirm' => 1, 'action' => $action);
                 $url = new \moodle_url($PAGE->url, $params);
                 $button = new \single_button($url, get_string('deletestore', 'cache'));
 
@@ -655,7 +668,7 @@ class administration_display_helper extends \core_cache\administration_helper {
      * @return void
      */
     public function action_purgedefinition() {
-        global $PAGE;
+        global $PAGE, $OUTPUT;
 
         $id = required_param('definition', PARAM_SAFEPATH);
         list($component, $area) = explode('/', $id, 2);
@@ -674,9 +687,12 @@ class administration_display_helper extends \core_cache\administration_helper {
                     'component' => $component,
                     'area' => $area,
                 ]);
-        $purgeagainlink = \html_writer::link(new \moodle_url('/cache/admin.php', [
-                'action' => 'purgedefinition', 'sesskey' => sesskey(), 'definition' => $id]),
-                get_string('purgeagain', 'cache'));
+        $purgeagainlink = $OUTPUT->single_button(
+            new \moodle_url('/cache/admin.php', ['action' => 'purgedefinition', 'definition' => $id, 'sesskey' => sesskey()]),
+            get_string('purgeagain', 'cache'),
+            'post',
+            ['class' => 'btn-to-link']
+        );
         redirect($PAGE->url, $message . ' ' . $purgeagainlink, 5);
     }
 
@@ -686,14 +702,17 @@ class administration_display_helper extends \core_cache\administration_helper {
      * @return void
      */
     public function action_purge() {
-        global $PAGE;
+        global $PAGE, $OUTPUT;
 
         $store = required_param('store', PARAM_TEXT);
         cache_helper::purge_store($store);
         $message = get_string('purgexstoresuccess', 'cache', ['store' => $store]);
-        $purgeagainlink = \html_writer::link(new \moodle_url('/cache/admin.php', [
-                'action' => 'purgestore', 'sesskey' => sesskey(), 'store' => $store]),
-                get_string('purgeagain', 'cache'));
+        $purgeagainlink = $OUTPUT->single_button(new \moodle_url('/cache/admin.php', [
+            'action' => 'purgestore', 'store' => $store, 'sesskey' => sesskey()]),
+            get_string('purgeagain', 'cache'),
+            'post',
+            ['class' => 'btn-to-link']
+        );
         redirect($PAGE->url, $message . ' ' . $purgeagainlink, 5);
     }
 
