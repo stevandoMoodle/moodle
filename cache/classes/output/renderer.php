@@ -271,7 +271,9 @@ class renderer extends \plugin_renderer_base {
         $html .= html_writer::table($table);
 
         $url = new moodle_url('/cache/admin.php', array('action' => 'rescandefinitions', 'sesskey' => sesskey()));
-        $link = html_writer::link($url, get_string('rescandefinitions', 'cache'));
+        $link = $this->output->single_button(
+            $url, get_string('rescandefinitions', 'cache'), 'post', ['class' => 'btn-to-link']
+        );
         $html .= html_writer::tag('div', $link, array('id' => 'core-cache-rescan-definitions'));
 
         $html .= html_writer::end_tag('div');
@@ -311,7 +313,7 @@ class renderer extends \plugin_renderer_base {
         $html = html_writer::start_tag('div', array('id' => 'core-cache-mode-mappings'));
         $html .= $this->output->heading(get_string('defaultmappings', 'cache'), 3);
         $html .= html_writer::table($table);
-        $link = html_writer::link($editurl, get_string('editmappings', 'cache'));
+        $link = $this->output->single_button($editurl, get_string('editmappings', 'cache'), 'post', ['class' => 'btn-to-link']);
         $html .= html_writer::tag('div', $link, array('class' => 'edit-link'));
         $html .= html_writer::end_tag('div');
         return $html;
@@ -353,8 +355,10 @@ class renderer extends \plugin_renderer_base {
         foreach ($locks as $lock) {
             $actions = array();
             if ($lock['uses'] === 0 && !$lock['default']) {
-                $url = new moodle_url('/cache/admin.php', array('lock' => $lock['name'], 'action' => 'deletelock', 'sesskey' => sesskey()));
-                $actions[] = html_writer::link($url, get_string('delete', 'cache'));
+                $url = new moodle_url(
+                    '/cache/admin.php', array('lock' => $lock['name'], 'action' => 'deletelock', 'sesskey' => sesskey())
+                );
+                $actions[] = $this->output->single_button($url, get_string('delete', 'cache'), 'post', ['class' => 'btn-to-link']);
             }
             $table->data[] = new html_table_row(array(
                 new html_table_cell($lock['name']),
@@ -381,6 +385,7 @@ class renderer extends \plugin_renderer_base {
         $url = new moodle_url('/cache/admin.php', array('action' => 'newlockinstance', 'sesskey' => sesskey()));
         $select = new single_select($url, 'lock', cache_factory::get_administration_display_helper()->get_addable_lock_options());
         $select->label = get_string('addnewlockinstance', 'cache');
+        $select->method = 'post';
 
         $html = html_writer::start_tag('div', array('id' => 'core-cache-lock-additional-actions'));
         $html .= html_writer::tag('div', $this->output->render($select), array('class' => 'new-instance'));

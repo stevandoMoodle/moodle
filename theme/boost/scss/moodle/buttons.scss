@@ -80,3 +80,44 @@ p.arrow_button {
         @include button-focus($value, $gray-800);
     }
 }
+
+// Start button to hyperlink.
+.btn-to-link {
+    display: inline-block;
+    form {
+        button {
+            padding: 0;
+            background-color: transparent;
+            border: none;
+            color: $blue;
+            text-align: left;
+            margin-top: -3px;
+            font-style: inherit;
+        }
+        button:focus {
+            background-color: transparent;
+            border-radius: 1px;
+        }
+        button:active,
+        button:not(:disabled):not(.disabled):active,
+        button:not(:disabled):not(.disabled):active:focus {
+            background-color: transparent;
+            outline: none;
+            box-shadow: none;
+            border-color: transparent;
+            color: #094478;
+        }
+        button:not(:active),
+        button:not(:active:focus) {
+            color: $blue;
+        }
+        button:hover,
+        button:not(:active):hover,
+        button:not(:active:focus):hover {
+            background-color: transparent;
+            text-decoration: underline;
+            color: #094478;
+        }
+    }
+}
+// End button to hyperlink.
