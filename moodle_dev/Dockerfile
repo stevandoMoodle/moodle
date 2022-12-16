@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1
-FROM moodlehq/moodle-php-apache:7.4
+FROM moodlehq/moodle-php-apache:8.0
 MAINTAINER mattp pozze30@gmail.com
 
 # Setup profiling requirements.
 RUN apt-get -y update
-RUN apt-get -y upgrade
+RUN ACCEPT_EULA=Y apt-get upgrade -y
 RUN apt-get install -y graphviz
 
 RUN git clone https://github.com/tideways/php-xhprof-extension.git /tmp/tideways
