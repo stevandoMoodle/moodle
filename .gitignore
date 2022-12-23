@@ -1,6 +1,7 @@
 local.yml
 .idea/
 .env
+<<<<<<< HEAD
 homeserver.db
 media_store/
 keycloak_data/h2/
@@ -11,3 +12,5 @@ moodle_dev/assets/certs/ca.key
 moodle_dev/assets/certs/ca.srl
 moodle_dev/assets/certs/localhost.csr
 moodle_dev/assets/certs/localhost.key
+=======
+>>>>>>> ecd5241 (allow environment variables to be defined in a file that is loaded on every up call)
