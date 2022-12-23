@@ -4,3 +4,10 @@ local.yml
 homeserver.db
 media_store/
 keycloak_data/h2/
+moodle_dev/assets/certs/ca.pem
+moodle_dev/assets/certs/localhost.crt
+moodle_dev/assets/certs/localhost.ext
+moodle_dev/assets/certs/ca.key
+moodle_dev/assets/certs/ca.srl
+moodle_dev/assets/certs/localhost.csr
+moodle_dev/assets/certs/localhost.key
