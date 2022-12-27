@@ -28,9 +28,12 @@ services:
     image: quay.io/keycloak/keycloak:latest
     entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev", "--import-realm"]
     volumes:
-      - "./keycloak_data:/opt/keycloak/data"
+      - "./keycloak/data:/opt/keycloak/data"
+      - "./keycloak/keycloak.conf:/opt/keycloak/conf/keycloak.conf"
+      - "./moodle_dev/assets/certs/:/etc/ssl/certs/"
     ports:
       - 8080:8080
+      - 8443:8443
     environment:
       KEYCLOAK_ADMIN: "${KEYCLOAK_ADMIN}"
       KEYCLOAK_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASSWORD}"

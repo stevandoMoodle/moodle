@@ -3,7 +3,7 @@ local.yml
 .env
 homeserver.db
 media_store/
-keycloak_data/h2/
+keycloak/h2/
 moodle_dev/assets/certs/ca.pem
 moodle_dev/assets/certs/localhost.crt
 moodle_dev/assets/certs/localhost.ext
