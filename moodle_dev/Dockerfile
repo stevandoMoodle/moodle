@@ -27,3 +27,6 @@ COPY assets/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-x
 COPY assets/certs/ /etc/ssl/certs/
 COPY assets/443-default.conf /etc/apache2/sites-enabled/443-default.conf
 RUN a2enmod ssl
+
+COPY assets/certs/ /usr/local/share/ca-certificates/
+RUN update-ca-certificates

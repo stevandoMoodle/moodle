@@ -13,11 +13,7 @@ $CFG->dbpass    = getenv('MOODLE_DOCKER_DBPASS');
 $CFG->prefix    = 'm_';
 $CFG->dboptions = ['dbcollation' => getenv('MOODLE_DOCKER_DBCOLLATION')];
 
-$host = 'localhost';
-if (!empty(getenv('MOODLE_DOCKER_WEB_HOST'))) {
-    $host = getenv('MOODLE_DOCKER_WEB_HOST');
-}
-$CFG->wwwroot   = "http://{$host}";
+$CFG->wwwroot   = "https://webserver";
 $CFG->dataroot  = '/var/www/moodledata';
 $CFG->admin     = 'admin';
 $CFG->directorypermissions = 0777;
