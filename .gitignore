@@ -7,3 +7,4 @@ keycloak/data/h2/
 moodle_dev/assets/certs/
 !moodle_dev/assets/certs/createcerts.sh
 !moodle_dev/assets/certs/README.md
+!keycloak/data/h2/README.md
