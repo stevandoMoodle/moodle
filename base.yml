@@ -41,11 +41,13 @@ services:
     image: "matrixdotorg/synapse:latest"
     volumes:
       - "./synapse_data:/data"
+      - "./moodle_dev/assets/certs/:/etc/ssl/certs/"
     environment:
       SYNAPSE_SERVER_NAME: "synapse"
       SYNAPSE_REPORT_STATS: "yes"
     ports:
       - "8008:8008"
+      - "8448:8448"
   element:
     image: vectorim/element-web
     volumes:

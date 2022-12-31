@@ -22,6 +22,13 @@ listeners:
     resources:
       - names: [client, federation]
         compress: false
+  - port: 8448
+    tls: true
+    type: http
+    x_forwarded: true
+    resources:
+      - names: [client, federation]
+        compress: false
 database:
   name: sqlite3
   args:
@@ -37,6 +44,16 @@ trusted_key_servers:
   - server_name: "matrix.org"
 enable_registration: true
 enable_registration_without_verification: true
-
-
+# PEM-encoded X509 certificate for TLS.
+# This certificate, as of Synapse 1.0, will need to be a valid and verifiable
+# certificate, signed by a recognised Certificate Authority.
+#
+# Be sure to use a `.pem` file that includes the full certificate chain including
+# any intermediate certificates (for instance, if using certbot, use
+# `fullchain.pem` as your certificate, not `cert.pem`).
+#
+tls_certificate_path: "/etc/ssl/certs/synapse.crt"
+# PEM-encoded private key for TLS
+tls_private_key_path: "/etc/ssl/certs/synapse.key"
+use_insecure_ssl_client_just_for_testing_do_not_use: true
 # vim:ft=yaml
