@@ -48,11 +48,15 @@ services:
     ports:
       - "8008:8008"
       - "8448:8448"
+    depends_on:
+      - keycloak
   element:
     image: vectorim/element-web
     volumes:
       - "./element_data/config.json:/app/config.json"
+      - "./element_data/nginx.conf:/etc/nginx/conf.d/default.conf"
+      - "./moodle_dev/assets/certs/:/etc/ssl/certs/"
     ports:
-      - "8081:80"
+      - "8081:8081"
     depends_on:
       - synapse

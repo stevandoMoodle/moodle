@@ -1,7 +1,7 @@
 {
   "default_server_config": {
     "m.homeserver": {
-      "base_url": "http://synapse:8008"
+      "base_url": "https://synapse:8008"
     },
     "m.identity_server": {
       "base_url": "https://vector.im"

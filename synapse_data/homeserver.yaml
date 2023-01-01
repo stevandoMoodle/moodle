@@ -14,9 +14,10 @@
 #
 server_name: "synapse"
 pid_file: /data/homeserver.pid
+public_baseurl: https://synapse:8008/
 listeners:
   - port: 8008
-    tls: false
+    tls: true
     type: http
     x_forwarded: true
     resources:
@@ -56,4 +57,18 @@ tls_certificate_path: "/etc/ssl/certs/synapse.crt"
 # PEM-encoded private key for TLS
 tls_private_key_path: "/etc/ssl/certs/synapse.key"
 use_insecure_ssl_client_just_for_testing_do_not_use: true
+
+oidc_providers:
+  - idp_id: keycloak
+    idp_name: "Keycloak"
+    issuer: "https://keycloak:8443/realms/moodle/"
+    client_id: "synapse-client"
+    client_secret: "jc4pq2J9ZQKEqpIRzbYYUWcpOYXoFZt7"
+    scopes: ["openid", "profile"]
+    user_mapping_provider:
+      config:
+        localpart_template: "{{ user.preferred_username }}"
+        display_name_template: "{{ user.name }}"
+    backchannel_logout_enabled: false # Optional, will do later
+
 # vim:ft=yaml
