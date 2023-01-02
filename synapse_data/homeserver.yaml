@@ -63,7 +63,7 @@ oidc_providers:
     idp_name: "Keycloak"
     issuer: "https://keycloak:8443/realms/moodle/"
     client_id: "synapse-client"
-    client_secret: "jc4pq2J9ZQKEqpIRzbYYUWcpOYXoFZt7"
+    client_secret: "********"
     scopes: ["openid", "profile"]
     user_mapping_provider:
       config:
