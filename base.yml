@@ -7,6 +7,8 @@ services:
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html"
       - "${ASSETDIR}/web/apache2_faildumps.conf:/etc/apache2/conf-enabled/apache2_faildumps.conf"
+    tmpfs:
+      - /muc
     environment:
       MOODLE_DOCKER_DBNAME: "${MOODLE_DOCKER_DBNAME}"
       MOODLE_DOCKER_DBUSER: "${MOODLE_DOCKER_DBUSER}"
