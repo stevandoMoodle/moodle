@@ -72,4 +72,9 @@ oidc_providers:
         email_template: "{{ user.email }}"
     backchannel_logout_enabled: false # Optional, will do later
 
+email:
+  smtp_host: mailhog
+  smtp_port: 1025
+  notif_from: "Your Friendly %(app)s homeserver <noreply@example.com>"
+
 # vim:ft=yaml
