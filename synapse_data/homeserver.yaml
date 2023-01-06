@@ -67,8 +67,9 @@ oidc_providers:
     scopes: ["openid", "profile"]
     user_mapping_provider:
       config:
-        localpart_template: "{{ user.preferred_username }}"
+        localpart_template: "{{ user.preferred_username }}" # preferred_username is what keycloak returns as the username.
         display_name_template: "{{ user.name }}"
+        email_template: "{{ user.email }}"
     backchannel_logout_enabled: false # Optional, will do later
 
 # vim:ft=yaml
