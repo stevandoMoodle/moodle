@@ -116,7 +116,7 @@ Next make the self signed certs so we can run Moodle and associated services ove
 There is a helper script that creates the root CA and dev certificates and keys.
 
 Change to the directory of the script first:<br/>
-`cd moodle-docker/assets/certs`
+`cd moodle-docker/moodle_dev/assets/certs`
 
 Then run it for each service that we require certificates for. The first time the script is run it will generate a root cert and key. After that it will re-use the root cert and just make the certs required for each service we want to run using SSL/TLS.
 
