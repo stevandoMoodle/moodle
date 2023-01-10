@@ -2,7 +2,7 @@
 
 if [ "$#" -ne 1 ]
 then
-  echo "Usage: Must supply a domain"
+  echo "Usage: Must supply a domain."
   exit 1
 fi
 
