@@ -148,12 +148,25 @@ Next we need to build our version of the moodle dev container:<br/>
 `cd moodle-docker/moodle_dev`<br/>
 `docker build -t "mattp:moodle_dev" .`
 
-Finally actually start the services:<br/>
+Finally, actually start the services:<br/>
 `cd moodle-docker/bin`<br/>
 `./moodle-docker-compose up -d`
 
 Next we need to install Moodle:<br/>
 `./moodle-docker-compose exec webserver php admin/cli/install_database.php --agree-license --fullname="Moodle Master" --shortname="docker_moodle" --summary="Moodle dev site" --adminpass="test" --adminemail="you@gmail.com"`
+
+## Synapse admin user
+We also need to create an initial Synapse admin user. This is an initial user you'll need before you can use the Matrix API.<br/>
+Synapse provides a cli tool to create users. To create an initial admin user:<br/>
+`cd moodle-docker/bin`<br/>
+```
+docker exec -it {containerid} register_new_matrix_user \
+-u admin \
+-a \
+-c /data/homeserver.yaml \
+https://synapse:8008/
+```
+Where `{containerid}` is the Docker ID of the running Synapse container.
 
 # PHPStorm Setup
 Next we set up profiling in PHPStorm. Go to your PhpStorm and go to:<br/>
