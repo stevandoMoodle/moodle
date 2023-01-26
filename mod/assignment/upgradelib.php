@@ -71,7 +71,7 @@ class assign_upgrade_manager {
         // Also note that we do not check for any mod_assignment capabilities, because they can
         // be removed so that users don't add new instances of the broken old thing.
         if (!has_capability('mod/assign:addinstance', $oldcontext)) {
-            $log = get_string('couldnotcreatenewassignmentinstance', 'mod_assign');
+            $log = get_string('couldnotcreatenewassignmentinstance', 'mod_assignment');
             return false;
         }
 
@@ -111,7 +111,7 @@ class assign_upgrade_manager {
         $newassignment = new assign(null, null, null);
 
         if (!$newassignment->add_instance($data, false)) {
-            $log = get_string('couldnotcreatenewassignmentinstance', 'mod_assign');
+            $log = get_string('couldnotcreatenewassignmentinstance', 'mod_assignment');
             return false;
         }
 
@@ -121,7 +121,7 @@ class assign_upgrade_manager {
                                                           $newmodule->id,
                                                           $newassignment->get_instance()->id);
         if (!$newcoursemodule) {
-            $log = get_string('couldnotcreatenewcoursemodule', 'mod_assign');
+            $log = get_string('couldnotcreatenewcoursemodule', 'mod_assignment');
             return false;
         }
 
@@ -220,7 +220,7 @@ class assign_upgrade_manager {
                 $submission->latest = 1;
                 $submission->id = $DB->insert_record('assign_submission', $submission);
                 if (!$submission->id) {
-                    $log .= get_string('couldnotinsertsubmission', 'mod_assign', $submission->userid);
+                    $log .= get_string('couldnotinsertsubmission', 'mod_assignment', $submission->userid);
                     $rollback = true;
                 }
                 foreach ($newassignment->get_submission_plugins() as $plugin) {
@@ -253,7 +253,7 @@ class assign_upgrade_manager {
                     }
                     $grade->id = $DB->insert_record('assign_grades', $grade);
                     if (!$grade->id) {
-                        $log .= get_string('couldnotinsertgrade', 'mod_assign', $grade->userid);
+                        $log .= get_string('couldnotinsertgrade', 'mod_assignment', $grade->userid);
                         $rollback = true;
                     }
 
@@ -304,7 +304,7 @@ class assign_upgrade_manager {
 
         } catch (Exception $exception) {
             $rollback = true;
-            $log .= get_string('conversionexception', 'mod_assign', $exception->getMessage());
+            $log .= get_string('conversionexception', 'mod_assignment', $exception->getMessage());
         }
 
         if ($rollback) {
