@@ -146,7 +146,7 @@ To add the certificate to firefox to get rid of the self signed warning. (Chrome
 ## Build and install
 Next we need to build our version of the moodle dev container:<br/>
 `cd moodle-docker/moodle_dev`<br/>
-`docker build -t "mattp:moodle_dev" .`
+`docker build -t "stevando:moodle_dev" .`
 
 Finally, actually start the services:<br/>
 `cd moodle-docker/bin`<br/>
