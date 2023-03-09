@@ -161,8 +161,7 @@ class matrix_events_manager {
      * @return string
      */
     public function get_room_membership_join_endpoint(): string {
-        return $this->matrixhomeserverurl . '/' . '_synapse/admin/v1/join' .
-             '/' . urlencode($this->roomid);
+        return $this->matrixhomeserverurl . '/' . '_synapse/admin/v1/join' . '/' . urlencode($this->roomid);
     }
 
     /**
@@ -176,11 +175,22 @@ class matrix_events_manager {
     }
 
     /**
-     * Get the user info endpoint. Provides access to profile related info and actions.
+     * Get the matrix api endpoint for creating a new user.
      *
+     * @param string $matrixuserid Matrix user id
      * @return string
      */
-    public function get_user_info_endpoint($matrixuserid): string {
+    public function get_create_user_endpoint(string $matrixuserid): string {
+        return $this->matrixhomeserverurl . '/' . '_synapse/admin/v2/users/' . urlencode($matrixuserid);
+    }
+
+    /**
+     * Get the matrix api endpoint for creating a new user.
+     *
+     * @param string $matrixuserid Matrix user id
+     * @return string
+     */
+    public function get_user_info_endpoint(string $matrixuserid): string {
         return $this->matrixhomeserverurl . '/' . '_synapse/admin/v2/users/' . urlencode($matrixuserid);
     }
 
