@@ -220,4 +220,50 @@ class communication_handler_test extends \advanced_testcase {
         // Expect it to be true as the local record should only be deleted after the room operation actioned.
         $this->assertTrue($communicationsettingsdata->record_exist());
     }
+
+    /**
+     * Test the adding members to a room operation.
+     *
+     * @return void
+     * @covers ::update_room_membership
+     * @covers ::is_update_required
+     * @covers ::add_to_task_queue
+     * @covers ::add_members
+     */
+    public function test_add_member_to_room_operation(): void {
+        $this->resetAfterTest();
+        $course = $this->get_course();
+        $userid = $this->get_user()->id;
+
+        // Handler object to update the room membership
+        $communication = new communication_handler($course->id);
+        $communication->update_room_membership('add', [$userid]);
+
+        // Test the tasks added.
+        $adhoctask = \core\task\manager::get_adhoc_tasks('\\core_communication\\task\\communication_user_operations');
+        $this->assertCount(1, $adhoctask);
+    }
+
+    /**
+     * Test the removing members from a room operation.
+     *
+     * @return void
+     * @covers ::update_room_membership
+     * @covers ::is_update_required
+     * @covers ::add_to_task_queue
+     * @covers ::remove_members
+     */
+    public function test_remove_member_from_room_operation(): void {
+        $this->resetAfterTest();
+        $course = $this->get_course();
+        $userid = $this->get_user()->id;
+
+        // Handler object to update the room membership
+        $communication = new communication_handler($course->id);
+        $communication->update_room_membership('remove', [$userid]);
+
+        // Test the tasks added.
+        $adhoctask = \core\task\manager::get_adhoc_tasks('\\core_communication\\task\\communication_user_operations');
+        $this->assertCount(1, $adhoctask);
+    }
 }
