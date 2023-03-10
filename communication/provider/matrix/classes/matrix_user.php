@@ -56,11 +56,15 @@ class matrix_user extends communication_user_base {
      */
     public function create_members(array $userids): void {
         foreach ($userids as $userid) {
-            $fullname = matrix_user_manager::get_moodle_user_data($userid)->fullname;
+            $user = matrix_user_manager::get_moodle_user_data($userid);
             // Proceed if we have a user's full name to work with.
-            if(!empty($fullname)) {
+            if(!empty($user->fullname)) {
                 $json = [
-                    'displayname' => $fullname,
+                    'displayname' => $user->fullname,
+                    'threepids' => [(object)[
+                        'medium' => 'email',
+                        'address' => $user->email
+                    ]],
                     'external_ids' => []
                 ];
 
