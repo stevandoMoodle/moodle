@@ -58,7 +58,7 @@ class matrix_user extends communication_user_base {
         foreach ($userids as $userid) {
             $user = matrix_user_manager::get_moodle_user_data($userid);
             // Proceed if we have a user's full name to work with.
-            if(!empty($user->fullname)) {
+            if(!empty($user->fullname) && !empty($user->email)) {
                 $json = [
                     'displayname' => $user->fullname,
                     'threepids' => [(object)[
