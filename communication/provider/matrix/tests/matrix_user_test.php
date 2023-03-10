@@ -36,6 +36,7 @@ require_once(__DIR__ . '/../../../tests/communication_test_helper_trait.php');
  * @copyright  2023 Stevani Andolo <stevani.andolo@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass \communication_matrix\matrix_user
+ * @coversDefaultClass \communication\task\communication_user_operations
  */
 class matrix_user_test extends \advanced_testcase {
 
@@ -99,4 +100,134 @@ class matrix_user_test extends \advanced_testcase {
         $this->assertNotEmpty($matrixuserdata);
         $this->assertEquals("Samplefn Sampleln", $matrixuserdata->displayname);
     }
+
+    /**
+     * Test adding members to a room.
+     *
+     * @return void
+     * @covers ::add_members_to_room
+     * @covers ::add_registered_matrix_user_to_room
+     * @covers ::check_room_membership
+     * @covers ::init
+     */
+    public function test_add_members_to_room(): void {
+        // Run matrix post install task.
+        $this->run_post_install_task();
+
+        $course = $this->get_course();
+        $userid = $this->get_user()->id;
+
+        // Run room operation task.
+        $this->runAdhocTasks('\core_communication\task\communication_room_operations');
+
+        // Add user to matrix room.
+        $communication = new communication($course->id, 'core_course', 'coursecommunication');
+        $matrixuser = new matrix_user($communication);
+        $matrixuser->add_members_to_room([$userid]);
+        // Get matrix room.
+        $matrixrooms = new matrix_rooms($communication->communicationsettings->get_communication_instance_id());
+        $eventmanager = new matrix_events_manager($matrixrooms->roomid);
+        // Get created matrixuserid from moodle.
+        $matrixuserid = matrix_user_manager::get_matrixid_from_moodle($userid, $eventmanager->matrixhomeserverurl);
+        // Test user is a member of the room.
+        $this->assertTrue($matrixuser->check_room_membership($matrixuserid));
+    }
+
+    /**
+     * Test removing members from a room.
+     *
+     * @return void
+     * @covers ::remove_members_from_room
+     * @covers ::add_members_to_room
+     * @covers ::add_registered_matrix_user_to_room
+     * @covers ::check_room_membership
+     * @covers ::init
+     */
+    public function test_remove_members_from_room(): void {
+        // Run matrix post install task.
+        $this->run_post_install_task();
+
+        $course = $this->get_course();
+        $userid = $this->get_user()->id;
+
+        // Run room operation task.
+        $this->runAdhocTasks('\core_communication\task\communication_room_operations');
+
+        // Add user to matrix room.
+        $communication = new communication($course->id, 'core_course', 'coursecommunication');
+        $matrixuser = new matrix_user($communication);
+        $matrixuser->add_members_to_room([$userid]);
+        // Get matrix room.
+        $matrixrooms = new matrix_rooms($communication->communicationsettings->get_communication_instance_id());
+        $eventmanager = new matrix_events_manager($matrixrooms->roomid);
+        // Get created matrixuserid from moodle.
+        $matrixuserid = matrix_user_manager::get_matrixid_from_moodle($userid, $eventmanager->matrixhomeserverurl);
+        // Test user is a member of the room.
+        $this->assertTrue($matrixuser->check_room_membership($matrixuserid));
+        // Remove member from matrix room.
+        $matrixuser->remove_members_from_room([$userid]);
+        // Test user is no longer a member of the room.
+        $this->assertFalse($matrixuser->check_room_membership($matrixuserid));
+    }
+
+    /**
+     * Check a user exists in Matrix.
+     *
+     * @return void
+     * @covers ::check_user_exists
+     * @covers ::add_members_to_room
+     */
+    public function test_check_user_exists(): void {
+        // Run matrix post install task.
+        $this->run_post_install_task();
+
+        $course = $this->get_course();
+        $userid = $this->get_user()->id;
+
+        // Run room operation task.
+        $this->runAdhocTasks('\core_communication\task\communication_room_operations');
+
+        // Add user to matrix room.
+        $communication = new communication($course->id, 'core_course', 'coursecommunication');
+        $matrixuser = new matrix_user($communication);
+        $matrixuser->add_members_to_room([$userid]);
+        // Get matrix room.
+        $matrixrooms = new matrix_rooms($communication->communicationsettings->get_communication_instance_id());
+        $eventmanager = new matrix_events_manager($matrixrooms->roomid);
+        // Get created matrixuserid from moodle.
+        $matrixuserid = matrix_user_manager::get_matrixid_from_moodle($userid, $eventmanager->matrixhomeserverurl);
+        // Test user is a member of the room.
+        $this->assertTrue($matrixuser->check_user_exists($matrixuserid));
+    }
+
+    /**
+     * Test the checking of room membership.
+     *
+     * @return void
+     * @covers ::check_room_membership
+     * @covers ::add_members_to_room
+     */
+    public function test_check_room_membership(): void {
+        // Run matrix post install task.
+        $this->run_post_install_task();
+
+        $course = $this->get_course();
+        $userid = $this->get_user()->id;
+
+        // Run room operation task.
+        $this->runAdhocTasks('\core_communication\task\communication_room_operations');
+
+        // Add user to matrix room.
+        $communication = new communication($course->id, 'core_course', 'coursecommunication');
+        $matrixuser = new matrix_user($communication);
+        $matrixuser->add_members_to_room([$userid]);
+        // Get matrix room.
+        $matrixrooms = new matrix_rooms($communication->communicationsettings->get_communication_instance_id());
+        $eventmanager = new matrix_events_manager($matrixrooms->roomid);
+        // Get created matrixuserid from moodle.
+        $matrixuserid = matrix_user_manager::get_matrixid_from_moodle($userid, $eventmanager->matrixhomeserverurl);
+        // Test user is a member of the room.
+        $this->assertTrue($matrixuser->check_room_membership($matrixuserid));
+    }
+
 }

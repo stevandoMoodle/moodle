@@ -84,6 +84,18 @@ class matrix_events_manager_test extends \advanced_testcase {
             '/' . urlencode($mockroomid) . '/' . 'state/m.room.avatar/',
             $matrixeventsmanager->get_update_avatar_endpoint());
 
+        $this->assertEquals($this->get_matrix_server_url() . '/' . '_matrix/client/r0/rooms' .
+            '/' . urlencode($mockroomid) . '/' . 'joined_members',
+            $matrixeventsmanager->get_room_membership_joined_endpoint());
+
+        $this->assertEquals($this->get_matrix_server_url() . '/' . '_synapse/admin/v1/join' .
+            '/' . urlencode($mockroomid),
+            $matrixeventsmanager->get_room_membership_join_endpoint());
+
+        $this->assertEquals($this->get_matrix_server_url() . '/' . '_matrix/client/r0/rooms' .
+            '/' . urlencode($mockroomid) . '/' . 'kick',
+            $matrixeventsmanager->get_room_membership_kick_endpoint());
+
         $this->assertEquals($this->get_matrix_server_url() . '/' . '_synapse/admin/v2/users/' . urlencode($mockuserid),
             $matrixeventsmanager->get_create_user_endpoint($mockuserid));
 

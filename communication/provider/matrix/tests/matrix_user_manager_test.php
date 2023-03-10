@@ -34,6 +34,7 @@ require_once(__DIR__ . '/../../../tests/communication_test_helper_trait.php');
  * @copyright  2023 Stevani Andolo <stevani.andolo@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @coversDefaultClass \communication_matrix\matrix_user
+ * @coversDefaultClass \communication\task\communication_user_operations
  */
 class matrix_user_manager_test extends \advanced_testcase {
 
