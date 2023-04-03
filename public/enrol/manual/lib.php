@@ -519,9 +519,10 @@ class enrol_manual_plugin extends enrol_plugin {
      * @param int $timeend 0 means forever
      * @param int $status default to ENROL_USER_ACTIVE for new enrolments, no change by default in updates
      * @param bool $recovergrades restore grade history
+     * @param int $group optional group id
      * @return int The number of enrolled cohort users
      */
-    public function enrol_cohort(stdClass $instance, $cohortid, $roleid = null, $timestart = 0, $timeend = 0, $status = null, $recovergrades = null) {
+    public function enrol_cohort(stdClass $instance, $cohortid, $roleid = null, $timestart = 0, $timeend = 0, $status = null, $recovergrades = null, $group = null) {
         global $DB;
         $context = context_course::instance($instance->courseid);
         list($esql, $params) = get_enrolled_sql($context);
@@ -531,6 +532,9 @@ class enrol_manual_plugin extends enrol_plugin {
         $members = $DB->get_fieldset_sql($sql, $params);
         foreach ($members as $userid) {
             $this->enrol_user($instance, $userid, $roleid, $timestart, $timeend, $status, $recovergrades);
+            if ($group){ 
+                groups_add_member($group, $userid);
+            }            
         }
         return count($members);
     }
