@@ -18282,6 +18282,10 @@ span.editinstructions .alert-link {
   font-weight: 700;
 }
 
+.coursebox .content .coursefile {
+  max-width: 100px;
+}
+
 .coursebox .content .courseimage img {
   max-width: 100px;
   max-height: 100px;
@@ -19220,8 +19224,6 @@ body.drawer-ease {
   .drawer-md.not-initialized {
     display: none;
   }
-}
-@media (max-width: 991.98px) {
   .drawer-md.drawer-right {
     width: 315px;
     max-width: 315px;
@@ -19236,8 +19238,6 @@ body.drawer-ease {
     margin-left: auto;
     margin-right: 5px;
   }
-}
-@media (max-width: 991.98px) {
   .drawer-md.drawer-left {
     width: 285px;
     max-width: 285px;
@@ -19252,8 +19252,6 @@ body.drawer-ease {
     margin-right: auto;
     margin-left: 5px;
   }
-}
-@media (max-width: 991.98px) {
   .drawer-md.drawer-bottom {
     bottom: -110%;
   }
@@ -19281,8 +19279,6 @@ body.drawer-ease {
   .drawer-sm.not-initialized {
     display: none;
   }
-}
-@media (max-width: 767.98px) {
   .drawer-sm.drawer-right {
     width: 315px;
     max-width: 315px;
@@ -19297,8 +19293,6 @@ body.drawer-ease {
     margin-left: auto;
     margin-right: 5px;
   }
-}
-@media (max-width: 767.98px) {
   .drawer-sm.drawer-left {
     width: 285px;
     max-width: 285px;
@@ -19313,8 +19307,6 @@ body.drawer-ease {
     margin-right: auto;
     margin-left: 5px;
   }
-}
-@media (max-width: 767.98px) {
   .drawer-sm.drawer-bottom {
     bottom: -110%;
   }
@@ -25927,8 +25919,6 @@ span[data-flexitour=container][x-placement=right] div[data-role=arrow]:after, sp
     margin-right: 0;
     padding-left: 1rem;
   }
-}
-@media (min-width: 992px) {
   #page.drawers.show-drawer-right {
     margin-left: 0;
     margin-right: 315px;
@@ -25937,14 +25927,10 @@ span[data-flexitour=container][x-placement=right] div[data-role=arrow]:after, sp
   .jsenabled #page.drawers.show-drawer-right .btn-footer-popover {
     right: calc(315px + 2rem);
   }
-}
-@media (min-width: 992px) {
   #page.drawers.show-drawer-left.show-drawer-right {
     margin-left: 285px;
     margin-right: 315px;
   }
-}
-@media (min-width: 992px) {
   #page.drawers.hasstickyfooter {
     height: calc(100vh - 60px - 60px);
   }
