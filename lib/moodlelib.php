@@ -4740,6 +4740,11 @@ function get_password_peppers(): array {
  */
 function validate_internal_user_password(stdClass $user, #[\SensitiveParameter] string $password): bool {
 
+    if (exeeds_password_length($password)) {
+        // Password cannot be more than MAX_PASSWORD_CHARACTERS characters.
+        return false;
+    }
+
     if ($user->password === AUTH_PASSWORD_NOT_CACHED) {
         // Internal password is not used at all, it can not validate.
         return false;
