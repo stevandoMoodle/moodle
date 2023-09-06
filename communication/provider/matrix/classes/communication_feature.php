@@ -751,4 +751,25 @@ class communication_feature implements
 
         return $powerlevel;
     }
+
+    /*
+     * Check if matrix settings are configured
+     *
+     * @return boolean
+     */
+    public static function is_configured(): bool {
+        // Matrix communication settings.
+        $matrixhomeserverurl = get_config('communication_matrix', 'matrixhomeserverurl');
+        $matrixaccesstoken = get_config('communication_matrix', 'matrixaccesstoken');
+        $matrixelementurl = get_config('communication_matrix', 'matrixelementurl');
+
+        if (
+            $matrixhomeserverurl === '' ||
+            $matrixaccesstoken === '' ||
+            (!PHPUNIT_TEST && $matrixelementurl === '')
+        ) {
+            return false;
+        }
+        return true;
+    }
 }

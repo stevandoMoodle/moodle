@@ -417,18 +417,18 @@ class processor_test extends \advanced_testcase {
     }
 
     /**
-     * Test if the provider is enabled or disabled.
+     * Test if the provider is available (enabled and configured).
      *
-     * @covers ::is_provider_enabled
+     * @covers ::is_provider_available
      */
-    public function test_is_provider_enabled(): void {
+    public function test_is_provider_available(): void {
         $this->resetAfterTest();
         $communicationprovider = 'communication_matrix';
-        $this->assertTrue(processor::is_provider_enabled($communicationprovider));
+        $this->assertTrue(processor::is_provider_available($communicationprovider));
 
         // Now test is disabling the plugin returns false.
         set_config('disabled', 1, $communicationprovider);
-        $this->assertFalse(processor::is_provider_enabled($communicationprovider));
+        $this->assertFalse(processor::is_provider_available($communicationprovider));
     }
 
     /**
