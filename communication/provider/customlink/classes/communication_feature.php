@@ -165,4 +165,8 @@ class communication_feature implements
             get_string('customlinkurlinfo', 'communication_customlink'),
             'addcommunicationoptionshere'), 'addcommunicationoptionshere');
     }
+
+    public static function is_configured(): bool {
+        return true;
+    }
 }

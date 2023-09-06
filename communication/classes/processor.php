@@ -333,7 +333,7 @@ class processor {
     public static function load_by_id(int $id): ?self {
         global $DB;
         $record = $DB->get_record('communication', ['id' => $id]);
-        if ($record && self::is_provider_enabled($record->provider)) {
+        if ($record && self::is_provider_available($record->provider)) {
             return new self($record);
         }
 
@@ -362,7 +362,7 @@ class processor {
             'instancetype' => $instancetype,
         ]);
 
-        if ($record && self::is_provider_enabled($record->provider)) {
+        if ($record && self::is_provider_available($record->provider)) {
             return new self($record);
         }
 
@@ -653,7 +653,11 @@ class processor {
      * @param string $provider provider component name
      * @return bool
      */
-    public static function is_provider_enabled(string $provider): bool {
-        return \core\plugininfo\communication::is_plugin_enabled($provider);
+    public static function is_provider_available(string $provider): bool {
+        if (\core\plugininfo\communication::is_plugin_enabled($provider)) {
+            $providerclass = "{$provider}\\communication_feature";
+            return $providerclass::is_configured();
+        }
+        return false;
     }
 }
