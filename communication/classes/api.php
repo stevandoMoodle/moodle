@@ -386,7 +386,11 @@ class api {
         ?\stored_file $avatar = null,
         ?\stdClass $instance = null,
     ): void {
-        if ($selectedcommunication !== processor::PROVIDER_NONE && $selectedcommunication !== '') {
+        if (
+            $selectedcommunication !== processor::PROVIDER_NONE &&
+            $selectedcommunication !== '' &&
+            processor::is_provider_configured($selectedcommunication)
+        ) {
             // Create communication record.
             $this->communication = processor::create_instance(
                 $selectedcommunication,
@@ -429,7 +433,7 @@ class api {
         ?\stdClass $instance = null,
     ): void {
         // Existing object found, let's update the communication record and associated actions.
-        if ($this->communication !== null) {
+        if ($this->communication !== null && processor::is_provider_configured($selectedprovider)) {
             // Get the previous data to compare for update.
             $previousprovider = $this->communication->get_provider();
             if ($previousprovider === $selectedprovider) {

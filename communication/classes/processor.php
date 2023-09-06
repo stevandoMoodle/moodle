@@ -656,4 +656,15 @@ class processor {
     public static function is_provider_enabled(string $provider): bool {
         return \core\plugininfo\communication::is_plugin_enabled($provider);
     }
+
+    /**
+     * Check if the provider is configured.
+     *
+     * @param string $provider The provider name
+     * @return bool True if provider is configured
+     */
+    public static function is_provider_configured(string $provider): bool {
+        $providerclass = "{$provider}\\communication_feature";
+        return $providerclass::is_configured();
+    }
 }

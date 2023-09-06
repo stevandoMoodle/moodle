@@ -48,7 +48,8 @@ class communication_feature implements
     \core_communication\user_provider,
     \core_communication\room_chat_provider,
     \core_communication\room_user_provider,
-    \core_communication\form_provider {
+    \core_communication\form_provider,
+    \core_communication\provider_configuration {
 
     /** @var matrix_room $room The matrix room object to update room information */
     private ?matrix_room $room = null;
@@ -93,7 +94,7 @@ class communication_feature implements
         $this->homeserverurl = get_config('communication_matrix', 'matrixhomeserverurl');
         $this->webclienturl = get_config('communication_matrix', 'matrixelementurl');
 
-        if ($this->homeserverurl) {
+        if ($this->homeserverurl && $processor::is_provider_enabled('communication_matrix')) {
             // Generate the API instance.
             $this->matrixapi = matrix_client::instance(
                 serverurl: $this->homeserverurl,
@@ -514,5 +515,22 @@ class communication_feature implements
         $body = $response->getBody();
 
         return json_decode($body, false, 512, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Check if matrix settings are configured
+     *
+     * @return boolean
+     */
+    public static function is_configured(): bool {
+        // Matrix communication settings.
+        $matrixhomeserverurl = get_config('communication_matrix', 'matrixhomeserverurl');
+        $matrixaccesstoken = get_config('communication_matrix', 'matrixaccesstoken');
+        $matrixelementurl = get_config('communication_matrix', 'matrixelementurl');
+
+        if (empty($matrixhomeserverurl) || empty($matrixaccesstoken) || (!PHPUNIT_TEST && empty($matrixelementurl))) {
+            return false;
+        }
+        return true;
     }
 }
