@@ -583,6 +583,11 @@ define('CONTACT_SUPPORT_AUTHENTICATED', 1);
  */
 define('CONTACT_SUPPORT_ANYONE', 2);
 
+/**
+ * Maximum number of characters for password.
+ */
+define('MAX_PASSWORD_CHARACTERS', 128);
+
 // PARAMETER HANDLING.
 
 /**
@@ -4740,7 +4745,7 @@ function get_password_peppers(): array {
  */
 function validate_internal_user_password(stdClass $user, #[\SensitiveParameter] string $password): bool {
 
-    if (exeeds_password_length($password)) {
+    if (exceeds_password_length($password)) {
         // Password cannot be more than MAX_PASSWORD_CHARACTERS characters.
         return false;
     }
@@ -4787,11 +4792,17 @@ function validate_internal_user_password(stdClass $user, #[\SensitiveParameter] 
  * @param bool $fasthash If true, use a low number of rounds when generating the hash
  *                       This is faster to generate but makes the hash less secure.
  *                       It is used when lots of hashes need to be generated quickly.
+ * @param int $pepperlength Lenght of the peppers
  * @return string The hashed password.
  *
  * @throws moodle_exception If a problem occurs while generating the hash.
  */
-function hash_internal_user_password(#[\SensitiveParameter] string $password, $fasthash = false): string {
+function hash_internal_user_password(#[\SensitiveParameter] string $password, $fasthash = false, $pepperlength = 0): string {
+    if (exceeds_password_length($password, $pepperlength)) {
+        // Password cannot be more than MAX_PASSWORD_CHARACTERS.
+        throw new \moodle_exception(get_string("passwordexceeded", 'error', MAX_PASSWORD_CHARACTERS));
+    }
+
     // Set the cost factor to 5000 for fast hashing, otherwise use default cost.
     $rounds = $fasthash ? 5000 : 10000;
 
@@ -11016,4 +11027,15 @@ function site_is_public() {
     }
 
     return $ispublic;
+}
+
+/**
+ * Validates user's password length.
+ *
+ * @param string $password
+ * @param int $pepperlength The length of the used peppers
+ * @return bool
+ */
+function exceeds_password_length(string $password, int $pepperlength = 0) : bool {
+    return (strlen($password) > (MAX_PASSWORD_CHARACTERS + $pepperlength));
 }

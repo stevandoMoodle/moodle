@@ -2740,6 +2740,26 @@ EOF;
     }
 
     /**
+     * Test function to validate password length.
+     *
+     * @covers ::exceeds_password_length
+     * @return void
+     */
+    public function test_exceeds_password_length() {
+        $this->resetAfterTest(true);
+
+        // With password less than equals to MAX_PASSWORD_CHARACTERS.
+        $this->assertFalse(exceeds_password_length('test'));
+
+        // With password more than MAX_PASSWORD_CHARACTERS.
+        $this->assertTrue(
+            exceeds_password_length('thisisapasswordthatcontainscharactersthatcan
+                                exeedthepasswordlengthof128thisispasswordthatcont
+                                ainscharactersthatcanexeedthelength-----')
+        );
+    }
+
+    /**
      * Test function validate_internal_user_password.
      * @covers ::validate_internal_user_password
      */
