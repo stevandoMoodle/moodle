@@ -28,3 +28,7 @@ body.mce-content-body a {
     display: inline-block;
     outline: 3px solid #b4d7ff;
 }
+/* Tinymce bibliography plugin */
+span.hide-ori-data {
+    display: none;
+}
