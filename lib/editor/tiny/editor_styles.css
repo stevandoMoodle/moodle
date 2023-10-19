@@ -11,3 +11,8 @@ body.mce-content-body a {
     color: #0f6cbf;
 }
 /** */
+
+/* Tinymce bibliography plugin */
+span.hide-ori-data {
+    display: none;
+}
