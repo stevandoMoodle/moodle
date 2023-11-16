@@ -46,6 +46,9 @@ abstract class adhoc_task extends task_base {
     /** @var \core\lock\lock The concurrency task lock for this task. */
     private $concurrencylock = null;
 
+    /** @var integer|null $attemptsavailable - Holds the remaining attempts for the task. */
+    private $attemptsavailable = null;
+
     /**
      * Provide default implementation of the task name for backward compatibility. Extending classes are expected to implement
      * this method to provide a descriptive name for the task (shown to admins)
@@ -170,5 +173,33 @@ abstract class adhoc_task extends task_base {
         if ($this->concurrencylock) {
             $this->concurrencylock->release();
         }
+    }
+
+    /**
+     * Setter for $attemptsavailable.
+     * @param int|null $attemptsavailable Sets the remaining attempts for the task
+     *
+     * @return void
+     */
+    public function set_attempts_available(int|null $attemptsavailable): void {
+        $this->attemptsavailable = $attemptsavailable;
+    }
+
+    /**
+     * Getter for $attemptsavailable.
+     * @return int|null $attemptsavailable The remaining attempts for the task
+     */
+    public function get_attempts_available(): int|null {
+        return $this->attemptsavailable;
+    }
+
+    /**
+     * Used to flag a failed task that can be re-run or not.
+     *
+     * By default it is set to true and other extending classes can define this method
+     * to flag is as non re-run.
+     */
+    public function retry_until_success(): bool {
+        return true;
     }
 }

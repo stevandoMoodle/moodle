@@ -121,6 +121,8 @@ class tool_task_renderer extends plugin_renderer_base {
                 $nextrun = '';
                 if ($stats['due'] > 0) {
                     $nextrun = get_string('asap', 'tool_task');
+                } else if ($stats['attemptsavailable'] === 0) {
+                    $nextrun = get_string('never', 'admin');
                 } else if ($stats['nextruntime']) {
                     $nextrun = userdate($stats['nextruntime']);
                 }
@@ -272,6 +274,11 @@ class tool_task_renderer extends plugin_renderer_base {
                 $nextruntime = $task->get_next_run_time();
                 $due = $nextruntime < $now;
                 $nextrun = $due ? userdate($nextruntime) : get_string('asap', 'tool_task');
+
+                // Check if attemptsavailable is set to '0' then mark as "Never" for next run.
+                if ($task->get_attempts_available() > 0) {
+                    $nextrun = get_string('never', 'admin');
+                }
 
                 if ($wantruntasks && ($faildelay || $due)) {
                     $nextrun .= ' '.html_writer::div(

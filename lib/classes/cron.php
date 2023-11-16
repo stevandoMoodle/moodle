@@ -363,6 +363,11 @@ class cron {
             $where .= ' AND classname = :classname';
             $params['classname'] = \core\task\manager::get_canonical_class_name($classname);
         }
+
+        // Rerun only the ones with attemptsavailable > 0.
+        $where .= 'AND attemptsavailable > 0';
+        $where .= 'OR attemptsavailable IS NULL';
+
         $tasks = $DB->get_records_sql("SELECT * from {task_adhoc} WHERE $where", $params);
         foreach ($tasks as $t) {
             self::run_adhoc_task($t->id);
