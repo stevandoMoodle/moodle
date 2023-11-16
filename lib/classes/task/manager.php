@@ -50,6 +50,27 @@ class manager {
     const ADHOC_TASK_QUEUE_MODE_FILLING = 1;
 
     /**
+     * @var int Used to flag no-retry failed tasks.
+     */
+    const NO_RETRY = 0;
+
+    /**
+     * @var int Used for no retry starting point.
+     */
+    const NO_RETRY_STARTING_POINT = 1;
+
+    /**
+     * @var int Used for retry starting point.
+     */
+    const RETRY_STARTING_POINT = null;
+
+     /**
+      * @var int Used to set retention period for failed adhoc tasks to be cleaned up.
+      * The number is in week unit
+      */
+    const TASK_ADHOC_FAILED_RETENTION = 4 * WEEKSECS;
+
+    /**
      * @var array A cached queue of adhoc tasks
      */
     public static $miniqueue;
@@ -305,6 +326,7 @@ class manager {
         $record->blocking = $task->is_blocking();
         $record->nextruntime = $task->get_next_run_time();
         $record->faildelay = $task->get_fail_delay();
+        $record->attemptsavailable = self::get_available_attempts($task);
         $record->customdata = $task->get_custom_data_as_string();
         $record->userid = $task->get_userid();
         $record->timecreated = time();
@@ -313,6 +335,59 @@ class manager {
         $record->pid = $task->get_pid();
 
         return $record;
+    }
+
+    /**
+     * Sets available attempts for failed adhoc tasks.
+     *
+     * @param \core\task\adhoc_task $task
+     * @param bool $updateavailableattempts Used to get remaining attempts for the task
+     * @return int|null
+     */
+    public static function get_available_attempts(adhoc_task $task): int|null {
+        $instancename = $task->get_attempts_available();
+        if (isset($instancename)) {
+            $availableattempts = $instancename;
+
+            // Decrement attemptsavailable.
+            if (!is_null($availableattempts) && $availableattempts > 0) {
+                $availableattempts--;
+            }
+
+            return $availableattempts;
+        } else {
+            return $task->retry_until_success() ? self::RETRY_STARTING_POINT : self::NO_RETRY_STARTING_POINT;
+        }
+    }
+
+    /**
+     * This is used to periodically cleanup old failed adhoc tasks.
+     *
+     * @return void
+     */
+    public static function clean_old_failed_adhoc_tasks(): void {
+        global $DB;
+
+        $sql = "DELETE
+                FROM {task_adhoc}
+               WHERE attemptsavailable = 0
+                 AND timecreated < :currenttimestamp";
+        $DB->execute($sql, [
+            'currenttimestamp' => time() - self::get_task_adhoc_failed_retention()
+        ]);
+    }
+
+    /**
+     * This is used at site upgrade and non ones that returns current retention period.
+     *
+     * @return int
+     */
+    public static function get_task_adhoc_failed_retention(): int {
+        $failedadhocretention = get_config('core', 'task_adhoc_failed_retention');
+        if ($failedadhocretention) {
+            return (int) $failedadhocretention;
+        }
+        return self::TASK_ADHOC_FAILED_RETENTION;
     }
 
     /**
@@ -356,6 +431,9 @@ class manager {
         }
         if (isset($record->pid)) {
             $task->set_pid($record->pid);
+        }
+        if (isset($record->attemptsavailable)) {
+            $task->set_attempts_available($record->attemptsavailable);
         }
 
         return $task;
@@ -531,6 +609,12 @@ class manager {
                     'running' => 0,
                     'due' => 0,
                 ];
+            }
+
+            // Check if attemptsavailable is set to '0' then mark as "Never" for next run.
+            $classsummary['attemptsavailable'] = !is_null($r->attemptsavailable) ? (int)$r->attemptsavailable : $r->attemptsavailable;
+            if ($classsummary['attemptsavailable'] === 0) {
+                continue;
             }
 
             $classsummary['count']++;
@@ -931,7 +1015,8 @@ class manager {
          LEFT JOIN (
                        SELECT classname, COUNT(*) running, MIN(timestarted) earliest
                          FROM {task_adhoc} run
-                        WHERE timestarted IS NOT NULL
+                        WHERE (timestarted IS NOT NULL AND attemptsavailable > 0)
+                           OR (timestarted IS NOT NULL AND attemptsavailable IS NULL)
                      GROUP BY classname
                    ) run ON run.classname = q.classname
              WHERE nextruntime < :timestart
