@@ -49,6 +49,9 @@ class task_log_cleanup_task extends scheduled_task {
      * Perform the cleanup task.
      */
     public function execute() {
+        // We can clean failed adhoc tasks that exceed retention period.
+        manager::clean_old_failed_adhoc_tasks();
+
         $logger = logmanager::get_logger_classname();
         if (is_a($logger, database_logger::class, true)) {
             $logger::cleanup();

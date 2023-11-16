@@ -3698,5 +3698,40 @@ privatefiles,moodle|/user/files.php';
         upgrade_main_savepoint(true, 2023110900.00);
     }
 
+    if ($oldversion < 2023111600.01) {
+        // Define field attemptsavailable to be added to task_adhoc.
+        $table = new xmldb_table('task_adhoc');
+
+        // Add the field and set it to have a default of 1.
+        $field = new xmldb_field(
+            name: 'attemptsavailable',
+            type: XMLDB_TYPE_INTEGER,
+            precision: '1',
+            previous: 'pid',
+        );
+
+        // Conditionally launch add field id.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Sets attemptsavailable to 1 due to it's not being run before.
+        $DB->execute("
+            UPDATE {task_adhoc}
+               SET attemptsavailable = 1
+             WHERE faildelay = 0
+        ");
+
+        // Sets attemptsavailable to 0 due to it's failed before.
+        $DB->execute("
+            UPDATE {task_adhoc}
+               SET attemptsavailable = 0
+             WHERE faildelay > 0
+        ");
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2023111600.01);
+    }
+
     return true;
 }

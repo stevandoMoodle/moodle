@@ -143,6 +143,65 @@ class adhoc_task_test extends \advanced_testcase {
     }
 
     /**
+     * Test adhoc task failure retry.
+     *
+     * @covers ::get_task_adhoc_failed_retention
+     * @covers ::get_available_attempts
+     * @covers ::clean_old_failed_adhoc_tasks
+     * @covers ::retry_until_success
+     * @covers ::get_next_adhoc_task
+     */
+    public function test_adhoc_task_fail_retry() {
+        global $DB;
+
+        $this->resetAfterTest(true);
+
+        // Test to get retention period.
+        $this->assertEquals(
+            manager::TASK_ADHOC_FAILED_RETENTION,
+            manager::get_task_adhoc_failed_retention()
+        );
+
+        $now = time();
+        // Create an adhoc task.
+        $task = new adhoc_test_task();
+        manager::queue_adhoc_task($task);
+
+        // The expected attemptsavailabe is manager::RETRY_STARTING_POINT after being queued.
+        $attempt = manager::get_available_attempts($task);
+        $this->assertEquals(manager::RETRY_STARTING_POINT, $attempt);
+
+        // Get it from the scheduler, execute it, and mark it as failed.
+        $task = manager::get_next_adhoc_task($now);
+        $taskid = $task->get_id();
+        $task->execute();
+        manager::adhoc_task_failed($task);
+
+        // Let's try to cleanup the failed adhoc tasks,
+        // this time the timecreated is not older than the retention period.
+        // This means the failed task will not be deleted.
+        manager::clean_old_failed_adhoc_tasks();
+
+        // To verify the task has not been deleted, we can query it.
+        $failedtasks = $DB->get_records('task_adhoc', ['id' => $taskid]);
+        $this->assertNotEmpty($failedtasks);
+
+        // Let's update the failed task's timecreated to sometime older than retention period.
+        $record = new \stdClass();
+        $record->id = $taskid;
+        $record->timecreated = 1691481637;
+        $record->attemptsavailable = 0;
+        $DB->update_record('task_adhoc', $record);
+
+        // Then, let's cleanup old failed adhoc tasks that are older than retention period.
+        manager::clean_old_failed_adhoc_tasks();
+
+        // Check to make sure that the failed task has been deleted.
+        $failedtasks = $DB->get_records('task_adhoc', ['id' => $taskid]);
+        $this->assertEmpty($failedtasks);
+    }
+
+    /**
      * Test future adhoc task execution.
      * @covers ::get_next_adhoc_task
      */
