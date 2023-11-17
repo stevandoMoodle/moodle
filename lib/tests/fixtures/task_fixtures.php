@@ -70,6 +70,46 @@ class adhoc_test_task extends \core\task\adhoc_task {
 /**
  * Test class.
  *
+ * @copyright 2023 Stevani Andolo <stevani@hotmail.com.au>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class asynchronous_restore_test_task extends \core\task\asynchronous_restore_task {
+
+    /**
+     * Constructor.
+     *
+     * @param int|null $nextruntime Next run time
+     * @param int|null $timestarted Time started
+     */
+    public function __construct(?int $nextruntime = null, ?int $timestarted = null) {
+        if ($nextruntime) {
+            $this->set_next_run_time($nextruntime);
+        }
+
+        if ($timestarted) {
+            $this->set_timestarted($timestarted);
+        }
+    }
+
+    /**
+     * Get task name
+     *
+     * @return string
+     */
+    public function get_name() {
+        return 'Test asynchronous restore task class';
+    }
+
+    /**
+     * Execute.
+     */
+    public function execute() {
+    }
+}
+
+/**
+ * Test class.
+ *
  * @copyright 2022 Catalyst IT Australia Pty Ltd
  * @author Cameron Ball <cameron@cameron1729.xyz>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

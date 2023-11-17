@@ -191,7 +191,7 @@ class adhoc_task_test extends \advanced_testcase {
 
         // Let's try to cleanup the failed adhoc tasks,
         // this time the timecreated is not older than the retention period.
-        // This means the failed task will not be deleted even if the attemptsavailable is not set to0.
+        // This means the failed task will not be deleted even if the attemptsavailable is set to 0.
         manager::clean_old_failed_adhoc_tasks();
 
         // To verify the task has not been deleted, we can query it.
@@ -213,6 +213,36 @@ class adhoc_task_test extends \advanced_testcase {
         // Check to make sure that the failed task has been deleted.
         $failedtasks = $DB->get_records('task_adhoc', ['id' => $taskid]);
         $this->assertEmpty($failedtasks);
+    }
+
+    /**
+     * Test asynchronous restore task failure no-retry.
+     *
+     * @covers ::get_next_adhoc_task
+     */
+    public function test_get_next_asynchronous_restore_task_fail_retry() {
+        $this->resetAfterTest(true);
+
+        $now = time();
+        // Create an adhoc task.
+        $task = new asynchronous_restore_test_task();
+        manager::queue_adhoc_task($task);
+
+        // The expected value would be manager::NO_RETRY_STARTING_POINT after first queued.
+        $attempt = manager::get_available_attempts($task);
+        $this->assertEquals(manager::NO_RETRY_STARTING_POINT, $attempt);
+
+        // Get it from the scheduler, execute it, and mark it as failed.
+        $task = manager::get_next_adhoc_task($now);
+        $task->execute();
+        manager::adhoc_task_failed($task);
+
+        // The expected value would be = manager::NO_RETRY after being failed.
+        $attempt = manager::get_available_attempts($task);
+        $this->assertEquals(manager::NO_RETRY, $attempt);
+
+        // Returns no task due to the attemptsavailable is set to manager::NO_RETRY.
+        $this->assertNull(manager::get_next_adhoc_task($now));
     }
 
     /**
