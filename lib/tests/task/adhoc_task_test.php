@@ -167,9 +167,9 @@ class adhoc_task_test extends \advanced_testcase {
         $task = new adhoc_test_task();
         manager::queue_adhoc_task($task);
 
-        // The expected attemptsavailabe is manager::RETRY_STARTING_POINT after being queued.
+        // The expected attemptsavailabe is manager::MAX_RETRY after being queued.
         $attempt = manager::get_available_attempts($task);
-        $this->assertEquals(manager::RETRY_STARTING_POINT, $attempt);
+        $this->assertEquals(manager::MAX_RETRY, $attempt);
 
         // Get it from the scheduler, execute it, and mark it as failed.
         $task = manager::get_next_adhoc_task($now);
@@ -177,20 +177,34 @@ class adhoc_task_test extends \advanced_testcase {
         $task->execute();
         manager::adhoc_task_failed($task);
 
+        // The expected value of attemptsavailabe would be 8.
+        $attempt = manager::get_available_attempts($task);
+        $this->assertEquals(8, $attempt);
+
+        // Let's keep failing it to decrement the attemptsavailable down to manager::NO_RETRY.
+        for ($i = 7; $i >= manager::NO_RETRY; $i--) {
+            $task->set_attempts_available($i + 1);
+            manager::adhoc_task_failed($task);
+            $attempt = manager::get_available_attempts($task);
+            $this->assertEquals($i, $attempt);
+        }
+
         // Let's try to cleanup the failed adhoc tasks,
         // this time the timecreated is not older than the retention period.
-        // This means the failed task will not be deleted.
+        // This means the failed task will not be deleted even if the attemptsavailable is not set to0.
         manager::clean_old_failed_adhoc_tasks();
 
         // To verify the task has not been deleted, we can query it.
         $failedtasks = $DB->get_records('task_adhoc', ['id' => $taskid]);
         $this->assertNotEmpty($failedtasks);
 
+        // There will be no next adhoc task due to the attemptsavailable is now set to 0.
+        $this->assertNull(manager::get_next_adhoc_task($now));
+
         // Let's update the failed task's timecreated to sometime older than retention period.
         $record = new \stdClass();
         $record->id = $taskid;
         $record->timecreated = 1691481637;
-        $record->attemptsavailable = 0;
         $DB->update_record('task_adhoc', $record);
 
         // Then, let's cleanup old failed adhoc tasks that are older than retention period.

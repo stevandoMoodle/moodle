@@ -59,16 +59,16 @@ class manager {
      */
     const NO_RETRY_STARTING_POINT = 1;
 
-    /**
-     * @var int Used for retry starting point.
-     */
-    const RETRY_STARTING_POINT = null;
-
      /**
       * @var int Used to set retention period for failed adhoc tasks to be cleaned up.
       * The number is in week unit
       */
     const TASK_ADHOC_FAILED_RETENTION = 4 * WEEKSECS;
+
+    /**
+     * @var int Used for max retry.
+     */
+    const MAX_RETRY = 9;
 
     /**
      * @var array A cached queue of adhoc tasks
@@ -355,7 +355,7 @@ class manager {
 
             return $availableattempts;
         } else {
-            return $task->retry_until_success() ? self::RETRY_STARTING_POINT : self::NO_RETRY_STARTING_POINT;
+            return $task->retry_until_success() ? self::MAX_RETRY : self::NO_RETRY_STARTING_POINT;
         }
     }
 
@@ -1016,11 +1016,11 @@ class manager {
          LEFT JOIN (
                        SELECT classname, COUNT(*) running, MIN(timestarted) earliest
                          FROM {task_adhoc} run
-                        WHERE (timestarted IS NOT NULL AND attemptsavailable > 0)
-                           OR (timestarted IS NOT NULL AND attemptsavailable IS NULL)
+                        WHERE timestarted IS NOT NULL
                      GROUP BY classname
                    ) run ON run.classname = q.classname
              WHERE nextruntime < :timestart
+                   AND attemptsavailable > 0
                    AND q.timestarted IS NULL " .
             (!empty($pertasksql) ? "AND (" . $pertasksql . ") " : "") .
             ($runmax ? "AND (COALESCE(run.running, 0)) < :runmax " : "") .

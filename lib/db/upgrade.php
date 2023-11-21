@@ -3733,5 +3733,30 @@ privatefiles,moodle|/user/files.php';
         upgrade_main_savepoint(true, 2023111600.01);
     }
 
+    if ($oldversion < 2023111600.02) {
+        $param = ['faildelay' => 86400];
+
+        // Sets attemptsavailable to \core\task\manager::MAX_RETRY
+        // if faildelay < 86400 and attemptsavailable IS NULL.
+        $DB->execute("
+            UPDATE {task_adhoc}
+               SET attemptsavailable = " . \core\task\manager::MAX_RETRY . "
+             WHERE attemptsavailable IS NULL
+               AND faildelay < :faildelay
+        ", $param);
+
+        // Sets attemptsavailable to \core\task\manager::NO_RETRY_STARTING_POINT
+        // if faildelay >= 86400 and attemptsavailable IS NULL.
+        $DB->execute("
+            UPDATE {task_adhoc}
+               SET attemptsavailable = " . \core\task\manager::NO_RETRY_STARTING_POINT . "
+             WHERE attemptsavailable IS NULL
+               AND faildelay >= :faildelay
+        ", $param);
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2023111600.02);
+    }
+
     return true;
 }
