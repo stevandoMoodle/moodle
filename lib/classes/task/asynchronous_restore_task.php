@@ -61,38 +61,43 @@ class asynchronous_restore_task extends adhoc_task {
             mtrace('Bad restore controller status, invalid controller, ending restore execution.');
             return;
         }
-        $rc = \restore_controller::load_controller($restoreid);
-        $rc->set_progress(new \core\progress\db_updater($restorerecord->id, 'backup_controllers', 'progress'));
 
-        // Do some preflight checks on the restore.
-        $status = $rc->get_status();
-        $execution = $rc->get_execution();
+        try {
+            $rc = \restore_controller::load_controller($restoreid);
+            $rc->set_progress(new \core\progress\db_updater($restorerecord->id, 'backup_controllers', 'progress'));
 
-        // Check that the restore is in the correct status and
-        // that is set for asynchronous execution.
-        if ($status == \backup::STATUS_AWAITING && $execution == \backup::EXECUTION_DELAYED) {
-            // Execute the restore.
-            $rc->execute_plan();
+            // Do some preflight checks on the restore.
+            $status = $rc->get_status();
+            $execution = $rc->get_execution();
 
-            // Send message to user if enabled.
-            $messageenabled = (bool)get_config('backup', 'backup_async_message_users');
-            if ($messageenabled && $rc->get_status() == \backup::STATUS_FINISHED_OK) {
-                $asynchelper = new async_helper('restore', $restoreid);
-                $asynchelper->send_message();
+            // Check that the restore is in the correct status and
+            // that is set for asynchronous execution.
+            if ($status == \backup::STATUS_AWAITING && $execution == \backup::EXECUTION_DELAYED) {
+                // Execute the restore.
+                $rc->execute_plan();
+
+                // Send message to user if enabled.
+                $messageenabled = (bool)get_config('backup', 'backup_async_message_users');
+                if ($messageenabled && $rc->get_status() == \backup::STATUS_FINISHED_OK) {
+                    $asynchelper = new async_helper('restore', $restoreid);
+                    $asynchelper->send_message();
+                }
+
+            } else {
+                // If status isn't 700, it means the process has failed.
+                // Retrying isn't going to fix it, so marked operation as failed.
+                $rc->set_status(\backup::STATUS_FINISHED_ERR);
+                mtrace('Bad backup controller status, is: ' . $status . ' should be 700, marking job as failed.');
+
             }
 
-        } else {
-            // If status isn't 700, it means the process has failed.
-            // Retrying isn't going to fix it, so marked operation as failed.
-            $rc->set_status(\backup::STATUS_FINISHED_ERR);
-            mtrace('Bad backup controller status, is: ' . $status . ' should be 700, marking job as failed.');
+            // Cleanup.
+            $rc->destroy();
 
+            $duration = time() - $started;
+            mtrace('Restore completed in: ' . $duration . ' seconds');
+        } catch (\Exception $e) {
+            mtrace('Restore was not completed 100% due to: "'.$e.'"');
         }
-
-        // Cleanup.
-        $rc->destroy();
-
-        $duration = time() - $started;
-        mtrace('Restore completed in: ' . $duration . ' seconds');
     }
 }
