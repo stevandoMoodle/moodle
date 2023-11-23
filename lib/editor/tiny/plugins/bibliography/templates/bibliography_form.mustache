@@ -44,14 +44,14 @@
             </div>
             <div class="biblio-pannel biblio-bottom-pannel mt-3" id="bibliography-ie-panel"></div>
             <div id="generate-button" class="form-group row mt-4 fitem">
-                <div class="col-md-6 checkbox">
+                <div class="col-md-4 checkbox">
                     <input type="checkbox" id="id_other_fields" data-action="show-other-fields">
                     <label for="id_other_fields">
-                        {{#str}} label:showootherfields, tiny_bibliography {{/str}}
+                        {{#str}} label:allfields, tiny_bibliography {{/str}}
                     </label>
                 </div>
-                <div class="col-md-6 form-button" data-fieldtype="text">
-                    <button class="btn btn-primary" id="id-generate" data-action="generate-list">
+                <div class="col-md-8 form-button" id="id-button-container">
+                    <button class="btn btn-primary mb-1" id="id-generate" data-action="generate-list">
                         <span id="id-generate-label">{{#str}} button:generate, tiny_bibliography {{/str}}</span>
                     </button>
                 </div>
