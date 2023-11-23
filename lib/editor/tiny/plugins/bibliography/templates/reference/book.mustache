@@ -39,20 +39,20 @@
     {{allData.keyValuePair}}
 </span>
 {{#ieee}}
-    <p class="d-flex mb-0">
-        <span class="id-refno-{{updateIndex}}">[{{updateIndex}}]</span>
-        <span class="ml-2">
-            {{allData.author}},
-            {{#allData.chapterTitle}}"{{allData.chapterTitle}},"{{/allData.chapterTitle}}
-            {{#allData.chapterTitle}}in {{/allData.chapterTitle}}<i>{{allData.publishedTitle}}</i>,
-            {{#allData.volume}}vol. {{allData.volume}},{{/allData.volume}}
-            {{#allData.edition}}{{allData.edition}},{{/allData.edition}}
-            {{allData.city}},
-            {{allData.country}}: {{allData.publisher}},
-            {{allData.year}},
-            {{#allData.chapter}}ch. {{allData.chapter}},{{/allData.chapter}}
-            {{#allData.section}}sec. {{allData.section}},{{/allData.section}}
-            pp. {{allData.pages}}
-        </span>
-    </p>
+<span class="d-flex mb-0">
+    <span class="id-refno-{{updateIndex}}">[{{updateIndex}}]</span>
+    <span class="ml-2">
+        {{allData.author}},
+        {{#allData.chapterTitle}}"{{allData.chapterTitle}},"{{/allData.chapterTitle}}
+        {{#allData.chapterTitle}}in {{/allData.chapterTitle}}<i>{{allData.publishedTitle}}</i>,
+        {{#allData.volume}}vol. {{allData.volume}},{{/allData.volume}}
+        {{#allData.edition}}{{allData.edition}},{{/allData.edition}}
+        {{allData.city}},
+        {{allData.country}}: {{allData.publisher}},
+        {{allData.year}},
+        {{#allData.chapter}}ch. {{allData.chapter}},{{/allData.chapter}}
+        {{#allData.section}}sec. {{allData.section}},{{/allData.section}}
+        pp. {{allData.pages}}
+    </span>
+</span>
 {{/ieee}}
