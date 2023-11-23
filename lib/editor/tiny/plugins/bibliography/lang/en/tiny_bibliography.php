@@ -38,8 +38,11 @@ $string['source:website'] = 'Website';
 $string['source:documentfromwebsite'] = 'Document From Website';
 $string['source:conferenceproceedings'] = 'Conference Proceedings';
 
-$string['label:showootherfields'] = 'Show other fields';
+$string['label:allfields'] = 'All fields';
 
+$string['button:reset'] = 'Reset';
+$string['button:delete'] = 'Delete';
+$string['button:save'] = 'Save as new';
 $string['button:edit'] = 'Edit';
 $string['button:ok'] = 'Ok';
 $string['button:cancel'] = 'Cancel';
