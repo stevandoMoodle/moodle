@@ -34,11 +34,6 @@
         ]
     }
 }}
-{{#heading}}
-    <h3 class="mb-4">{{{bio}}}</h3>
-{{/heading}}
-{{^heading}}
-    <div class="bibliography-list d-flex" tabindex="1" data-action="edit-bio" data-object="{{dataObject}}">
-        {{{bio}}}
-    </div>
-{{/heading}}
+<div class="id-bibliography-list-{{referenceNumber}}">
+    {{{reference}}}
+</div>

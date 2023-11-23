@@ -34,331 +34,36 @@
         ]
     }
 }}
-<ul class="nav nav-tabs">
-    <li class="nav-item">
-        <a class="nav-link active" id="bio-form" href="#bibliography-info-holder" role="tab" data-toggle="tab" aria-selected="true">
-            <span>{{#str}} biblioform, tiny_bibliography {{/str}}</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#bibliography-info-list-holder" role="tab" data-toggle="tab" aria-selected="false">
-            <span>{{#str}} bibliolist, tiny_bibliography {{/str}}</span>
-        </a>
-    </li>
-</ul>
 
-<div class="tab-content mt-2" id="myTabContent" role="tabpanel">
-    <div class="tab-pane fade show active" id="bibliography-info-holder">
-        <div class="biblio-pannel mb-3" style="display: inline-flex; width: 100%;">
-            <div class="col-md-6 col-form-label">
-                <div id="fitem_id_style" class="form-group row  fitem">
-                    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                        <label id="id_style_label" class="d-inline word-break " for="id_style">
-                            Style
-                        </label>
-                        <div class="form-label-addon d-flex align-items-center align-self-start"></div>
-                    </div>
-
-                    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                        <select class="custom-select asdf" name="sourcestyle" data-type="style-source" data-name="style" id="id_sourcestyle" style="width: 100%;">
-                            <option value="IEEE">IEEE</option>
-                        </select>
-                        <div class="form-control-feedback invalid-feedback" id="id_error_author"></div>
-                    </div>
-                </div>
+<div class="tab-content row mt-2" id="myTabContent">
+    <div class="col-md-5 d-flex" id="bibliography-info-holder">
+        <form id="bibliography-form" onsubmit="return false;">
+            {{> tiny_bibliography/style_resource }}
+            <div class="biblio-pannel" id="main-input-fields">
+                {{> tiny_bibliography/forms/field }}
             </div>
-            <div class="col-md-6 col-form-label">
-                <div id="fitem_id_source" class="form-group row  fitem">
-                    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                        <label id="id_source_label" class="d-inline word-break " for="id_source">
-                            Source
-                        </label>
-                        <div class="form-label-addon d-flex align-items-center align-self-start"></div>
-                    </div>
-
-                    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                        <select class="custom-select" name="typeofsource" data-type="style-source" data-name="source" id="id_typeofsource" style="width: 100%;">
-                            <option value="Book">Book</option>
-                            <option value="Article in journal">Article in journal</option>
-                        </select>
-                        <div class="form-control-feedback invalid-feedback" id="id_error_author"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="biblio-pannel">
-            <div id="full-an-holder" class="form-group row fitem">
-                <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                    <label id="id_author_label" class="d-inline word-break " for="id_author">
-                        Author *
-                    </label>
-                    <div class="form-label-addon d-flex align-items-center align-self-start"></div>
-                </div>
-
-                <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                    <div class="col-9 col-form-label d-flex pb-0 pr-md-0" style="padding-left: unset;">
-                        <textarea
-                            type="text"
-                            class="form-control"
-                            name="author"
-                            id="id_author"
-                            data-type="bibliography-info-example"
-                            data-action="authorExample"
-                            data-name="author"
-                            placeholder="Author"
-                            style="width: 100%;"
-                        ></textarea>
-                        <div class="form-control-feedback invalid-feedback" id="id_error_author"></div>
-                    </div>
-                    <div class="col-md-3 col-form-label pb-0 pr-md-0 form-button">
-                        <button class="btn btn-primary" id="id-custom-authors" data-action="custom-authors">
-                            <span>{{#str}} custom, tiny_bibliography {{/str}}</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="custom-an-holder" class="form-group row fitem hide">
-                <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                    <label id="id_author_label" class="d-inline word-break">
-                        Author *
+            <div class="biblio-pannel biblio-bottom-pannel mt-3" id="bibliography-ie-panel"></div>
+            <div id="generate-button" class="form-group row mt-4 fitem">
+                <div class="col-md-6 checkbox">
+                    <input type="checkbox" id="id_other_fields" data-action="show-other-fields">
+                    <label for="id_other_fields">
+                        {{#str}} label:showootherfields, tiny_bibliography {{/str}}
                     </label>
                 </div>
-
-                <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                    <div class="col-md-4">
-                        <div class="form-group row  fitem">
-                            <div class="col-form-label d-flex pr-2">
-                                <input
-                                    type="text"
-                                    class="form-control "
-                                    name="author-surename"
-                                    id="id_author_surename"
-                                    data-name="author-surename"
-                                    placeholder="Surename"
-                                    style="width: 100%;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group row  fitem">
-                            <div class="col-form-label d-flex">
-                                <input
-                                    type="text"
-                                    class="form-control "
-                                    name="author-firstname"
-                                    id="id_author_firstname"
-                                    data-name="author-firstname"
-                                    placeholder="First Name"
-                                    style="width: 100%;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="form-group row  fitem">
-                            <div class="col-form-label d-flex pl-2">
-                                <input
-                                    type="text"
-                                    class="form-control "
-                                    name="author-middlename"
-                                    id="id_author_middlename"
-                                    data-name="author-middlename"
-                                    placeholder="Middle Name"
-                                    style="width: 100%;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 col-form-label pb-0 pr-md-0 form-button">
-                        <button class="btn btn-outline-danger" id="id-cancel-custom-authors" data-action="cancel-custom-authors">
-                            <span>{{#str}} cancel, tiny_bibliography {{/str}}</span>
-                        </button>
-                        <button class="btn btn-primary" id="id-ok-custom-authors" data-action="ok-custom-authors">
-                            <span>{{#str}} ok, tiny_bibliography {{/str}}</span>
-                        </button>
-                    </div>
+                <div class="col-md-6 form-button" data-fieldtype="text">
+                    <button class="btn btn-primary" id="id-generate" data-action="generate-list">
+                        <span id="id-generate-label">{{#str}} button:generate, tiny_bibliography {{/str}}</span>
+                    </button>
                 </div>
             </div>
-
-            <div id="other-than-author">
-                <div id="fitem_id_title" class="form-group row  fitem">
-                    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                        <label id="id_title_label" class="d-inline word-break " for="id_title">
-                            Title *
-                        </label>
-                        <div class="form-label-addon d-flex align-items-center align-self-start"></div>
-                    </div>
-
-                    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                        <input
-                            type="text"
-                            class="form-control "
-                            name="title"
-                            id="id_title"
-                            data-type="bibliography-info-example"
-                            data-action="titleExample"
-                            data-name="title"
-                            placeholder="Title"
-                            style="width: 100%;">
-                        <div class="form-control-feedback invalid-feedback" id="id_error_title"></div>
-                    </div>
-                </div>
-
-                <div id="fitem_id_city_bio" class="form-group row  fitem">
-                    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                        <label id="id_city_bio_label" class="d-inline word-break " for="id_city_bio">
-                            City *
-                        </label>
-                        <div class="form-label-addon d-flex align-items-center align-self-start"></div>
-                    </div>
-
-                    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                        <input
-                            type="text"
-                            class="form-control "
-                            name="city"
-                            id="id_city_bio"
-                            data-type="bibliography-info-example"
-                            data-action="cityExample"
-                            data-name="city_bio"
-                            placeholder="City"
-                            style="width: 100%;">
-                        <div class="form-control-feedback invalid-feedback" id="id_error_city"></div>
-                    </div>
-                </div>
-
-                <div id="fitem_id_publisher" class="form-group row  fitem">
-                    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                        <label id="id_publisher_label" class="d-inline word-break " for="id_publisher">
-                            Publisher *
-                        </label>
-                        <div class="form-label-addon d-flex align-items-center align-self-start"></div>
-                    </div>
-
-                    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                        <input
-                            type="text"
-                            class="form-control "
-                            name="publisher"
-                            id="id_publisher"
-                            data-type="bibliography-info-example"
-                            data-action="publisherExample"
-                            data-name="publisher"
-                            placeholder="Publisher"
-                            style="width: 100%;">
-                        <div class="form-control-feedback invalid-feedback" id="id_error_publisher"></div>
-                    </div>
-                </div>
-
-                <div id="fitem_id_year" class="form-group row  fitem">
-                    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                        <label id="id_year_label" class="d-inline word-break " for="id_year">
-                            Year *
-                        </label>
-                        <div class="form-label-addon d-flex align-items-center align-self-start"></div>
-                    </div>
-
-                    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                        <input
-                            type="number"
-                            class="form-control "
-                            name="year"
-                            id="id_year"
-                            data-type="bibliography-info-example"
-                            data-action="yearExample"
-                            data-name="year"
-                            placeholder="Year"
-                            style="width: 100%;">
-                        <div class="form-control-feedback invalid-feedback" id="id_error_year"></div>
-                    </div>
-                </div>
-
-                <div id="book-source" class="hide">
-                    <div class="form-group row fitem">
-                        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                            <label id="id_volume_label" class="d-inline word-break">
-                                Volume *
-                            </label>
-                        </div>
-
-                        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                            <input
-                                type="text"
-                                class="form-control "
-                                name="volume"
-                                id="id_volume"
-                                data-type="bibliography-info-example"
-                                data-action="volumeExample"
-                                data-name="volume"
-                                placeholder="Volume"
-                                style="width: 100%;">
-                            <div class="form-control-feedback invalid-feedback" id="id_error_volume"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row fitem">
-                        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                            <label id="id_issue_label" class="d-inline word-break">
-                                Issue *
-                            </label>
-                        </div>
-
-                        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                            <input
-                                type="number"
-                                class="form-control "
-                                name="issue"
-                                id="id_issue"
-                                data-type="bibliography-info-example"
-                                data-action="issueExample"
-                                data-name="issue"
-                                placeholder="Issue"
-                                style="width: 100%;">
-                            <div class="form-control-feedback invalid-feedback" id="id_error_issue"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row fitem">
-                        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-                            <label id="id_pages_label" class="d-inline word-break">
-                                Pages *
-                            </label>
-                        </div>
-
-                        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-                            <input
-                                type="text"
-                                class="form-control "
-                                name="pages"
-                                id="id_pages"
-                                data-type="bibliography-info-example"
-                                data-action="pagesExample"
-                                data-name="pages"
-                                placeholder="Pages"
-                                style="width: 100%;">
-                            <div class="form-control-feedback invalid-feedback" id="id_error_pages"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="biblio-pannel biblio-bottom-pannel mt-3" id="bibliography-ie-panel"></div>
-
-        <div id="fitem_id_author" class="form-group row mt-4 fitem">
-            <div class="col-md-6 col-form-label d-flex pb-0 pr-md-0"></div>
-
-            <div class="col-md-6 form-button" data-fieldtype="text">
-                <button class="btn btn-primary" id="id-generate" data-action="generate-list">
-                    <span id="id-generate-label">{{#str}} generate, tiny_bibliography {{/str}}</span>
-                </button>
-            </div>
-        </div>
+        </form>
     </div>
-    <div class="tab-pane mt-2 fade" id="bibliography-info-list-holder" role="tabpanel" aria-labelledby="bibliography-info-list-holder">
-        <span>No bibliography yet.</span>
+    <div class="col-md-7 d-flex">
+        <div class="biblio-list-container" id="bibliography-info-list-holder">
+            <h3 class="mb-4">
+                <span>{{#str}} pluginname, tiny_bibliography {{/str}}</span>
+            </h3>
+            <span>{{#str}} nobibliographyyet, tiny_bibliography {{/str}}</span>
+        </div>
     </div>
 </div>
