@@ -34,24 +34,13 @@
         ]
     }
 }}
-<span class="hide-ori-data ori-author">
-    {{allData.keyValuePair}}
-</span>
-{{#ieee}}
-<span class="d-flex mb-0">
-    <span class="id-refno-{{updateIndex}}">[{{updateIndex}}]</span>
-    <span class="ml-2">
-        {{allData.author}},
-        {{#allData.chapterTitle}}"{{allData.chapterTitle}},"{{/allData.chapterTitle}}
-        {{#allData.chapterTitle}}in {{/allData.chapterTitle}}<i>{{allData.publishedTitle}}</i>,
-        {{#allData.volume}}vol. {{allData.volume}},{{/allData.volume}}
-        {{#allData.edition}}{{allData.edition}},{{/allData.edition}}
-        {{allData.city}},
-        {{allData.country}}: {{allData.publisher}},
-        {{allData.year}},
-        {{#allData.chapter}}ch. {{allData.chapter}},{{/allData.chapter}}
-        {{#allData.section}}sec. {{allData.section}},{{/allData.section}}
-        pp. {{allData.pages}}
-    </span>
-</span>
-{{/ieee}}
+
+<button class="btn btn-warning mb-1" id="id-reset" data-action="reset-form">
+    <span id="id-reset-label mb-1">{{#str}} button:reset, tiny_bibliography {{/str}}</span>
+</button>
+<button class="btn btn-success mb-1" id="id-save" data-action="save-list">
+    <span id="id-save-label">{{#str}} button:save, tiny_bibliography {{/str}}</span>
+</button>
+<button class="btn btn-danger mb-1" id="id-delete" data-target-id="{{id}}" data-action="delete-bio">
+    <span id="id-delete-label">{{#str}} button:delete, tiny_bibliography {{/str}}</span>
+</button>
