@@ -1,0 +1,60 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template tiny_accessibilitychecker/style_resource
+
+    Display input fields of style_resource source
+}}
+
+<div class="biblio-pannel mb-3">
+    <div class="form-group row fitem">
+        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label class="d-inline word-break " for="id_style">
+                {{#str}} style, tiny_bibliography {{/str}}
+            </label>
+        </div>
+
+        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
+            <select class="custom-select" name="sourcestyle" data-type="style-source" data-name="style" id="id_bibliography_style" style="width: 100%;">
+                <option value="ieee">
+                    {{#str}} style:ieee, tiny_bibliography {{/str}}
+                </option>
+                <option value="apa">
+                    {{#str}} style:apa, tiny_bibliography {{/str}}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group row fitem">
+        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+            <label class="d-inline word-break " for="id_bibliography_source">
+                {{#str}} source, tiny_bibliography {{/str}}
+            </label>
+        </div>
+
+        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
+            <select class="custom-select" name="typeofsource" data-type="style-source" data-name="source" id="id_bibliography_source" style="width: 100%;">
+                {{#sources}}
+                    <option value="{{name}}">
+                        {{label}}
+                    </option>
+                {{/sources}}
+            </select>
+        </div>
+    </div>
+</div>

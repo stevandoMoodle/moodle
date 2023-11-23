@@ -1,0 +1,127 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template tiny_accessibilitychecker/warning_content
+
+    Display a content warning message
+
+    Example context (json):
+    {
+        "warnings": [
+            {
+                "description": "This is a warning message",
+                "nodeData": [{
+                    "text": "Text of content",
+                    "src": "https://example.com/image.png",
+                    "nodeName": "IMG",
+                    "nodeIndex": 0
+                }]
+            }
+        ]
+    }
+}}
+
+{{#show}}
+<div id="full-{{field}}-holder" class="form-group row fitem bibliography-field">
+    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+        <label class="d-inline word-break " for="id_bibliography_{{field}}">
+            {{label}} {{#required}}*{{/required}}
+        </label>
+    </div>
+
+    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
+        <div class="col-8 col-form-label d-flex pb-0 pr-md-0" style="padding-left: unset;">
+            <textarea
+                type="text"
+                class="form-control"
+                id="id_bibliography_{{field}}"
+                data-type="bibliography-info-example"
+                data-author="true"
+                data-example="{{example}}"
+                data-name="{{field}}"
+                placeholder="{{label}}"
+                style="width: 100%;"
+            >{{data}}</textarea>
+        </div>
+        <div class="col-md-4 col-form-label pb-0 pr-md-0 form-button">
+            <button class="btn btn-primary" data-field="{{field}}" id="id-custom-{{field}}" data-action="custom-bibliography-author">
+                <span>{{#str}} button:edit, tiny_bibliography {{/str}}</span>
+            </button>
+        </div>
+    </div>
+</div>
+<div id="custom-{{field}}-holder" class="form-group row fitem hide">
+    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+        <label class="d-inline word-break">
+            {{label}} {{#required}}*{{/required}}
+        </label>
+    </div>
+
+    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
+        <div class="col-md-4">
+            <div class="form-group row fitem">
+                <div class="col-form-label d-flex pr-2">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="id_bibliography_{{field}}_surename"
+                        data-name="{{field}}-surename"
+                        placeholder="{{#str}} field:surename, tiny_bibliography {{/str}}"
+                        style="width: 100%;">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group row fitem">
+                <div class="col-form-label d-flex">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="id_bibliography_{{field}}_firstname"
+                        data-name="{{field}}-firstname"
+                        placeholder="{{#str}} field:firstname, tiny_bibliography {{/str}}"
+                        style="width: 100%;">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group row fitem">
+                <div class="col-form-label d-flex pl-2">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="id_bibliography_{{field}}_middlename"
+                        data-name="{{field}}-middlename"
+                        placeholder="{{#str}} field:middlename, tiny_bibliography {{/str}}"
+                        style="width: 100%;">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-form-label pb-0 pr-md-0 form-button">
+            <button class="btn btn-outline-danger" id="id-cancel-custom-{{field}}" data-field="{{field}}" data-action="cancel-custom-bibliography-author">
+                <span>{{#str}} button:cancel, tiny_bibliography {{/str}}</span>
+            </button>
+            <button class="btn btn-primary" id="id-ok-custom-{{field}}" data-field="{{field}}" data-action="ok-custom-bibliography-author">
+                <span>{{#str}} button:ok, tiny_bibliography {{/str}}</span>
+            </button>
+        </div>
+    </div>
+</div>
+{{/show}}
