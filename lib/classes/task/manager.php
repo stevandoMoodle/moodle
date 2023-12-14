@@ -24,6 +24,8 @@
  */
 namespace core\task;
 
+use backup;
+
 define('CORE_TASK_TASKS_FILENAME', 'db/tasks.php');
 /**
  * Collection of task related methods.
@@ -45,6 +47,11 @@ class manager {
      * @var int Used to tell the adhoc task queue to try and fill unused capacity.
      */
     const ADHOC_TASK_QUEUE_MODE_FILLING = 1;
+
+    /**
+     * @var string Used to hold specific task not to be retried.
+     */
+    const TASK_NOT_TO_BE_RETRIED = \core\task\asynchronous_restore_task::class;
 
     /**
      * @var array A cached queue of adhoc tasks
@@ -976,14 +983,39 @@ class manager {
             $delay = 86400;
         }
 
-        // Reschedule and then release the locks.
-        $task->set_timestarted();
-        $task->set_hostname();
-        $task->set_pid();
-        $task->set_next_run_time(time() + $delay);
-        $task->set_fail_delay($delay);
-        $record = self::record_from_adhoc_task($task);
-        $DB->update_record('task_adhoc', $record);
+        // Get backupid based on the specified no retry task.
+        $noretrytask = self::get_canonical_class_name(self::TASK_NOT_TO_BE_RETRIED);
+        $customdata = $DB->get_field(
+            'task_adhoc',
+            'customdata',
+            [
+                'id' => $task->get_id(),
+                'classname' => $noretrytask
+            ]
+        );
+
+        if ($delay > 0 && $customdata) {
+            // Mark the restore controller with backup::STATUS_FINISHED_ERR code as failed/error.
+            $customdata = json_decode($customdata);
+            $DB->set_field(
+                'backup_controllers',
+                'status',
+                backup::STATUS_FINISHED_ERR,
+                ['backupid' => $customdata->backupid]
+            );
+
+            // Delete failed task.
+            $DB->delete_records('task_adhoc', ['id' => $task->get_id()]);
+        } else {
+            // Reschedule and then release the locks.
+            $task->set_timestarted();
+            $task->set_hostname();
+            $task->set_pid();
+            $task->set_next_run_time(time() + $delay);
+            $task->set_fail_delay($delay);
+            $record = self::record_from_adhoc_task($task);
+            $DB->update_record('task_adhoc', $record);
+        }
 
         $task->release_concurrency_lock();
         if ($task->is_blocking()) {
