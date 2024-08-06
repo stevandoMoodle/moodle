@@ -35,15 +35,8 @@
 }}
 {{< core/drawer}}
     {{$drawercontent}}
-        <div id="message-drawer-{{uniqid}}" class="message-app" data-region="message-drawer" role="region">
+        <div id="message-drawer-{{uniqid}}" class="message-app pt-2" data-region="message-drawer" role="region">
             <h2 class="sr-only">{{#str}} messagingcategory,admin {{/str}}</h2>
-            <div class="closewidget text-right pr-2">
-                <a class="text-dark btn-link" data-action="closedrawer" href="#"
-                   title="{{#cleanstr}} closebuttontitle {{/cleanstr}}" aria-label="{{#cleanstr}} closebuttontitle {{/cleanstr}}"
-                >
-                    {{#pix}} i/window_close, core {{/pix}}
-                </a>
-            </div>
             <div class="header-container position-relative" data-region="header-container">
                 {{> core_message/message_drawer_view_contacts_header }}
                 {{> core_message/message_drawer_view_conversation_header }}
