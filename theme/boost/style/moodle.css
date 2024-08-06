@@ -30109,26 +30109,12 @@ body.drawer-ease {
 [data-region=right-hand-drawer].drawer {
   z-index: 1021;
   position: fixed;
-  top: 60px;
-  right: 0;
-  height: calc(100% - 60px);
+  top: 70px;
+  right: 10px;
+  height: calc(100% - 80px);
   width: 320px;
-  box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.25);
   padding: 0;
-  visibility: visible;
-  opacity: 1;
-}
-[data-region=right-hand-drawer].hidden {
-  display: block;
-  right: -320px;
-  visibility: hidden;
-  opacity: 0;
-  transition: right 0.2s ease-in-out, visibility 0s ease-in-out 0.2s, opacity 0s ease-in-out 0.2s;
-}
-@media (prefers-reduced-motion: reduce) {
-  [data-region=right-hand-drawer].hidden {
-    transition: none;
-  }
 }
 
 @media (max-width: 767.98px) {

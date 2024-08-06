@@ -280,6 +280,7 @@ function(
                 hide(root);
             });
 
+            let isClickedOutsideRegistered = false;
             PubSub.subscribe(Events.TOGGLE_VISIBILITY, function(buttonid) {
                 if (isVisible(root)) {
                     hide(root);
@@ -288,6 +289,20 @@ function(
                     show(namespace, root);
                     setJumpFrom(buttonid);
                     $(SELECTORS.JUMPTO).attr('tabindex', 0);
+
+                    // When the message drawer is displayed register click event to hide
+                    // the drawer when clicked outside of it or the icon itself.
+                    if (!isClickedOutsideRegistered) {
+                        $('html').click(function(e) {
+                            var target = $(e.target);
+                            const iconTarget = $('[data-region="popover-region-messages"]');
+                            if (!root.is(target) && !root.has(target).length &&
+                                !iconTarget.is(target) && !iconTarget.has(target).length) {
+                                hide(root);
+                            }
+                        });
+                        isClickedOutsideRegistered = true;
+                    }
                 }
             });
         }
@@ -296,17 +311,6 @@ function(
             setJumpFrom(args.buttonid);
             show(namespace, root);
             Router.go(namespace, Routes.VIEW_CONVERSATION, args.conversationid);
-        });
-
-        var closebutton = root.find(SELECTORS.CLOSE_BUTTON);
-        closebutton.on(CustomEvents.events.activate, function(e, data) {
-            data.originalEvent.preventDefault();
-
-            var button = $(SELECTORS.DRAWER).attr('data-origin');
-            if (button) {
-                $('#' + button).focus();
-            }
-            PubSub.publish(Events.TOGGLE_VISIBILITY);
         });
 
         PubSub.subscribe(Events.CREATE_CONVERSATION_WITH_USER, function(args) {

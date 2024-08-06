@@ -119,25 +119,12 @@ $right-drawer-width: 320px;
     &.drawer {
         z-index: $zindex-sticky + 1;
         position: fixed;
-        top: $navbar-height;
-        right: 0;
-        height: calc(100% - #{$navbar-height});
+        top: $navbar-height + 10px;
+        right: 10px;
+        height: calc(100% - #{$navbar-height + 20});
         width: $right-drawer-width;
-        box-shadow: -2px 2px 4px $drawer-shadow-color;
+        box-shadow: 0 0 2px 1px $drawer-shadow-color;
         padding: 0;
-        visibility: visible;
-        opacity: 1;
-    }
-
-    &.hidden {
-        display: block;
-        right: $right-drawer-width * -1;
-        // Turn off visibility so that nothing in the drawer can receive focus when
-        // it is hidden.
-        visibility: hidden;
-        opacity: 0;
-        // Delay visibility changes until after the slide right animation has completed.
-        @include transition(right .2s ease-in-out, visibility 0s ease-in-out .2s, opacity 0s ease-in-out .2s);
     }
 }
 
