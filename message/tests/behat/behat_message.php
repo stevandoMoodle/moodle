@@ -47,37 +47,37 @@ class behat_message extends behat_base {
             new behat_component_named_selector('Message', [".//*[@data-conversation-id]//img[%altMatch%]/.."]),
             new behat_component_named_selector('Message conversation', [
                 <<<XPATH
-    .//*[@data-region='message-drawer' and contains(., %locator%)]//div[@data-region='content-message-container']
+    .//*[@data-region='message-popover' and contains(., %locator%)]//div[@data-region='content-message-container']
 XPATH
             ], false),
             new behat_component_named_selector('Message header', [
                 <<<XPATH
-    .//*[@data-region='message-drawer']//div[@data-region='header-content' and contains(., %locator%)]
+    .//*[@data-region='message-popover']//div[@data-region='header-content' and contains(., %locator%)]
 XPATH
             ]),
             new behat_component_named_selector('Message member', [
                 <<<XPATH
-    .//*[@data-region='message-drawer']//div[@data-region='group-info-content-container']
+    .//*[@data-region='message-popover']//div[@data-region='group-info-content-container']
     //div[@class='list-group' and not(contains(@class, 'hidden'))]//*[%core_message/textMatch%]
 XPATH
                 , <<<XPATH
-    .//*[@data-region='message-drawer']//div[@data-region='group-info-content-container']
+    .//*[@data-region='message-popover']//div[@data-region='group-info-content-container']
     //div[@data-region='empty-message-container' and not(contains(@class, 'hidden')) and contains(., %locator%)]
 XPATH
             ], false),
             new behat_component_named_selector('Message tab', [
                 <<<XPATH
-    .//*[@data-region='message-drawer']//button[@data-toggle='collapse' and contains(string(), %locator%)]
+    .//*[@data-region='message-popover']//button[@data-toggle='collapse' and contains(string(), %locator%)]
 XPATH
             ], false),
             new behat_component_named_selector('Message list area', [
                 <<<XPATH
-    .//*[@data-region='message-drawer']//*[contains(@data-region, concat('view-overview-', %locator%))]
+    .//*[@data-region='message-popover']//*[contains(@data-region, concat('view-overview-', %locator%))]
 XPATH
             ], false),
             new behat_component_named_selector('Message content', [
                 <<<XPATH
-    .//*[@data-region='message-drawer']//*[@data-region='message' and @data-message-id and contains(., %locator%)]
+    .//*[@data-region='message-popover']//*[@data-region='message' and @data-message-id and contains(., %locator%)]
 XPATH
             ], false),
         ];
@@ -147,7 +147,7 @@ XPATH
             array(
                 "//a[@data-action='view-contact']",
                 "xpath_element",
-                "//*[@data-region='message-drawer']//div[@data-region='header-container']",
+                "//*[@data-region='message-popover']//div[@data-region='header-container']",
                 "xpath_element",
             )
         );
@@ -155,7 +155,7 @@ XPATH
             array(
                 "//img[@title='Picture of ". $this->escape($userfullname) . "']",
                 "xpath_element",
-                "//*[@data-region='message-drawer']//*[@data-region='view-contact']",
+                "//*[@data-region='message-popover']//*[@data-region='view-contact']",
                 "xpath_element",
             )
         );
@@ -180,7 +180,7 @@ XPATH
             [
                 $this->escape($userfullname),
                 'link',
-                "[data-region='message-drawer'] [data-region='search-results-container']",
+                "[data-region='message-popover'] [data-region='search-results-container']",
                 "css_element",
             ]
         );
@@ -195,14 +195,14 @@ XPATH
      * @param string $string the search string.
      */
     public function i_search_for_string_in_messaging($string) {
-        $messagedrawer = $this->find('css', '[data-region="message-drawer"]');
+        $messagedrawer = $this->find('css', '[data-region="message-popover"]');
         $this->execute('behat_general::i_click_on_in_the', [
             get_string('search', 'core'), 'field',
             $messagedrawer, 'NodeElement'
         ]);
 
         $this->execute('behat_forms::i_set_the_field_with_xpath_to', [
-            "//*[@data-region='message-drawer']//input[@data-region='search-input']",
+            "//*[@data-region='message-popover']//input[@data-region='search-input']",
             $this->escape($string)
         ]);
 
@@ -232,7 +232,7 @@ XPATH
             [
                 '[data-action="send-message"]',
                 'css_element',
-                "[data-region='message-drawer'] [data-region='footer-container'] [data-region='view-conversation']",
+                "[data-region='message-popover'] [data-region='footer-container'] [data-region='view-conversation']",
                 "css_element",
             ]
         );
@@ -297,7 +297,7 @@ XPATH
             array(
                 'button',
                 'css_element',
-                '[data-region="message-drawer"] [data-region="header-container"]',
+                '[data-region="message-popover"] [data-region="header-container"]',
                 'css_element',
             )
         );
@@ -311,7 +311,7 @@ XPATH
      * @param string $listname
      */
     public function i_select_conversation_in_the_conversations_list(string $convname, string $listname) {
-        $xpath = '//*[@data-region="message-drawer"]//div[@data-region="view-overview-'.
+        $xpath = '//*[@data-region="message-popover"]//div[@data-region="view-overview-'.
             $this->escape($listname).
             '"]//*[@data-conversation-id]//img[contains(@alt,"'.
             $this->escape($convname).'")]';
@@ -327,7 +327,7 @@ XPATH
         $this->execute('behat_general::wait_until_the_page_is_ready');
         $this->execute('behat_general::i_click_on',
             array(
-                '//*[@data-region="message-drawer"]//a[@data-route="view-settings"]',
+                '//*[@data-region="message-popover"]//a[@data-route="view-settings"]',
                 'xpath_element',
                 '',
                 '',

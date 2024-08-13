@@ -47,7 +47,7 @@ Feature: Manage preferences
     Then I log in as "student2"
     And I open messaging
     And I send "Hi!" message to "Student 1" user
-    And I should see "Hi!" in the "//*[@data-region='message-drawer']//div[@data-region='content-message-container']" "xpath_element"
+    And I should see "Hi!" in the "Student 1" "core_message > Message conversation"
 
   # Recipient has 'My contacts and anyone in my courses' set.
   Scenario: Disallow sending a message if you are neither contacts with the recipient nor do you share a course
@@ -71,7 +71,7 @@ Feature: Manage preferences
     Then I log in as "student4"
     And I open messaging
     And I send "Hi!" message to "Student 1" user
-    And I should see "Hi!" in the "//*[@data-region='message-drawer']//div[@data-region='content-message-container']" "xpath_element"
+    And I should see "Hi!" in the "Student 1" "core_message > Message conversation"
 
   # Recipient has 'My contacts and anyone in my courses' set.
   Scenario: Disallow sending a message if you are neither a contact, nor are in the same group in a shared course
@@ -103,7 +103,7 @@ Feature: Manage preferences
     And I select "Student 2" user in messaging
     And I set the field with xpath "//textarea[@data-region='send-message-txt']" to "Hi!"
     And I press the enter key
-    Then I should see "Hi!" in the "//*[@data-region='message-drawer']//div[@data-region='content-message-container']" "xpath_element"
+    Then I should see "Hi!" in the "Student 2" "core_message > Message conversation"
 
   Scenario: Sending a message after 'Use enter to send' is disabled
     Given I log in as "student1"
@@ -114,6 +114,6 @@ Feature: Manage preferences
     Then I select "Student 2" user in messaging
     And I set the field with xpath "//textarea[@data-region='send-message-txt']" to "Hi!"
     And I press the enter key
-    And I should not see "Hi!" in the "//*[@data-region='message-drawer']//div[@data-region='content-message-container']" "xpath_element"
+    And I should not see "Hi!" in the "Student 2" "core_message > Message conversation"
     And I press "Send message"
-    And I should see "Hi!" in the "//*[@data-region='message-drawer']//div[@data-region='content-message-container']" "xpath_element"
+    And I should see "Hi!" in the "Student 2" "core_message > Message conversation"

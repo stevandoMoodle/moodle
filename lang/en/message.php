@@ -241,6 +241,7 @@ $string['sendbulkmessagesentsingle'] = 'Message sent to 1 person';
 $string['sendmessageto'] = 'Send message to {$a}';
 $string['sendmessagetopopup'] = 'Send message to {$a} - new window';
 $string['settings'] = 'Settings';
+$string['showmessagewindow'] = 'Show message window';
 $string['showmessagewindownonew'] = 'Show message window with no new messages';
 $string['showmessagewindowwithcount'] = 'Show message window with {$a} new messages';
 $string['shownotificationwindownonew'] = 'Show notification window with no new notifications';

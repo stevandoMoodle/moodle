@@ -31,7 +31,7 @@ Feature: Capability test for 'moodle/site:messageanyuser'
     Given I log in as "teacher1"
     And I open messaging
     When I send "Hi!" message to "Student 1" user
-    Then I should see "Hi!" in the "//div[@data-region='message-drawer']//div[@data-region='content-message-container']" "xpath_element"
+    Then I should see "Hi!" in the "Student 1" "core_message > Message conversation"
 
   Scenario: Do not allow a message to be sent as the user does not have the correct capabilities
     Given I log in as "student2"

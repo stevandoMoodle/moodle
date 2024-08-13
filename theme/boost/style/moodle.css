@@ -31738,13 +31738,16 @@ a.ygtvspacer:hover {
     transition: right 0.25s;
   }
 }
-.drawer .message-app {
+.drawer .message-app,
+.message-popover .message-app {
   height: 100%;
 }
-.drawer .message-app .icon-back-in-app {
+.drawer .message-app .icon-back-in-app,
+.message-popover .message-app .icon-back-in-app {
   display: none;
 }
-.drawer .message-app .icon-back-in-drawer {
+.drawer .message-app .icon-back-in-drawer,
+.message-popover .message-app .icon-back-in-drawer {
   display: inherit;
 }
 
@@ -37004,6 +37007,41 @@ body {
   display: none;
 }
 
+[data-region=message-popover-region] {
+  display: flex;
+  flex-direction: column;
+  transition: right 0.2s ease-in-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-region=message-popover-region] {
+    transition: none;
+  }
+}
+[data-region=message-popover-region].message-popover {
+  z-index: 1021;
+  position: fixed;
+  top: 72px;
+  right: 50px;
+  height: 82%;
+  width: 320px;
+  border: 1px solid #ddd;
+  padding: 0;
+}
+[data-region=message-popover-region].hidden {
+  display: none;
+}
+
+@media (max-width: 575.98px) {
+  [data-region=message-popover-region].message-popover {
+    width: auto;
+    height: auto;
+    top: 61px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+  }
+}
 @media (max-width: 767px) {
   .navbar .popover-region .popover-region-container {
     right: -70px;

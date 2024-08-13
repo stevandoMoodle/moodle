@@ -372,7 +372,8 @@ $message-received-color-muted: mix($message-received-color, $message-received-bg
 $message-app-bg: mix($message-send-bg, $message-received-bg, 50%) !default;
 $message-day-color: color-yiq($message-app-bg) !default;
 
-.drawer {
+.drawer,
+.message-popover {
     .message-app {
         height: 100%;
         .icon-back-in-app {

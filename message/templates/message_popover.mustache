@@ -36,7 +36,7 @@
 
 }}
 <div class="popover-region collapsed" data-region="popover-region-messages">
-    <a id="message-drawer-toggle-{{uniqid}}" class="nav-link popover-region-toggle position-relative icon-no-margin" href="#"
+    <a id="message-popover-toggle-{{uniqid}}" class="nav-link popover-region-toggle position-relative icon-no-margin" href="#"
             role="button">
         {{#pix}} t/message, core, {{#str}} togglemessagemenu, message {{/str}} {{/pix}}
         <div
@@ -60,7 +60,7 @@ function(
     $,
     Popover
 ) {
-    var toggle = $('#message-drawer-toggle-{{uniqid}}');
+    var toggle = $('#message-popover-toggle-{{uniqid}}');
     Popover.init(toggle);
 });
 {{/js}}

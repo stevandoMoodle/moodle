@@ -215,25 +215,25 @@ XPATH
         .//*[@data-conversation-id]//img[contains(@alt, %locator%)]/..
 XPATH
         , 'group_message_conversation' => <<<XPATH
-            .//*[@data-region='message-drawer' and contains(., %locator%)]//div[@data-region='content-message-container']
+            .//*[@data-region='message-popover' and contains(., %locator%)]//div[@data-region='content-message-container']
 XPATH
     , 'group_message_header' => <<<XPATH
-        .//*[@data-region='message-drawer']//div[@data-region='header-content' and contains(., %locator%)]
+        .//*[@data-region='message-popover']//div[@data-region='header-content' and contains(., %locator%)]
 XPATH
     , 'group_message_member' => <<<XPATH
-        .//*[@data-region='message-drawer']//div[@data-region='group-info-content-container']
+        .//*[@data-region='message-popover']//div[@data-region='group-info-content-container']
         //div[@class='list-group' and not(contains(@class, 'hidden'))]//*[text()[contains(., %locator%)]] |
-        .//*[@data-region='message-drawer']//div[@data-region='group-info-content-container']
+        .//*[@data-region='message-popover']//div[@data-region='group-info-content-container']
         //div[@data-region='empty-message-container' and not(contains(@class, 'hidden')) and contains(., %locator%)]
 XPATH
     , 'group_message_tab' => <<<XPATH
-        .//*[@data-region='message-drawer']//button[@data-toggle='collapse' and contains(string(), %locator%)]
+        .//*[@data-region='message-popover']//button[@data-toggle='collapse' and contains(string(), %locator%)]
 XPATH
     , 'group_message_list_area' => <<<XPATH
-        .//*[@data-region='message-drawer']//*[contains(@data-region, concat('view-overview-', %locator%))]
+        .//*[@data-region='message-popover']//*[contains(@data-region, concat('view-overview-', %locator%))]
 XPATH
     , 'group_message_message_content' => <<<XPATH
-        .//*[@data-region='message-drawer']//*[@data-region='message' and @data-message-id and contains(., %locator%)]
+        .//*[@data-region='message-popover']//*[@data-region='message' and @data-message-id and contains(., %locator%)]
 XPATH
     , 'heading' => <<<XPATH
         .//*[self::h1 or self::h2 or self::h3 or self::h4 or self::h5 or self::h6][contains(normalize-space(.), %locator%)]

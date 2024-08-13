@@ -50,7 +50,8 @@ function(
 
     var SELECTORS = {
         CAN_RECEIVE_FOCUS: 'input:not([type="hidden"]), a[href], button, textarea, select, [tabindex]',
-        ROUTES_BACK: '[data-route-back]'
+        ROUTES_BACK: '[data-route-back]',
+        MESSAGE_USER_BUTTON: 'message-user-button',
     };
 
     /**
@@ -276,7 +277,13 @@ function(
                 // Delay the focus 50 milliseconds otherwise it doesn't correctly
                 // focus the element for some reason...
                 window.setTimeout(function() {
-                    previous.focusElement.focus();
+                    // Check if the previous focused element is "#message-user-button".
+                    if (previous.focusElement[0].id === SELECTORS.MESSAGE_USER_BUTTON) {
+                        // Set the next sibling (span.data-region="jumpto") of message user button tabindex to -1.
+                        document.querySelector(`#${SELECTORS.MESSAGE_USER_BUTTON}`).nextSibling.setAttribute('tabindex', -1);
+                    } else {
+                        previous.focusElement.focus();
+                    }
                 }, 50);
             }
         }

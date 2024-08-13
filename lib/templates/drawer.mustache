@@ -29,14 +29,17 @@
     * none
 
     Example context (json):
-    {}
+    {
+        "uniqid": "01",
+        "show": "true"
+    }
 }}
 <div
-    id="{{$drawerid}}drawer-{{uniqid}}{{/drawerid}}"
-    class="{{$drawerclasses}}{{/drawerclasses}} drawer bg-white {{^show}}hidden{{/show}}"
+    id="{{$drawerid}}message-popover-region-{{uniqid}}{{/drawerid}}"
+    class="{{$drawerclasses}}{{/drawerclasses}} {{$popoverclasses}}drawer{{/popoverclasses}} bg-white {{^show}}hidden{{/show}}"
     aria-expanded="{{#show}}true{{/show}}{{^show}}false{{/show}}"
     {{^show}}aria-hidden="true"{{/show}}
-    data-region="right-hand-drawer"
+    data-region="{{$popoverregion}}right-hand-drawer{{/popoverregion}}"
     role="region"
     tabindex="0"
 >

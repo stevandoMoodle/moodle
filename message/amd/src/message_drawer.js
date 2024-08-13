@@ -59,7 +59,7 @@ function(
 ) {
 
     var SELECTORS = {
-        DRAWER: '[data-region="right-hand-drawer"]',
+        POPOVER: '[data-region="message-popover-region"]',
         JUMPTO: '.popover-region [data-region="jumpto"]',
         PANEL_BODY_CONTAINER: '[data-region="panel-body-container"]',
         PANEL_HEADER_CONTAINER: '[data-region="panel-header-container"]',
@@ -75,8 +75,15 @@ function(
         HEADER_CONTAINER: '[data-region="header-container"]',
         BODY_CONTAINER: '[data-region="body-container"]',
         FOOTER_CONTAINER: '[data-region="footer-container"]',
-        CLOSE_BUTTON: '[data-action="closedrawer"]'
+        MESSAGE_POPOVER_REGION: '[data-region="message-popover-region"]',
+        POPOVER_REGION_MESSAGES: '[data-region="popover-region-messages"]',
+        SEARCH_INPUT: '[data-region="view-overview-search-input"]',
+        MESSAGE_TOGGLE: '.popover-region-toggle',
+        MESSAGE_USER_BUTTON: document.querySelector('#message-user-button'),
     };
+
+    // Whether the message user button is pressed or not.
+    let MESSAGE_USER_BUTTON_PRESSED = false;
 
     /**
      * Get elements for route.
@@ -130,20 +137,38 @@ function(
     };
 
     /**
+     * Find the root element of the popover based on the using the popover content root's ID.
+     *
+     * @param {Object} contentRoot The popover content's root element.
+     * @returns {jQuery}
+     */
+    const getPopoverRoot = (contentRoot) => {
+        return contentRoot.closest(SELECTORS.MESSAGE_POPOVER_REGION);
+    };
+
+    /**
      * Show the message drawer.
      *
      * @param {string} namespace The route namespace.
      * @param {Object} root The message drawer container.
+     * @param {HTMLElement} messagePopover Message popover html.
      */
-    var show = function(namespace, root) {
+    const show = function(namespace, root, messagePopover) {
         if (!root.attr('data-shown')) {
             Router.go(namespace, Routes.VIEW_OVERVIEW);
             root.attr('data-shown', true);
         }
 
-        var drawerRoot = Drawer.getDrawerRoot(root);
+        const drawerRoot = getPopoverRoot(root);
         if (drawerRoot.length) {
             Drawer.show(drawerRoot);
+            messagePopover?.classList.remove('collapsed');
+        }
+
+        // Check if the message user button is pressed.
+        if (MESSAGE_USER_BUTTON_PRESSED) {
+            // Remove the "active" class if message user button has it.
+            SELECTORS.MESSAGE_USER_BUTTON?.classList.add('active');
         }
     };
 
@@ -151,11 +176,29 @@ function(
      * Hide the message drawer.
      *
      * @param {Object} root The message drawer container.
+     * @param {HTMLElement} messagePopover Message popover html.
      */
-    var hide = function(root) {
-        var drawerRoot = Drawer.getDrawerRoot(root);
+    const hide = function(root, messagePopover) {
+        const drawerRoot = getPopoverRoot(root);
         if (drawerRoot.length) {
             Drawer.hide(drawerRoot);
+            messagePopover?.classList.add('collapsed');
+
+            // Remove "active" class if message user button label has it.
+            if (SELECTORS.MESSAGE_USER_BUTTON) {
+                const messageUserButton = SELECTORS.MESSAGE_USER_BUTTON.querySelector('span.header-button-title');
+                messageUserButton?.classList.remove('active');
+            }
+
+            // Check if the message user button is pressed.
+            if (MESSAGE_USER_BUTTON_PRESSED) {
+                // Remove the "active" class if message user button has it.
+                SELECTORS.MESSAGE_USER_BUTTON?.classList.remove('active');
+                // Set the next sibling (span.data-region="jumpto") of message user button tabindex to -1.
+                SELECTORS.MESSAGE_USER_BUTTON.nextSibling.setAttribute('tabindex', -1);
+                // Set MESSAGE_USER_BUTTON_PRESSED back to false.
+                MESSAGE_USER_BUTTON_PRESSED = false;
+            }
         }
     };
 
@@ -166,7 +209,7 @@ function(
      * @return {boolean}
      */
     var isVisible = function(root) {
-        var drawerRoot = Drawer.getDrawerRoot(root);
+        const drawerRoot = getPopoverRoot(root);
         if (drawerRoot.length) {
             return Drawer.isVisible(drawerRoot);
         }
@@ -179,7 +222,7 @@ function(
      * @param {String} buttonid The originating button id
      */
     var setJumpFrom = function(buttonid) {
-        $(SELECTORS.DRAWER).attr('data-origin', buttonid);
+        document.querySelector(SELECTORS.POPOVER).setAttribute('data-origin', buttonid);
     };
 
     /**
@@ -256,15 +299,30 @@ function(
         });
 
         $(SELECTORS.JUMPTO).focus(function() {
-            var firstInput = root.find(SELECTORS.CLOSE_BUTTON);
-            if (firstInput.length) {
-                firstInput.focus();
+            // Get unfocused search container.
+            const overviewSearch = document.querySelector(SELECTORS.VIEW_OVERVIEW);
+            // Check if the search container has class "hidden".
+            if (overviewSearch.classList.contains('hidden')) {
+                // Get header container's nodes to loop.
+                const containers = document.querySelector(SELECTORS.HEADER_CONTAINER).childNodes;
+                containers.forEach(container => {
+                    // Check if the container is not "#text" and has no class "hidden".
+                    if (container.nodeName !== '#text' && !container.classList.contains('hidden')) {
+                        // Set the focus on the "back" of the container that has no class "hidden".
+                        container.querySelector(SELECTORS.ROUTES_BACK).focus();
+                    }
+                });
             } else {
-                $(SELECTORS.HEADER_CONTAINER).find(SELECTORS.ROUTES_BACK).focus();
+                // Get and check for unfocused search input.
+                const firstInput = root.find(SELECTORS.SEARCH_INPUT);
+                if (firstInput.length) {
+                    // Set the focus on the unfocused search input if its container has no class "hidden".
+                    firstInput.focus();
+                }
             }
         });
 
-        $(SELECTORS.DRAWER).focus(function() {
+        $(SELECTORS.POPOVER).focus(function() {
             var button = $(this).attr('data-origin');
             if (button) {
                 $('#' + button).focus();
@@ -281,35 +339,82 @@ function(
             });
 
             PubSub.subscribe(Events.TOGGLE_VISIBILITY, function(buttonid) {
+                const messagePopover = document.getElementById(buttonid).parentElement;
                 if (isVisible(root)) {
-                    hide(root);
+                    hide(root, messagePopover);
                     $(SELECTORS.JUMPTO).attr('tabindex', -1);
                 } else {
-                    show(namespace, root);
+                    show(namespace, root, messagePopover);
                     setJumpFrom(buttonid);
                     $(SELECTORS.JUMPTO).attr('tabindex', 0);
+                }
+            });
+
+            // Keydown to track if a dropdown menu within the message popover is focused.
+            let isExpanded = false;
+            document.addEventListener('keydown', async(e) => {
+                if (e.key === "Escape") {
+                    if (e.target.dataset.toggle) {
+                        isExpanded = e.target.getAttribute('aria-expanded') === 'false' ? false : true;
+                    } else {
+                        if (e.target.parentElement.classList.contains('dropdown-menu')) {
+                            isExpanded = true;
+                        }
+                    }
+                }
+            });
+
+            // Keyup to close the message popover if escape is pressed and the current focused element
+            // is not a dropdown within the message popover.
+            document.addEventListener('keyup', async(e) => {
+                if (e.key === "Escape") {
+                    if (!isExpanded) {
+                        const messagePopover = document.querySelector(SELECTORS.POPOVER_REGION_MESSAGES);
+                        if (messagePopover && isVisible(root)) {
+                            // Set the focus back to body.
+                            document.activeElement.blur();
+                            // Set jumpto tabindex back to -1.
+                            document.querySelector(SELECTORS.JUMPTO).setAttribute('tabindex', -1);
+
+                            // Check if the message user button is pressed.
+                            if (MESSAGE_USER_BUTTON_PRESSED) {
+                                SELECTORS.MESSAGE_USER_BUTTON.focus();
+                            } else {
+                                // Set the fucus to message icon in the header.
+                                document.querySelector(`${SELECTORS.POPOVER_REGION_MESSAGES} ${SELECTORS.MESSAGE_TOGGLE}`).focus();
+                            }
+                            hide(root, messagePopover);
+                        }
+                    }
+                }
+            });
+
+            // Close the popover if clicked outside of it.
+            document.addEventListener('click', (e) => {
+                const target = e.target;
+                const messagePopover = document.querySelector(SELECTORS.POPOVER_REGION_MESSAGES);
+                const messageUserButton = SELECTORS.MESSAGE_USER_BUTTON;
+                if (messagePopover) {
+                    // Get the underlying DOM element(s) from the jQuery object.
+                    const rootElement = root[0];
+                    if (rootElement !== target && !rootElement?.contains(target) &&
+                        messagePopover !== target && !messagePopover?.contains(target) &&
+                        messageUserButton !== target && !messageUserButton?.contains(target)) {
+                        hide(root, messagePopover);
+                    }
                 }
             });
         }
 
         PubSub.subscribe(Events.SHOW_CONVERSATION, function(args) {
+            MESSAGE_USER_BUTTON_PRESSED = true;
             setJumpFrom(args.buttonid);
             show(namespace, root);
             Router.go(namespace, Routes.VIEW_CONVERSATION, args.conversationid);
         });
 
-        var closebutton = root.find(SELECTORS.CLOSE_BUTTON);
-        closebutton.on(CustomEvents.events.activate, function(e, data) {
-            data.originalEvent.preventDefault();
-
-            var button = $(SELECTORS.DRAWER).attr('data-origin');
-            if (button) {
-                $('#' + button).focus();
-            }
-            PubSub.publish(Events.TOGGLE_VISIBILITY);
-        });
-
-        PubSub.subscribe(Events.CREATE_CONVERSATION_WITH_USER, function(args) {
+        PubSub.subscribe(Events.CREATE_CONVERSATION_WITH_USER, async function(args) {
+            MESSAGE_USER_BUTTON_PRESSED = true;
             setJumpFrom(args.buttonid);
             show(namespace, root);
             Router.go(namespace, Routes.VIEW_CONVERSATION, null, 'create', args.userid);
