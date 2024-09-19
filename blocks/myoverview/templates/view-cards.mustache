@@ -38,15 +38,13 @@
 
 {{< core_course/coursecards }}
     {{$menu}}
-        <div class="card-footer dashboard-card-footer menu border-0 bg-white ml-auto">
+        <div class="menu ml-auto">
             {{> block_myoverview/course-action-menu }}
         </div>
     {{/menu}}
     {{$progress}}
         {{#hasprogress}}
-            <div class="card-footer dashboard-card-footer border-0 bg-white w-100">
-                {{> block_myoverview/progress-bar}}
-            </div>
+            {{> block_myoverview/progress-bar}}
         {{/hasprogress}}
     {{/progress}}
     {{$coursename}}
