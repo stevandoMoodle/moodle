@@ -15,21 +15,28 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template tiny_accessibilitychecker/warning_content
+    @template tiny_bibliography/styles/ieee/book
 
-    Display a content warning message
+    Display a generated bibliography of book source.
 
     Example context (json):
     {
-        "warnings": [
+        "updateIndex": 1,
+        "allData": [
             {
-                "description": "This is a warning message",
-                "nodeData": [{
-                    "text": "Text of content",
-                    "src": "https://example.com/image.png",
-                    "nodeName": "IMG",
-                    "nodeIndex": 0
-                }]
+                "keyValuePair": {"style": "ieee", "source": "book", ...},
+                "author": "L. Name",
+                "chapterTitle": "Chapter title",
+                "publishedTitle": "Published title",
+                "volume": "I",
+                "edition": "2nd Edition",
+                "city": "Perth",
+                "country": "Australia",
+                "publisher": "IEEE",
+                "year": "2024",
+                "chapter": "1",
+                "section": "1",
+                "pages": "1-5"
             }
         ]
     }
@@ -37,7 +44,6 @@
 <span class="hide-ori-data ori-author">
     {{allData.keyValuePair}}
 </span>
-{{#ieee}}
 <span class="d-flex mb-0">
     <span class="id-refno-{{updateIndex}}">[{{updateIndex}}]</span>
     <span class="ml-2">
@@ -54,4 +60,3 @@
         pp. {{allData.pages}}
     </span>
 </span>
-{{/ieee}}

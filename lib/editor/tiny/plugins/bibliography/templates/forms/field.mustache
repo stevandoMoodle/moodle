@@ -21,11 +21,13 @@
 }}
 
 {{#fields}}
-    {{#author}}
-    {{> tiny_bibliography/forms/fields/author }}
-    {{/author}}
-
-    {{^author}}
+    {{#select}}
+        {{> tiny_bibliography/forms/fields/options }}
+    {{/select}}
+    {{#input}}
         {{> tiny_bibliography/forms/fields/input }}
+    {{/input}}
+    {{#author}}
+        {{> tiny_bibliography/forms/fields/author }}
     {{/author}}
 {{/fields}}

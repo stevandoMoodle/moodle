@@ -23,11 +23,24 @@
  */
 
 $string['pluginname'] = 'Bibliography';
+$string['citation'] = 'Citation';
+$string['pluginname'] = 'Bibliography';
 $string['source'] = 'Source';
+
+$string['source:default'] = '{$a} default source';
+$string['source:default_desc'] = 'Please select your default source for {$a}';
+
+$string['source_desc'] = 'Please select your default bibliography source.';
 $string['style'] = 'Style';
+$string['style_desc'] = 'Please select your default bibliography style.';
 $string['style:ieee'] = 'IEEE';
+$string['style:enable'] = 'Enable';
+$string['style:default_style'] = 'Default style';
 $string['style:apa'] = 'APA';
+$string['style:harvard'] = 'HARVARD';
+
 $string['source:book'] = 'Book';
+$string['source:book_translated'] = 'Book translated';
 $string['source:book_with_chapter_title'] = 'Book with chapter title';
 $string['source:soundrecording'] = 'Sound Recording';
 $string['source:booksection'] = 'Book Section';
@@ -37,6 +50,10 @@ $string['source:articleinjournal'] = 'Article In Journal';
 $string['source:website'] = 'Website';
 $string['source:documentfromwebsite'] = 'Document From Website';
 $string['source:conferenceproceedings'] = 'Conference Proceedings';
+
+$string['no_styles'] = 'You do not have any styles yet.<br>If you think you have created any styles, please check the string lang.';
+$string['style:no_resources'] = '{$a} style has no sources yet.<br>If you think you have created sources for {$a}, please check the string lang.';
+
 
 $string['label:allfields'] = 'All fields';
 
@@ -93,6 +110,14 @@ $string['field:stateProvince'] = 'State / Province';
 $string['field:country'] = 'Country';
 $string['field:numberOfVolumes'] = 'Number of volumes';
 $string['field:conferencepublicationname'] = 'Conference publication name';
+$string['field:state'] = 'State (only U.S.)';
+$string['field:translatedTo'] = 'Translated to';
+$string['field:place'] = 'Place of publication';
+
+$string['field:subTitle'] = 'Sub title';
+$string['field:isFirstEdition'] = 'Is it first edition?';
+$string['yes'] = 'Yes';
+$string['no'] = 'No';
 
 $string['biblioform'] = 'Bibliography Form';
 $string['bibliolist'] = 'Bibliography List';
@@ -106,3 +131,7 @@ $string['alert:error'] = 'Error!';
 $string['alert:warning'] = 'Warning!';
 $string['stylenotavailable'] = '<b><i>{$a}</b></i> style is not available yet';
 $string['sourcenotavailable'] = '<b><i>{$a}</b></i> source is not available yet';
+
+$string['settings:general'] = 'Style default setting';
+
+$string['settings:default_source'] = '<b><i>{$a}</b></i> - Default source setting';

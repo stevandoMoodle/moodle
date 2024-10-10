@@ -15,21 +15,23 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template tiny_accessibilitychecker/warning_content
+    @template tiny_bibliography/styles/ieee/website
 
-    Display a content warning message
+    Display a generated bibliography of website source.
 
     Example context (json):
     {
-        "warnings": [
+        "updateIndex": 1,
+        "allData": [
             {
-                "description": "This is a warning message",
-                "nodeData": [{
-                    "text": "Text of content",
-                    "src": "https://example.com/image.png",
-                    "nodeName": "IMG",
-                    "nodeIndex": 0
-                }]
+                "keyValuePair": "{key: value}",
+                "author": "L. Name",
+                "pageTitle": "Page title",
+                "websiteTitle": "Website title",
+                "webAddress": "www.moodle.org",
+                "monthAccessed": "January",
+                "dateAccessed": "10",
+                "yearAccessed": "2024"
             }
         ]
     }
@@ -38,7 +40,6 @@
 <span class="hide-ori-data ori-author">
     {{allData.keyValuePair}}
 </span>
-{{#ieee}}
 <span class="d-flex mb-0">
     <span class="id-refno-{{updateIndex}}">[{{updateIndex}}]</span>
     <span class="ml-2">
@@ -48,4 +49,3 @@
         {{allData.webAddress}} (accessed {{allData.monthAccessed}}. {{allData.dateAccessed}}, {{allData.yearAccessed}}).
     </span>
 </span>
-{{/ieee}}

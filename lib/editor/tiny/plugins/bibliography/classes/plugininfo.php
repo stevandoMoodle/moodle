@@ -23,6 +23,8 @@ use editor_tiny\plugin_with_buttons;
 use editor_tiny\plugin_with_configuration;
 use editor_tiny\plugin_with_menuitems;
 
+use function DI\string;
+
 /**
  * Tiny media manager plugin.
  *
@@ -44,18 +46,105 @@ class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menu
         ];
     }
 
+    public static function get_style_and_source() {
+        global $CFG;
+
+        $target = $CFG->dirroot . '/lib/editor/tiny/plugins/bibliography/amd/src/bibliography/styles';
+        $targetDir = new \DirectoryIterator($target);
+
+        $styles = [];
+        foreach ($targetDir as $dir) {
+            $styledotjs = $target .'/'. $dir->getFilename() .'/style.js';
+            if (!$dir->isDot() && $dir->isDir() && file_exists($styledotjs)) {
+                $styles[] = $dir->getFilename();
+            }
+        }
+
+        $styleSources = [];
+        foreach ($styles as $style) {
+            $pluginStyle = self::add_prefix($style);
+            $styleSources[$pluginStyle] = [];
+            $sourceTarget = $target . '/' . $style .'/sources';
+            if (file_exists($sourceTarget)) {
+                $targetDir = new \DirectoryIterator($sourceTarget);
+                $totalsourcefiles = 0;
+                foreach ($targetDir as $file) {
+                    if (!$file->isDot() && $file->isFile() && $file->getExtension() === 'js') {
+                        $source = str_replace('.js', '', $file->getFilename());
+                        array_push(
+                            $styleSources[$pluginStyle],
+                            self::add_prefix(
+                                string: $source,
+                                style: false
+                            )
+                        );
+                        $totalsourcefiles++;
+                    }
+                }
+
+                if ($totalsourcefiles < 1 && isset($styleSources[$pluginStyle])) {
+                    // Unset the style because it has no sources.
+                    unset($styleSources[$pluginStyle]);
+                }
+            } else {
+                // Unset the style because it has no sources.
+                unset($styleSources[$pluginStyle]);
+            }
+        }
+
+        return $styleSources;
+    }
+
+    public static function get_style_default_source() {
+        $defaultsources = [];
+        $styles = array_keys(plugininfo::get_style_and_source());
+        foreach ($styles as $style) {
+            $style = self::remove_prefix($style);
+            $defaultsources[$style] = self::remove_prefix(
+                string: get_config(
+                    plugin: 'tiny_bibliography',
+                    name: $style . 'defaultsource',
+                ),
+                style: false,
+            );
+        }
+        return $defaultsources;
+    }
+
+    public static function add_prefix(string $string, bool $style = true) {
+        return ($style ? 'style:' : 'source:') . $string;
+    }
+
+    public static function remove_prefix(string $string, bool $style = true) {
+        return str_replace($style ? 'style:' : 'source:', '', $string);
+    }
+
     public static function get_plugin_configuration_for_context(
         context $context,
         array $options,
         array $fpoptions,
         ?editor $editor = null
     ): array {
-        $permissions = [
-            'upload' => true,
+        global $PAGE;
+
+        $defaultstyle = self::remove_prefix(get_config(
+            plugin: 'tiny_bibliography',
+            name: 'defaultstyle',
+        ));
+        $defaultsource = self::get_style_default_source();
+
+        $data = [
+            'params' => self::get_style_and_source(),
+            'default' => [
+                'style' => $defaultstyle,
+                'sources' => $defaultsource,
+            ],
+            'fpoptions' => $fpoptions
         ];
+        $PAGE->requires->js_call_amd('tiny_bibliography/bibliography/ui_source_selector', 'init', [$defaultstyle, $defaultsource, $editor]);
+
         return [
-            'permissions' => $permissions,
-            'storeinrepo' => true,
+            'data' => $data
         ];
     }
 }
