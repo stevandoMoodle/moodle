@@ -51,6 +51,17 @@ class media_vimeo_plugin extends core_media_player_external {
             $params['dnt'] = 1;
         }
 
+        // Let's check if the original text is an anchor tag.
+        if (isset($options['originaltext']) && $this->is_anchor_tag($options['originaltext'])) {
+            $params = $this->get_controls_from_url(
+                url: $url,
+                params: $params,
+                mute: 'muted'
+            );
+        } else {
+            $params = array_merge($params, $this->get_controls_form_options($options, 'muted'));
+        }
+
         $embedurl = new moodle_url("https://player.vimeo.com/video/$videoid", $params);
         // Template context.
         $context = [

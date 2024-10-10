@@ -116,6 +116,16 @@ class media_youtube_plugin extends core_media_player_external {
             $params['rel'] = 0;
             $params['wmode'] = 'transparent';
 
+            // Let's check if the original text is an anchor tag.
+            if (isset($options['originaltext']) && $this->is_anchor_tag($options['originaltext'])) {
+                $params = $this->get_controls_from_url(
+                    url: $url,
+                    params: $params
+                );
+            } else {
+                $params = array_merge($params, $this->get_controls_form_options($options));
+            }
+
             // Handle no cookie option.
             if (!$nocookie) {
                 $embedurl = new moodle_url('https://www.youtube.com/embed/' . $videoid, $params );
