@@ -2,9 +2,13 @@ issueNumber: MDL-78428
 notes:
   core_media:
     - message: >-
-        Added new method "get_controls_from_url" in
-        media/player/youtube/classes/plugin.php to handle/get controls from the
-        YouTube link
+        - Added new method "get_controls_from_url" in
+          media/classes/player_external.php to handle/get controls from the url
+        - Added new method "is_anchor_tag" in
+          media/classes/player_external.php to check for anchor tag
+        - Added new method "get_controls_form_options" in
+          media/classes/player_external.php to handle/get controls from the
+          "$options" passed from filter/mediaplugin/classes/text_filter.php
       type: improved
   core_editor:
     - message: >-
@@ -19,7 +23,6 @@ notes:
         - `addsource,tiny_media`
         - `addsource_help,tiny_media`
         - `advancedsettings,tiny_media`
-        - `audio,tiny_media`
         - `audiosourcelabel,tiny_media`
         - `browserepositoriesimage,tiny_media`
         - `createmedia,tiny_media`
@@ -28,7 +31,6 @@ notes:
         - `entersource,tiny_media`
         - `link,tiny_media`
         - `updatemedia,tiny_media`
-        - `video,tiny_media`
         - `videoheight,tiny_media`
         - `videosourcelabel,tiny_media`
         - `videowidth,tiny_media`

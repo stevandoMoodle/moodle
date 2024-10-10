@@ -25,14 +25,14 @@
     }
 
 }}
-<div class="container">
+<div class="container tiny_media_insert_media d-none" id="tiny-media-thumbnail-preview">
     <div class="row">
         <div class="tiny_media_preview_col col-lg-12 p-0">
             <div class="tiny_media_preview_box border rounded">
-                <div class="tiny_media_delete_icon delete_tiny_thumbnail" tabindex="0" title="{{#str}} deletemediathumbnail, tiny_media {{/str}}">
-                    <i class="fa fa-trash-o" title="{{#str}} deletemediathumbnail, tiny_media {{/str}}"></i>
-                </div>
-                <img class="tiny_media_preview" alt="media thumbnail image" src="data:,">
+                <button class="btn rounded-circle tiny_media_delete_icon delete_tiny_thumbnail" tabindex="0" title="{{#str}} deletemediathumbnail, tiny_media {{/str}}">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+                <img class="tiny_media_thumbnail_preview" alt="media thumbnail image" src="data:,">
             </div>
         </div>
     </div>

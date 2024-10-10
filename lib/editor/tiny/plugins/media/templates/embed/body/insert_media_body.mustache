@@ -26,7 +26,7 @@
     }
 
 }}
-<div class="tiny_media_insert_media">
+<div class="tiny_media_insert_media" id="tiny-insert-media">
     <div class="d-flex flex-column justify-content-center">
         {{#showDropzone}}
             <div class="tiny_media_dropzone_container"></div>
@@ -40,7 +40,7 @@
                             {{#str}} nofilepicker, tiny_media {{/str}}
                         {{/showFilePicker}}
                         {{^showFilePicker}}
-                            {{#str}} nofilepickerrepository, tiny_media {{/str}}
+                            {{#str}} nofilepickerrepository, tiny_media, {{fileType}} {{/str}}
                         {{/showFilePicker}}
                     </p>
                 </div>

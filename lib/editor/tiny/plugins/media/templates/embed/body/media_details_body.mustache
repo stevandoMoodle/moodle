@@ -24,6 +24,9 @@
         "isVideo": true,
         "isAudio": true,
         "isLink": true,
+        "canHaveThumbnail": true,
+        "isAudioTag": true,
+        "isVideoTag": true,
         "elementid": "id",
         "media" : {
             "poster": "link/to/poster",
@@ -39,22 +42,35 @@
     }
 
 }}
-<div id="tiny-media-details-body">
+<div id="tiny-media-details-body" class="d-none">
     <div class="container">
         <div class="row">
             <div class="col-lg-7 p-0">
                 <div class="tiny_media_preview_box border rounded">
-                    <div class="tiny_media_delete_icon" tabindex="0" title="{{#str}} deletemedia, tiny_media {{/str}}">
-                        <i class="fa fa-trash-o" title="{{#str}} deletemedia, tiny_media {{/str}}"></i>
-                    </div>
+                    <button class="btn rounded-circle tiny_media_delete_icon" tabindex="0" title="{{#str}} deletemedia, tiny_media {{/str}}">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
                     {{#isVideo}}
-                        <video controls id="video-tag" class="tiny_media_preview_tag" {{#media.poster}}poster="{{media.poster}}"{{/media.poster}}>
+                        <video controls
+                            id="video-tag"
+                            class="tiny_media_preview_tag"
+                            {{#media.poster}}poster="{{media.poster}}"{{/media.poster}}
+                            {{#media.autoplay}}autoplay="autoplay"{{/media.autoplay}}
+                            {{#media.muted}}muted="{{media.muted}}"{{/media.muted}}
+                            {{#media.loop}}loop="{{media.loop}}"{{/media.loop}}
+                        >
                             <source class="tiny_media_preview" src="data:,">
                             Your browser does not support HTML5 video.
                         </video>
                     {{/isVideo}}
                     {{#isAudio}}
-                        <audio controls id="audio-tag" class="tiny_media_preview_tag">
+                        <audio controls
+                            id="audio-tag"
+                            class="tiny_media_preview_tag"
+                            {{#media.autoplay}}autoplay="autoplay"{{/media.autoplay}}
+                            {{#media.muted}}muted="{{media.muted}}"{{/media.muted}}
+                            {{#media.loop}}loop="{{media.loop}}"{{/media.loop}}
+                        >
                             <source class="tiny_media_preview" src="data:,">
                             Your browser does not support HTML5 audio.
                         </audio>
@@ -66,29 +82,48 @@
             </div>
             <div class="tiny_media_properties_col col-lg-5 tiny_media_source tiny_media_poster_source">
                 <div class="mb-2">
-                    <div class="input-group-append">
-                        <input
-                            class="tiny_media_title_entry form-control"
-                            type="text"
-                            id="{{elementid}}tiny_media_title_entry"
-                            size="32"
-                            {{#media.title}}value="{{media.title}}"{{/media.title}}
-                            placeholder="{{#str}} entertitle, tiny_media {{/str}}"
-                        >
-                    </div>
-                    {{#isVideo}}
-                        <div class="input-group-append mt-2">
-                            <button class="btn btn-secondary upload-custom-thumbnail" type="button">{{#str}} uploadthumbnail, tiny_media {{/str}}</button>
+                    <div>
+                        <label for="{{elementid}}_tiny_media_title_entry">{{#str}} entertitle, tiny_media {{/str}}</label>
+                        <div class="input-group-append">
+                            <input
+                                class="tiny_media_title_entry form-control"
+                                type="text"
+                                id="{{elementid}}_tiny_media_title_entry"
+                                size="32"
+                                {{#media.title}}value="{{media.title}}"{{/media.title}}
+                            >
                         </div>
-                    {{/isVideo}}
+                    </div>
+                    {{#isLink}}
+                        <input type="hidden" class="media-link-embed-type" value="{{mediaTagType}}">
+                    {{/isLink}}
+                    {{#canHaveThumbnail}}
+                        <div class="video-thumbnail">
+                            <div class="input-group-append mt-2">
+                                <button class="btn btn-primary upload-custom-thumbnail" type="button">
+                                    {{#media.poster}}
+                                        {{#str}} changethumbnail, tiny_media {{/str}}
+                                    {{/media.poster}}
+                                    {{^media.poster}}
+                                        {{#str}} uploadthumbnail, tiny_media {{/str}}
+                                    {{/media.poster}}
+                                </button>
+                            </div>
+                            {{#media.poster}}
+                                <div class="input-group-append mt-2">
+                                    <button class="btn btn-secondary delete-custom-thumbnail" type="button">{{#str}} deleteembeddedthumbnail, tiny_media {{/str}}</button>
+                                </div>
+                            {{/media.poster}}
+                        </div>
+                    {{/canHaveThumbnail}}
                 </div>
                 <div class="ml-4 mt-4">
                     <div class="input-group-append">
                         <input
                             type="checkbox"
-                            {{^media.isUpdating}}checked="true"{{/media.isUpdating}}
                             class="form-check-input tiny_media_controls"
                             id="vadvancedsettings_media-controls-toggle"
+                            {{#isNewFileOrLinkUpload}}checked{{/isNewFileOrLinkUpload}}
                             {{#media.controls}}checked{{/media.controls}}
                         >
                         <label class="form-check-label" for="vadvancedsettings_media-controls-toggle">
@@ -117,76 +152,74 @@
                             {{#str}} mute, tiny_media {{/str}}
                         </label>
                     </div>
-                    {{^isLink}}
-                        <div class="input-group-append">
-                            <input
-                                type="checkbox"
-                                class="form-check-input tiny_media_loop"
-                                id="vadvancedsettings_media-loop-toggle"
-                                {{#media.loop}}checked{{/media.loop}}
-                            >
-                            <label class="form-check-label" for="vadvancedsettings_media-loop-toggle">
-                                {{#str}} loop, tiny_media {{/str}}
-                            </label>
-                        </div>
-                    {{/isLink}}
+                    <div class="input-group-append">
+                        <input
+                            type="checkbox"
+                            class="form-check-input tiny_media_loop"
+                            id="vadvancedsettings_media-loop-toggle"
+                            {{#media.loop}}checked{{/media.loop}}
+                        >
+                        <label class="form-check-label" for="vadvancedsettings_media-loop-toggle">
+                            {{#str}} loop, tiny_media {{/str}}
+                        </label>
+                    </div>
                 </div>
-                {{#isVideo}}
-                    <hr>
-                    <div class="size-container">
-                        <div>
-                            <input type="radio" class="tiny_media_sizeoriginal form-check-input" id="{{elementid}}_tiny_media_sizeoriginal" name="radioOptions">
-                            <label class="form-check-label" for="{{elementid}}_tiny_media_sizeoriginal">{{#str}} sizeoriginal, tiny_media {{/str}}</label>
-                        </div>
-                        <div>
-                            <input type="radio" class="tiny_media_sizecustom form-check-input" id="{{elementid}}_tiny_media_sizecustom" name="radioOptions">
-                            <label class="form-check-label" for="{{elementid}}_tiny_media_sizecustom">{{#str}} sizecustom, tiny_media {{/str}}</label>
-                            {{#customsizehelpicon}}
-                                {{> core/help_icon }}
-                            {{/customsizehelpicon}}
-                        </div>
-                    </div>
-                    <div class="form-check mt-2 ml-1 tiny_media_properties">
-                        <div class="d-flex justify-content-start">
-                            <div class="flex-item mr-2">
-                                <div class="form-group mb-0">
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        class="tiny_media_width_entry form-control mr-1 input-mini"
-                                        id="{{elementid}}_tiny_media_width_entry"
-                                        value="{{media.width}}"
-                                        placeholder="1200"
-                                    >
-                                    <label for="{{elementid}}_tiny_media_width_entry" class="ml-1">{{#str}} width, tiny_media {{/str}}</label>
-                                </div>
+                {{#canHaveThumbnail}}
+                    <div class="media-size-properties">
+                        <hr>
+                        <div class="size-container">
+                            <div>
+                                <input type="radio" class="tiny_media_sizeoriginal form-check-input" id="{{elementid}}_tiny_media_sizeoriginal" name="radioOptions">
+                                <label class="form-check-label" for="{{elementid}}_tiny_media_sizeoriginal">{{#str}} sizeoriginal, tiny_media {{/str}}</label>
                             </div>
-                            <div class="flex-item mr-1 mt-2">X</div>
-                            <div class="flex-item mr-1">
-                                <div class="form-group mb-0">
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        placeholder="800"
-                                        class="tiny_media_height_entry form-control ml-1 input-mini"
-                                        id="{{elementid}}_tiny_media_height_entry"
-                                        value="{{media.height}}"
-                                    >
-                                    <label for="{{elementid}}_tiny_media_height_entry" class="ml-1">{{#str}} height, tiny_media {{/str}}</label>
-                                </div>
+                            <div>
+                                <input type="radio" class="tiny_media_sizecustom form-check-input" id="{{elementid}}_tiny_media_sizecustom" name="radioOptions">
+                                <label class="form-check-label" for="{{elementid}}_tiny_media_sizecustom">{{#str}} sizecustom, tiny_media {{/str}}</label>
+                                {{#customsizehelpicon}}
+                                    {{> core/help_icon }}
+                                {{/customsizehelpicon}}
                             </div>
                         </div>
+                        <div class="form-check mt-2 ml-1 tiny_media_properties">
+                            <div class="d-flex justify-content-start">
+                                <div class="flex-item mr-2">
+                                    <div class="form-group mb-0">
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            class="tiny_media_width_entry form-control mr-1 input-mini"
+                                            id="{{elementid}}_tiny_media_width_entry"
+                                            value="{{media.width}}"
+                                            placeholder="1200"
+                                        >
+                                        <label for="{{elementid}}_tiny_media_width_entry" class="ml-1">{{#str}} width, tiny_media {{/str}}</label>
+                                    </div>
+                                </div>
+                                <div class="flex-item mr-1 mt-2">X</div>
+                                <div class="flex-item mr-1">
+                                    <div class="form-group mb-0">
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            placeholder="800"
+                                            class="tiny_media_height_entry form-control ml-1 input-mini"
+                                            id="{{elementid}}_tiny_media_height_entry"
+                                            value="{{media.height}}"
+                                        >
+                                        <label for="{{elementid}}_tiny_media_height_entry" class="ml-1">{{#str}} height, tiny_media {{/str}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                {{/isVideo}}
+                {{/canHaveThumbnail}}
             </div>
         </div>
     </div>
 </div>
 
-{{^isLink}}
-    <div id="tiny-media-subtitle-caption-body" class="d-none">
-        <div class="container">
-            {{> tiny_media/embed/insert_media_subtitle_caption }}
-        </div>
+<div id="tiny-media-subtitle-caption-body" class="d-none">
+    <div class="container">
+        {{> tiny_media/embed/insert_media_subtitle_caption }}
     </div>
-{{/isLink}}
+</div>
