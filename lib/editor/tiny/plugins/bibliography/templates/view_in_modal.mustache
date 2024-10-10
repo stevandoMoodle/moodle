@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template tiny_accessibilitychecker/warning_content
+    @template tiny_bibliography/view_in_modal
 
     Display a content warning message
 
@@ -38,19 +38,24 @@
     <h3 class="mb-4">{{{bio}}}</h3>
 {{/heading}}
 {{^heading}}
-    <div class="d-flex">
-        <div class="bibliography-list d-flex" id={{id}} data-index={{index}} tabindex="1" data-action="edit-bio">
+    <div class="bl-container" id="id-{{id}}">
+        <div class="bibliography-list d-flex mb-1" id={{id}} data-index={{index}} data-action="edit-bio">
             <span class="d-flex mb-0">
                 {{{bio}}}
             </span>
         </div>
-        <button class="btn btn-sm btn-outline-success ml-2"
-            data-action="citethis"
+        <button class="btn btn-sm btn-outline-success"
+            data-action="cite-this"
             data-id="{{id}}"
             data-index="{{index}}"
             data-object='{{dataobject}}'>
-            <i class="fa fa-solid fa-quote-left"></i>
             <i class="fa fa-solid fa-quote-right"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-danger ml-1"
+            data-action="delete-bio"
+            data-target-id="{{id}}"
+            data-index="{{index}}">
+            <i class="fa fa-solid fa-trash"></i>
         </button>
     </div>
 {{/heading}}

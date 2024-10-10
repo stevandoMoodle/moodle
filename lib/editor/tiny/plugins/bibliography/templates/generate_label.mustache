@@ -15,23 +15,9 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template tiny_accessibilitychecker/warning_content
+    @template tiny_accessibilitychecker/generate_label
 
-    Display a content warning message
-
-    Example context (json):
-    {
-        "warnings": [
-            {
-                "description": "This is a warning message",
-                "nodeData": [{
-                    "text": "Text of content",
-                    "src": "https://example.com/image.png",
-                    "nodeName": "IMG",
-                    "nodeIndex": 0
-                }]
-            }
-        ]
-    }
+    Display "Generate" as label
 }}
-<span class="cited-bibliography">[{{index}}]</span>
+
+<span id="id-generate-label">{{#str}} button:generate, tiny_bibliography {{/str}}</span>

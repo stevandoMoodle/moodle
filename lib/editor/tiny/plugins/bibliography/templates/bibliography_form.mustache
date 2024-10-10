@@ -15,24 +15,9 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template tiny_accessibilitychecker/warning_content
+    @template tiny_bibliography/bibliography_form
 
-    Display a content warning message
-
-    Example context (json):
-    {
-        "warnings": [
-            {
-                "description": "This is a warning message",
-                "nodeData": [{
-                    "text": "Text of content",
-                    "src": "https://example.com/image.png",
-                    "nodeName": "IMG",
-                    "nodeIndex": 0
-                }]
-            }
-        ]
-    }
+    Display a bibliography form
 }}
 
 <div class="tab-content row mt-2" id="myTabContent">
@@ -52,7 +37,7 @@
                 </div>
                 <div class="col-md-8 form-button" id="id-button-container">
                     <button class="btn btn-primary mb-1" id="id-generate" data-action="generate-list">
-                        <span id="id-generate-label">{{#str}} button:generate, tiny_bibliography {{/str}}</span>
+                        {{> tiny_bibliography/generate_label }}
                     </button>
                 </div>
             </div>
@@ -63,7 +48,7 @@
             <h3 class="mb-4">
                 <span>{{#str}} pluginname, tiny_bibliography {{/str}}</span>
             </h3>
-            <span>{{#str}} nobibliographyyet, tiny_bibliography {{/str}}</span>
+            {{> tiny_bibliography/no_bibliography }}
         </div>
     </div>
 </div>
