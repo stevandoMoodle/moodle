@@ -219,9 +219,27 @@ class text_filter extends \core_filters\text_filter {
                 $urls[] = new url($url);
             }
         }
-        // Extract width/height/title attributes and call embed_alternatives to find a suitable media player.
+        // Extract muted, autoplay, loop, controls, width, height and title attributes
+        // and call embed_alternatives to find a suitable media player.
         if ($urls) {
             $options = [core_media_manager::OPTION_ORIGINAL_TEXT => $fulltext];
+
+            // Add muted to options array.
+            $muted = core_media_player_native::get_attribute($fulltext, 'muted');
+            $options['muted'] = (is_null($muted) || ($muted === '0') || ($muted === 'false')) ? false : true;
+
+            // Add autoplay to options array.
+            $autoplay = core_media_player_native::get_attribute($fulltext, 'autoplay');
+            $options['autoplay'] = (is_null($autoplay) || ($autoplay === '0') || ($autoplay === 'false')) ? false : true;
+
+            // Add loop to options array.
+            $loop = core_media_player_native::get_attribute($fulltext, 'loop');
+            $options['loop'] = (is_null($loop) || ($loop === '0') || ($loop === 'false')) ? false : true;
+
+            // Add controls to options array.
+            $controls = core_media_player_native::get_attribute($fulltext, 'controls');
+            $options['controls'] = (is_null($controls) || ($controls === '0') || ($controls === 'false')) ? false : true;
+
             $width = core_media_player_native::get_attribute($fulltext, 'width', PARAM_INT);
             $height = core_media_player_native::get_attribute($fulltext, 'height', PARAM_INT);
             $name = core_media_player_native::get_attribute($fulltext, 'title');
