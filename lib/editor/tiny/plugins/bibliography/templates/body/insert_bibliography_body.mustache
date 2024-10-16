@@ -20,30 +20,19 @@
     Display a bibliography form
 }}
 
-<div class="tab-content row mt-2" id="myTabContent">
-    <div class="col-md-5 d-flex" id="bibliography-form-container">
+<div class="tab-content row mt-2" id="{{id}}_tiny_bibliography_form">
+    <div class="col-md-12 {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" id="bibliography-form-container">
         <form id="bibliography-form" onsubmit="return false;">
             {{> tiny_bibliography/style_resource }}
             <div class="biblio-pannel" id="main-input-fields">
                 {{> tiny_bibliography/forms/field }}
             </div>
-            <div class="biblio-pannel biblio-bottom-pannel mt-3" id="bibliography-ie-panel"></div>
-            <div id="generate-button" class="form-group row mt-4 fitem">
-                <div class="col-md-4 checkbox">
-                    <input type="checkbox" id="id_other_fields" data-action="show-other-fields">
-                    <label for="id_other_fields">
-                        {{#str}} label:allfields, tiny_bibliography {{/str}}
-                    </label>
-                </div>
-                <div class="col-md-8 form-button" id="id-button-container">
-                    <button class="btn btn-primary mb-1" id="id-generate" data-action="generate-list">
-                        {{> tiny_bibliography/generate_label }}
-                    </button>
-                </div>
-            </div>
         </form>
     </div>
-    <div class="col-md-7 d-flex">
+    <div class="col-md-12">
+        <div class="biblio-pannel biblio-bottom-pannel mt-3 {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" id="bibliography-ie-panel"></div>
+    </div>
+    <div class="col-md-12 {{#isInsertBibliography}}d-none{{/isInsertBibliography}}" id="bibliography-list-outer-modal-container">
         <div class="biblio-list-container" id="bibliography-list-modal-container">
             <h3 class="mb-4">
                 <span>{{#str}} pluginname, tiny_bibliography {{/str}}</span>

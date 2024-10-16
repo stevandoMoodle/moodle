@@ -55,7 +55,7 @@ $string['no_styles'] = 'You do not have any styles yet.<br>If you think you have
 $string['style:no_resources'] = '{$a} style has no sources yet.<br>If you think you have created sources for {$a}, please check the string lang.';
 
 
-$string['label:allfields'] = 'All fields';
+$string['label:allfields'] = 'Show all fields';
 
 $string['button:reset'] = 'Reset';
 $string['button:delete'] = 'Delete';
@@ -64,6 +64,7 @@ $string['button:edit'] = 'Edit';
 $string['button:ok'] = 'Ok';
 $string['button:cancel'] = 'Cancel';
 $string['button:generate'] = 'Generate';
+$string['button:update'] = 'Update';
 
 $string['field:pageTitle'] = 'Page title';
 $string['field:websiteTitle'] = 'Website title';
@@ -126,8 +127,7 @@ $string['edit'] = 'Edit';
 $string['update'] = 'Update';
 $string['delete'] = 'Delete';
 $string['nobibliographyyet'] = 'No bibliography yet';
-$string['fieldsrequired'] = 'You need to fill all the fields with *';
-$string['alert:error'] = 'Error!';
+$string['fieldsrequired'] = 'You need to fill all the default fields or if you enable "All fields" are the ones with *';
 $string['alert:warning'] = 'Warning!';
 $string['stylenotavailable'] = '<b><i>{$a}</b></i> style is not available yet';
 $string['sourcenotavailable'] = '<b><i>{$a}</b></i> source is not available yet';
@@ -135,3 +135,8 @@ $string['sourcenotavailable'] = '<b><i>{$a}</b></i> source is not available yet'
 $string['settings:general'] = 'Style default setting';
 
 $string['settings:default_source'] = '<b><i>{$a}</b></i> - Default source setting';
+
+$string['preparing'] = 'Preparing bibliography';
+$string['modalTitle:insert'] = 'Insert bibliography';
+$string['modalTitle:citation'] = 'Insert citation';
+$string['modalTitle:bibliography'] = 'Bibliography';
