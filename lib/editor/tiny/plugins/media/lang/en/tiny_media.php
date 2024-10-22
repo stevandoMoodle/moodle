@@ -77,6 +77,7 @@ $string['insertmediathumbnail'] = 'Insert media thumbnail';
 $string['label'] = 'Label';
 $string['languagesavailable'] = 'Languages available';
 $string['languagesinstalled'] = 'Languages installed';
+$string['linkcustomsize_help'] = 'For best viewing experience, the link media\'s width and height will adjust together with 16:9 aspect ratio.';
 $string['loading'] = 'Preparing the image';
 $string['loadingembedthumbnail'] = 'Preparing the embed thumbnail';
 $string['loadingmedia'] = 'Preparing the media';

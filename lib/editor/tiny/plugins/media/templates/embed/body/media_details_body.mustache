@@ -175,9 +175,16 @@
                             <div>
                                 <input type="radio" class="tiny_media_sizecustom form-check-input" id="{{elementid}}_tiny_media_sizecustom" name="radioOptions">
                                 <label class="form-check-label" for="{{elementid}}_tiny_media_sizecustom">{{#str}} sizecustom, tiny_media {{/str}}</label>
-                                {{#customsizehelpicon}}
-                                    {{> core/help_icon }}
-                                {{/customsizehelpicon}}
+                                {{#isLink}}
+                                    {{#linkcustomsizehelpicon}}
+                                        {{> core/help_icon }}
+                                    {{/linkcustomsizehelpicon}}
+                                {{/isLink}}
+                                {{^isLink}}
+                                    {{#customsizehelpicon}}
+                                        {{> core/help_icon }}
+                                    {{/customsizehelpicon}}
+                                {{/isLink}}
                             </div>
                         </div>
                         <div class="form-check mt-2 ml-1 tiny_media_properties">

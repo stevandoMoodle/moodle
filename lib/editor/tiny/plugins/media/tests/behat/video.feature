@@ -88,7 +88,7 @@ Feature: Use the TinyMCE editor to upload a video
     And I click on "Add custom thumbnail" "button" in the "Media details" "dialogue"
     Then "Insert media thumbnail" "dialogue" should exist
     And "tiny-insert-media" "region" should exist in the "Insert media thumbnail" "dialogue"
-    And I set the field "Add via URL" in the "Insert media thumbnail" "dialogue" to "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSouyQgYFwklkCFVWZZGwiZ1H9KxsHzS_HnPg&s"
+    And I set the field "Or add via URL" in the "Insert media thumbnail" "dialogue" to "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSouyQgYFwklkCFVWZZGwiZ1H9KxsHzS_HnPg&s"
     And "Add" "button" should exist in the "Insert media thumbnail" "dialogue"
     And I click on "Add" "button" in the "Insert media thumbnail" "dialogue"
     # Delete previewed thumbnail.
@@ -102,7 +102,7 @@ Feature: Use the TinyMCE editor to upload a video
     # Add back the same thumbnail link again.
     Then "Insert media thumbnail" "dialogue" should exist
     And "tiny-insert-media" "region" should exist in the "Insert media thumbnail" "dialogue"
-    And I set the field "Add via URL" in the "Insert media thumbnail" "dialogue" to "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSouyQgYFwklkCFVWZZGwiZ1H9KxsHzS_HnPg&s"
+    And I set the field "Or add via URL" in the "Insert media thumbnail" "dialogue" to "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSouyQgYFwklkCFVWZZGwiZ1H9KxsHzS_HnPg&s"
     And "Add" "button" should exist in the "Insert media thumbnail" "dialogue"
     And I click on "Add" "button" in the "Insert media thumbnail" "dialogue"
     Then "Media thumbnail" "dialogue" should exist

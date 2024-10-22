@@ -30,7 +30,12 @@
 }}
 <div class="row">
     <div class="col-md-6 d-flex align-items-center p-0">
-        <label for="{{elementid}}_tiny_media_from_url_entry" class="mr-1">{{#str}} enterurl, tiny_media {{/str}}</label>
+        {{#showDropzone}}
+            <label for="{{elementid}}_tiny_media_from_url_entry" class="me-1">{{#str}} enterurlor, tiny_media {{/str}}</label>
+        {{/showDropzone}}
+        {{^showDropzone}}
+            <label for="{{elementid}}_tiny_media_from_url_entry" class="me-1">{{#str}} enterurl, tiny_media {{/str}}</label>
+        {{/showDropzone}}
         <input
             name="urlentry"
             class="tiny_media_from_url_entry form-control w-50 mr-1"

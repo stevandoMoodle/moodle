@@ -59,7 +59,7 @@ class media_vimeo_plugin extends core_media_player_external {
                 mute: 'muted'
             );
         } else {
-            $params = array_merge($params, $this->get_controls_form_options($options, 'muted'));
+            $params = array_merge($params, $this->get_controls_from_options($options, 'muted'));
         }
 
         $embedurl = new moodle_url("https://player.vimeo.com/video/$videoid", $params);

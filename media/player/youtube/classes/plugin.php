@@ -123,7 +123,7 @@ class media_youtube_plugin extends core_media_player_external {
                     params: $params
                 );
             } else {
-                $params = array_merge($params, $this->get_controls_form_options($options));
+                $params = array_merge($params, $this->get_controls_from_options($options));
             }
 
             // Handle no cookie option.

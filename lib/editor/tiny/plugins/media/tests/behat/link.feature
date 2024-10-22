@@ -13,15 +13,15 @@ Feature: Use the TinyMCE editor to upload a media link
   # The following scenario covers:
   # 1. Add video using external link to a video file.
   # 2. Preview inserted video.
-  # 3. Add custom thumbnail using the "Add via URL" input.
+  # 3. Add custom thumbnail using the "Or add via URL" input.
   # 5. Preivew embedded video in tiny.
   Scenario: Insert video from external link with custom thumbnail into TinyMCE editor
     Given I log in as "admin"
     And I open my profile in edit mode
     And I click on the "Multimedia" button for the "Description" TinyMCE editor
     Then "Insert media" "dialogue" should exist
-    # Add video link using "Add via URL" input.
-    And I set the field "Add via URL" to "https://media.geeksforgeeks.org/wp-content/uploads/20190616234019/Canvas.move_.mp4"
+    # Add video link using "Or add via URL" input.
+    And I set the field "Or add via URL" to "https://media.geeksforgeeks.org/wp-content/uploads/20190616234019/Canvas.move_.mp4"
     When I click on "Add" "button" in the "Insert media" "dialogue"
     # Preview inserted video.
     Then "Media details" "dialogue" should exist
@@ -34,7 +34,7 @@ Feature: Use the TinyMCE editor to upload a media link
     And I click on "Add custom thumbnail" "button" in the "Media details" "dialogue"
     Then "Insert media thumbnail" "dialogue" should exist
     And "tiny-insert-media" "region" should exist
-    And I set the field "Add via URL" to "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSouyQgYFwklkCFVWZZGwiZ1H9KxsHzS_HnPg&s"
+    And I set the field "Or add via URL" to "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSouyQgYFwklkCFVWZZGwiZ1H9KxsHzS_HnPg&s"
     And "Add" "button" should exist in the "Insert media thumbnail" "dialogue"
     And I click on "Add" "button" in the "Insert media thumbnail" "dialogue"
     Then "Media thumbnail" "dialogue" should exist
@@ -69,8 +69,8 @@ Feature: Use the TinyMCE editor to upload a media link
     And I open my profile in edit mode
     And I click on the "Multimedia" button for the "Description" TinyMCE editor
     Then "Insert media" "dialogue" should exist
-    # Add audio link using "Add via URL" input.
-    And I set the field "Add via URL" to "https://media.geeksforgeeks.org/wp-content/uploads/20220913101124/audiosample.ogg"
+    # Add audio link using "Or add via URL" input.
+    And I set the field "Or add via URL" to "https://media.geeksforgeeks.org/wp-content/uploads/20220913101124/audiosample.ogg"
     When I click on "Add" "button" in the "Insert media" "dialogue"
     # Preview inserted audio.
     Then "Media details" "dialogue" should exist
@@ -103,8 +103,8 @@ Feature: Use the TinyMCE editor to upload a media link
     And I open my profile in edit mode
     And I click on the "Multimedia" button for the "Description" TinyMCE editor
     Then "Insert media" "dialogue" should exist
-    # Add audio link using "Add via URL" input.
-    And I set the field "Add via URL" to "https://www.youtube.com/watch?v=-fPTdIruJUU"
+    # Add audio link using "Or add via URL" input.
+    And I set the field "Or add via URL" to "https://www.youtube.com/watch?v=-fPTdIruJUU"
     And I click on "Add" "button" in the "Insert media" "dialogue"
     # Select how the link is embedded.
     Then "Select media type" "dialogue" should exist
@@ -115,15 +115,16 @@ Feature: Use the TinyMCE editor to upload a media link
     Then "Media details" "dialogue" should exist
     And "tiny-insert-media" "region" should not exist in the "Media details" "dialogue"
     And "tiny-media-details-body" "region" should exist in the "Media details" "dialogue"
-    And the field "Media title" in the "Media details" "dialogue" matches value ""
+    And the field "Media title" in the "Media details" "dialogue" matches value "Moodle LMS: Create transformative learning experiences"
     And "Add custom thumbnail" "button" should exist in the "Media details" "dialogue"
     And I click on "Autoplay" "checkbox" in the "Media details" "dialogue"
+    And I click on "Muted" "checkbox" in the "Media details" "dialogue"
     And I click on "Loop" "checkbox" in the "Media details" "dialogue"
     # Add custom thumbnail for link.
     And I click on "Add custom thumbnail" "button" in the "Media details" "dialogue"
     Then "Insert media thumbnail" "dialogue" should exist
     And "tiny-insert-media" "region" should exist
-    And I set the field "Add via URL" to "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSouyQgYFwklkCFVWZZGwiZ1H9KxsHzS_HnPg&s"
+    And I set the field "Or add via URL" to "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSouyQgYFwklkCFVWZZGwiZ1H9KxsHzS_HnPg&s"
     And "Add" "button" should exist in the "Insert media thumbnail" "dialogue"
     And I click on "Add" "button" in the "Insert media thumbnail" "dialogue"
     Then "Media thumbnail" "dialogue" should exist
@@ -140,7 +141,7 @@ Feature: Use the TinyMCE editor to upload a media link
     And I click on the "Multimedia" button for the "Description" TinyMCE editor
     Then "Media details" "dialogue" should exist
     And "Select media type" "dialogue" should not exist in the "Media details" "dialogue"
-    And the field "Media title" in the "Media details" "dialogue" matches value "youtube.com/watch?v=-fPTdIruJUU"
+    And the field "Media title" in the "Media details" "dialogue" matches value "Moodle LMS: Create transformative learning experiences"
     And the field "Autoplay" in the "Media details" "dialogue" matches value "1"
     And the field "Muted" in the "Media details" "dialogue" matches value "1"
     And the field "Loop" in the "Media details" "dialogue" matches value "1"
@@ -158,7 +159,7 @@ Feature: Use the TinyMCE editor to upload a media link
     Then "Insert media" "dialogue" should exist
     And "tiny-insert-media" "region" should exist in the "Insert media" "dialogue"
     # Let's add the same YouTube link.
-    And I set the field "Add via URL" to "https://www.youtube.com/watch?v=-fPTdIruJUU"
+    And I set the field "Or add via URL" to "https://www.youtube.com/watch?v=-fPTdIruJUU"
     And I click on "Add" "button" in the "Insert media" "dialogue"
     # Select media modal is displayed due to inserting a new link.
     Then "Select media type" "dialogue" should exist
@@ -169,7 +170,7 @@ Feature: Use the TinyMCE editor to upload a media link
     Then "Media details" "dialogue" should exist
     And "tiny-insert-media" "region" should not exist in the "Media details" "dialogue"
     And "tiny-media-details-body" "region" should exist in the "Media details" "dialogue"
-    And the field "Media title" in the "Media details" "dialogue" matches value ""
+    And the field "Media title" in the "Media details" "dialogue" matches value "Moodle LMS: Create transformative learning experiences"
     And "Add custom thumbnail" "button" should not exist in the "Media details" "dialogue"
     And "Change thumbnail" "button" should not exist in the "Media details" "dialogue"
     And "Delete thumbnail" "button" should not exist in the "Media details" "dialogue"

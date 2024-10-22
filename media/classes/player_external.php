@@ -129,14 +129,14 @@ abstract class core_media_player_external extends core_media_player {
      * Check if the $tag string is an anchor tag.
      *
      * @param string $tag String of media tag
-     * @return boolean
+     * @return bool
      */
-    protected function is_anchor_tag(string $tag) {
+    protected function is_anchor_tag(string $tag): bool {
         return preg_match_all('~<a\s+.*?</a>~is', $tag, $anchors);
     }
 
     /**
-     * Get media controls from the $options array
+     * Get media controls from the $options array.
      *
      * After some testings, both YouTube and Vimeo use 1/0 instead of "true"/"false" as param value.
      *
@@ -144,12 +144,12 @@ abstract class core_media_player_external extends core_media_player {
      * @param string $mute YouTube uses mute while Vimeo uses muted.
      * @return array
      */
-    protected function get_controls_form_options(array $options, string $mute = 'mute') {
+    protected function get_controls_from_options(array $options, string $mute = 'mute'): array {
         return [
-            'controls' => (isset($options['controls']) && $options['controls']) ? '1' : '0',
-            'autoplay' => (isset($options['autoplay']) && $options['autoplay']) ? '1' : '0',
-            $mute => (isset($options['muted']) && $options['muted']) ? '1' : '0',
-            'loop' => (isset($options['loop']) && $options['loop']) ? '1' : '0',
+            'controls' => (!empty($options['controls'])) ? '1' : '0',
+            'autoplay' => (!empty($options['autoplay'])) ? '1' : '0',
+            $mute => (!empty($options['muted'])) ? '1' : '0',
+            'loop' => (!empty($options['loop'])) ? '1' : '0',
         ];
     }
 }

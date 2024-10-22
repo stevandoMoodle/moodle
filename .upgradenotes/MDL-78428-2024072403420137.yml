@@ -6,7 +6,7 @@ notes:
           media/classes/player_external.php to handle/get controls from the url
         - Added new method "is_anchor_tag" in
           media/classes/player_external.php to check for anchor tag
-        - Added new method "get_controls_form_options" in
+        - Added new method "get_controls_from_options" in
           media/classes/player_external.php to handle/get controls from the
           "$options" passed from filter/mediaplugin/classes/text_filter.php
       type: improved
