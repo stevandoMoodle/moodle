@@ -33,10 +33,11 @@ final class provider_test extends \advanced_testcase {
         $provider = new \aiprovider_azureai\provider();
         $actionlist = $provider->get_action_list();
         $this->assertIsArray($actionlist);
-        $this->assertEquals(3, count($actionlist));
+        $this->assertEquals(4, count($actionlist));
         $this->assertContains(\core_ai\aiactions\generate_text::class, $actionlist);
         $this->assertContains(\core_ai\aiactions\generate_image::class, $actionlist);
         $this->assertContains(\core_ai\aiactions\summarise_text::class, $actionlist);
+        $this->assertContains(\core_ai\aiactions\explain_text::class, $actionlist);
     }
 
     /**

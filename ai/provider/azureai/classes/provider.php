@@ -72,6 +72,7 @@ class provider extends \core_ai\provider {
             \core_ai\aiactions\generate_text::class,
             \core_ai\aiactions\generate_image::class,
             \core_ai\aiactions\summarise_text::class,
+            \core_ai\aiactions\explain_text::class,
         ];
     }
 
@@ -171,7 +172,7 @@ class provider extends \core_ai\provider {
             PARAM_ALPHANUMEXT,
         );
 
-        if ($actionname === 'generate_text' || $actionname === 'summarise_text') {
+        if ($actionname === 'generate_text' || $actionname === 'summarise_text' || $actionname === 'explain_text') {
             // Add system instruction settings.
             $settings[] = new \admin_setting_configtextarea(
                 "aiprovider_azureai/action_{$actionname}_systeminstruction",

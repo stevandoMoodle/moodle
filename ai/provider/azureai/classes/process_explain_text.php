@@ -14,23 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace aiplacement_courseassist;
+namespace aiprovider_azureai;
 
 /**
- * Class placement.
+ * Class process text explanation.
  *
- * @package    aiplacement_courseassist
- * @copyright  2024 Matt Porritt <matt.porritt@moodle.com>
+ * @package    aiprovider_azureai
+ * @copyright  2024 David Woloszyn <david.woloszyn@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class placement extends \core_ai\placement {
-
+class process_explain_text extends process_generate_text {
     #[\Override]
-    public function get_action_list(): array {
-        return [
-            \core_ai\aiactions\summarise_text::class,
-            \core_ai\aiactions\explain_text::class,
-        ];
+    protected function get_deployment_name(): string {
+        return get_config('aiprovider_azureai', 'action_explain_text_deployment');
     }
 
+    #[\Override]
+    protected function get_api_version(): string {
+        return get_config('aiprovider_azureai', 'action_explain_text_apiversion');
+    }
+
+    #[\Override]
+    protected function get_system_instruction(): string {
+        return get_config('aiprovider_azureai', 'action_explain_text_systeminstruction');
+    }
 }
