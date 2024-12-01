@@ -15,9 +15,9 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template aiplacement_courseassist/summarise_button
+    @template aiplacement_courseassist/explain_button
 
-    Template to display summarise button for the course assist.
+    Template to display explain button for the course assist.
 
     Context variables required for this template:
     * none
@@ -30,10 +30,10 @@
     <button class="btn btn-outline-secondary ai-action"
             aria-controls="ai-drawer"
             type="button"
-            data-action="summarise"
+            data-action="explain"
             data-toggle="tooltip"
             data-html="true"
-            title="{{#str}} summarise_tooltips, aiplacement_courseassist {{/str}}"
+            title="{{#str}} explain_tooltips, aiplacement_courseassist {{/str}}"
     >
         <span class="ai-course-assist-sparkles-icon">
             {{#pix}} sparkles, aiplacement_courseassist {{/pix}}
@@ -41,6 +41,6 @@
         <span class="ai-course-assist-sparkles-icon white">
             {{#pix}} sparkles-white, aiplacement_courseassist {{/pix}}
         </span>
-        {{#str}} summarise, aiplacement_courseassist {{/str}}
+        {{#str}} explain, aiplacement_courseassist {{/str}}
     </button>
 </div>

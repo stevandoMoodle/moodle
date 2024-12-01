@@ -58,13 +58,64 @@ class assist_ui {
     public static function load_summarise_button(after_http_headers $hook): void {
         global $OUTPUT;
 
+        $html = $OUTPUT->render_from_template('aiplacement_courseassist/summarise_button', []);
+        $hook->add_html($html);
+    }
+
+    /**
+     * Bootstrap the explain button.
+     *
+     * @param after_http_headers $hook
+     */
+    public static function load_explain_button(after_http_headers $hook): void {
+        global $OUTPUT;
+
+        $html = $OUTPUT->render_from_template('aiplacement_courseassist/explain_button', []);
+        $hook->add_html($html);
+    }
+
+    /**
+     * Bootstrap the dropdown menu with the nested buttons.
+     *
+     * @param after_http_headers $hook
+     * @param array $actions The actions to feed into the dropdown.
+     */
+    public static function load_actions_dropdown(after_http_headers $hook, array $actions): void {
+        global $OUTPUT;
+
+        $html = $OUTPUT->render_from_template('aiplacement_courseassist/actions_dropdown', $actions);
+        $hook->add_html($html);
+    }
+
+    /**
+     * Determine if we should be loading a single button or a dropdown.
+     *
+     * @param after_http_headers $hook
+     */
+    public static function action_buttons_handler(after_http_headers $hook): void {
+        global $PAGE;
+
         // Preflight checks.
         if (!self::preflight_checks()) {
             return;
         }
 
-        $html = $OUTPUT->render_from_template('aiplacement_courseassist/summarise_button', []);
-        $hook->add_html($html);
+        $actions['actions'] = utils::get_actions_available($PAGE->context);
+
+        // No actions available.
+        if (empty($actions['actions'])) {
+            return;
+        }
+
+        if (count($actions['actions']) > 1) {
+            // Load a dropdown with multiple buttons.
+            self::load_actions_dropdown($hook, $actions);
+        } else {
+            // Load a singular button.
+            $action = $actions['actions'][0]['action'];
+            $method = "load_{$action}_button";
+            self::{$method}($hook);
+        }
     }
 
     /**
