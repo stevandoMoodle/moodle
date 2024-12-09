@@ -15,9 +15,9 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template aiplacement_courseassist/actions_dropdown
+    @template aiplacement_courseassist/actions
 
-    Template to display AI action in a dropdown for the course assist.
+    Template to display AI action in a dropdown or single action button for the course assist.
 
     Context variables required for this template:
     * action - The action to perform
@@ -26,6 +26,9 @@
 
     Example context (json):
     {
+        "isdropdown": true,
+        "issummary": true,
+        "isexplain": true,
         "actions": [
             {
                 "action": "explain",
@@ -35,19 +38,14 @@
         ]
     }
 }}
-<button
-    class="btn btn-outline-secondary dropdown-toggle ai-action"
-    type="button"
-    title="{{#str}} aifeatures, aiplacement_courseassist {{/str}}"
-    data-toggle="dropdown"
-    aria-haspopup="true"
-    aria-expanded="false"
->
-    {{> aiplacement_courseassist/sparkles_icon }}
-    {{#str}} aifeatures, aiplacement_courseassist {{/str}}
-</button>
-<div class="dropdown-menu">
-    {{#actions}}
-        {{> aiplacement_courseassist/action_button }}
-    {{/actions}}
+<div {{#isdropdown}}id="#ai-features"{{/isdropdown}}
+    class="course-assist-controls {{#isdropdown}}py-3{{/isdropdown}} {{^isdropdown}}pt-3 pb-3{{/isdropdown}}">
+    {{#isdropdown}}
+        {{> aiplacement_courseassist/actions_dropdown }}
+    {{/isdropdown}}
+    {{^isdropdown}}
+        {{#actions}}
+            {{> aiplacement_courseassist/action_button }}
+        {{/actions}}
+    {{/isdropdown}}
 </div>
