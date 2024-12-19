@@ -1444,6 +1444,21 @@ function xmldb_main_upgrade($oldversion) {
         upgrade_main_savepoint(true, 2024100100.02);
     }
 
+    // Updating provider value to provider_component in ai_action_register table.
+    if ($oldversion < 2024100700.06) {
+        // Get data from ai_action_register table.
+        $actions = $DB->get_records('ai_action_register', [], '', 'id, provider');
+        foreach ($actions as $action) {
+            $action->provider = ($action->provider === 'OpenAI API provider') ?
+                                'aiprovider_openai' :
+                                'aiprovider_azureai';
+            $DB->update_record('ai_action_register', $action);
+        }
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2024100700.06);
+    }
+
     // Automatically generated Moodle v4.5.0 release upgrade line.
     // Put any upgrade step following this.
 
