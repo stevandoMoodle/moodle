@@ -1321,5 +1321,20 @@ function xmldb_main_upgrade($oldversion) {
         // Main savepoint reached.
         upgrade_main_savepoint(true, 2024120500.02);
     }
+
+    // Updating provider value to provider_component in ai_action_register table.
+    if ($oldversion < 2024121300.01) {
+        // Get data from ai_action_register table.
+        $actions = $DB->get_records('ai_action_register', [], '', 'id, provider');
+        foreach ($actions as $action) {
+            $action->provider = ($action->provider === 'OpenAI API provider') ?
+                                'aiprovider_openai' :
+                                'aiprovider_azureai';
+            $DB->update_record('ai_action_register', $action);
+        }
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2024121300.01);
+    }
     return true;
 }
