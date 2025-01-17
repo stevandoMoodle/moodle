@@ -17,6 +17,10 @@ To use this feature:
 
 * The public method `get_slashargument` has been added to the `moodle_url` class.
 
+* Added is_site_registered_in_hub method in lib/classes/hub/api.php to
+  check if the site is registered or not.
+* Added get_secret method in lib/classes/hub/registration.php to get site's secret.
+
 === 4.4.6 ===
 
 * A new core\ip_utils::normalize_internet_address() method is created to
