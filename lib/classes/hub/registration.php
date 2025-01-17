@@ -92,11 +92,19 @@ class registration {
         global $DB;
 
         if (self::$registration === null) {
-            self::$registration = $DB->get_record('registration_hubs', ['huburl' => HUB_MOODLEORGHUBURL]) ?: null;
+            // Every time "Register your site" button is pressed, a new row is added to {registration_hubs} table,
+            // so let's get all of the data.
+            self::$registration = $DB->get_records('registration_hubs', ['huburl' => HUB_MOODLEORGHUBURL]) ?: null;
         }
 
-        if (self::$registration && (bool)self::$registration->confirmed == (bool)$confirmed) {
-            return self::$registration;
+        if (self::$registration) {
+            // Loop the data from {registration_hubs}.
+            foreach (self::$registration as $registration) {
+                // Check and return the registration based on the "confirmed".
+                if ((bool) $registration->confirmed === (bool) $confirmed) {
+                    return $registration;
+                }
+            }
         }
 
         return null;
@@ -138,10 +146,19 @@ class registration {
     public static function get_token($strictness = IGNORE_MISSING) {
         if ($strictness == MUST_EXIST) {
             $registration = self::require_registration();
-        } else if (!$registration = self::get_registration()) {
+        } else if (!$registration = (self::get_registration(false) ?? self::get_registration())) {
             return null;
         }
         return $registration->token;
+    }
+
+    public static function get_secret($strictness = IGNORE_MISSING) {
+        if ($strictness == MUST_EXIST) {
+            $registration = self::require_registration();
+        } else if (!$registration = (self::get_registration(false) ?? self::get_registration())) {
+            return null;
+        }
+        return $registration->secret;
     }
 
     /**
@@ -379,9 +396,10 @@ class registration {
         if (!$registration || $registration->token !== $token) {
             throw new moodle_exception('wrongtoken', 'hub', new moodle_url('/admin/registration/index.php'));
         }
+
+        // Update hub information of the site.
         $record = ['id' => $registration->id];
         $record['token'] = $newtoken;
-        $record['confirmed'] = 1;
         $record['hubname'] = $hubname;
         $record['timemodified'] = time();
         $DB->update_record('registration_hubs', $record);
@@ -393,6 +411,13 @@ class registration {
             api::update_registration($siteinfo);
             self::$registration = null;
         }
+
+        // Delete existing registered hub info which has confirmed equals to "1".
+        $DB->delete_records('registration_hubs', ['confirmed' => 1]);
+
+        // Let's set the confirmed after hub update.
+        $record['confirmed'] = 1;
+        $DB->update_record('registration_hubs', $record);
 
         // Finally, allow other plugins to perform actions once a site is registered for first time.
         $pluginsfunction = get_plugins_with_function('post_site_registration_confirmed');
@@ -459,7 +484,8 @@ class registration {
     public static function register($returnurl) {
         global $DB, $SESSION;
 
-        if (self::is_registered()) {
+        // We should also check if the url is registered in the hub.
+        if (self::is_registered() && api::site_is_registered_in_hub()) {
             // Caller of this method must make sure that site is not registered.
             throw new \coding_exception('Site already registered');
         }
@@ -468,7 +494,8 @@ class registration {
         if (empty($hub)) {
             // Create a new record in 'registration_hubs'.
             $hub = new stdClass();
-            $hub->token = get_site_identifier();
+            // Let's add date('Ymdhis') to make the token unique.
+            $hub->token = get_site_identifier() . date('Ymdhis');
             $hub->secret = $hub->token;
             $hub->huburl = HUB_MOODLEORGHUBURL;
             $hub->hubname = 'moodle';
@@ -651,7 +678,10 @@ class registration {
         if (!has_capability('moodle/site:config', context_system::instance())) {
             return;
         }
-        if (self::show_after_install() || self::get_new_registration_fields()) {
+        if (
+            site_is_public() &&
+            (self::show_after_install() || self::get_new_registration_fields())
+        ) {
             $returnurl = new moodle_url($url);
             redirect(new moodle_url('/admin/registration/index.php', ['returnurl' => $returnurl->out_as_local_url(false)]));
         }
