@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\param;
+
 /**
  * @param int $oldversion the version we are upgrading from
  * @return bool result
@@ -38,6 +40,26 @@ function xmldb_filter_mathjaxloader_upgrade($oldversion) {
 
     // Automatically generated Moodle v4.5.0 release upgrade line.
     // Put any upgrade step following this.
+
+    if ($oldversion < 2025021400.01) {
+        global $DB;
+
+        // Set value of "httpsurl" to the latest MathJax cdn version 3.2.2.
+        $DB->execute(
+            sql: "
+                UPDATE {config_plugins}
+                   SET value = :value
+                 WHERE name = :name
+            ",
+            params: [
+                'value' => 'https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js',
+                'name' => 'httpsurl',
+            ]
+        );
+
+        // Main savepoint reached.
+        upgrade_main_savepoint(true, 2025021400.01);
+    }
 
     return true;
 }
