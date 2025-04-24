@@ -24,6 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2023100900.04;
+$plugin->version   = 2025041400.01;
 $plugin->requires  = 2023041800;
 $plugin->component = 'tiny_bibliography';

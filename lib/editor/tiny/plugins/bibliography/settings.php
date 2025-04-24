@@ -37,12 +37,37 @@ if ($ADMIN->fulltree) {
 
     $options = [];
     $styles = plugininfo::get_style_and_source();
+    $enabledstyles = [];
     foreach (array_keys($styles) as $style) {
+        $isstyleinstalled1 = get_config($component, plugininfo::remove_prefix($style));
+        if (is_string($isstyleinstalled1) && $isstyleinstalled1 === '1') {
+            if ($sourcelang = get_string($style, $component)) {
+                $enabledstyles[plugininfo::remove_prefix(string: $style)] = $sourcelang;
+            }
+        }
+
         if ($sourcelang = get_string($style, $component)) {
             $options[plugininfo::remove_prefix(string: $style)] = $sourcelang;
         }
     }
     ksort($options);
+
+    $stylewithconfig = array_keys((array) get_config($component));
+    if (($key = array_search('version', $stylewithconfig)) !== false) {
+        unset($stylewithconfig[$key]);
+    }
+
+    $styleinplugin = array_keys($options);
+    foreach ($stylewithconfig as $style) {
+        if (strpos($style, 'default') !== false) {
+            $identifiedstyle = explode('default', $style)[0];
+            if (!empty($identifiedstyle) && !in_array($identifiedstyle, $styleinplugin)) {
+                unset_config($style, $component);
+            }
+        } else if (!in_array($style, $styleinplugin)) {
+            unset_config($style, $component);
+        }
+    }
 
     if (count($options) > 0) {
         $settings->add(
@@ -53,13 +78,23 @@ if ($ADMIN->fulltree) {
             )
         );
 
+        if (count($enabledstyles) < 1) {
+            $settings->add(
+                new admin_setting_description(
+                    'tiny_bibliography_status/' . $style . $key,
+                    get_string('style:default_style', $component),
+                    get_string('noenabledstyles', $component),
+                )
+            );
+        }
+
         $settings->add(
             new admin_setting_configselect(
                 "tiny_bibliography/defaultstyle",
                 get_string('style:default_style', $component),
                 null,
                 'ieee',
-                $options
+                $enabledstyles
             )
         );
 
@@ -74,16 +109,18 @@ if ($ADMIN->fulltree) {
                     )] = $sourcelang;
                 }
             }
+
             ksort($options);
             $default = array_keys($options)[0];
-
             $style = plugininfo::remove_prefix(string: $style);
+            $isstyleinstalled = get_config($component, $style);
             $ucstyle = strtoupper($style);
+
             $settings->add(
                 new admin_setting_heading(
                     name: 'tiny_bibliography/settings' . $style . $key,
                     heading: get_string('settings:default_source', $component, $ucstyle),
-                    information: ''
+                    information: '',
                 )
             );
 
@@ -93,7 +130,7 @@ if ($ADMIN->fulltree) {
                         'tiny_bibliography/' . $style,
                         get_string('style:enable', $component),
                         null,
-                        1
+                        1,
                     )
                 );
 
@@ -103,9 +140,27 @@ if ($ADMIN->fulltree) {
                         get_string('source:default', $component, $ucstyle),
                         null,
                         $default,
-                        $options
+                        $options,
                     )
                 );
+
+                if (is_bool($isstyleinstalled) && !$isstyleinstalled) {
+                    $settings->add(
+                        new admin_setting_description(
+                            'tiny_bibliography_status/' . $style . $key,
+                            get_string('stylestatus', $component),
+                            get_string('notinstalled', $component),
+                        )
+                    );
+                } else {
+                    $settings->add(
+                        new admin_setting_description(
+                            'tiny_bibliography_status/' . $style . $key,
+                            get_string('stylestatus', $component),
+                            get_string('installed', $component),
+                        )
+                    );
+                }
             } else {
                 \core\notification::add(
                     message: get_string('style:no_resources', $component, $ucstyle),

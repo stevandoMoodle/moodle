@@ -29,7 +29,7 @@
         </div>
 
         <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-            <select class="custom-select" data-action="select-style" id="id_bibliography_style" style="width: 100%;">
+            <select class="custom-select" data-name="style" data-action="select-style" id="id_bibliography_style" style="width: 100%;">
                 {{#styles}}
                     <option value="{{name}}" {{#isSetDefault}}selected{{/isSetDefault}}>{{label}}</option>
                 {{/styles}}
@@ -45,7 +45,7 @@
         </div>
 
         <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-            <select class="custom-select" data-action="select-source" id="id_bibliography_source" style="width: 100%;">
+            <select class="custom-select" data-name="source" data-action="select-source" id="id_bibliography_source" style="width: 100%;">
                 {{#sources}}
                     <option value="{{name}}" {{#isSetDefault}}selected{{/isSetDefault}}>{{label}}</option>
                 {{/sources}}

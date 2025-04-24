@@ -35,9 +35,6 @@
     }
 }}
 
-<button class="btn btn-warning" id="id-reset" data-action="reset-bibliography-form">
-    {{#str}} button:reset, tiny_bibliography {{/str}}
-</button>
-<button class="btn btn-success" id="id-save" data-action="save-as-new">
-    <span id="id-save-label">{{#str}} button:save, tiny_bibliography {{/str}}</span>
+<button class="btn btn-success" id="id-save" data-id="{{id}}" data-index="{{index}}" data-action="update-bibliography">
+    {{#str}} button:update, tiny_bibliography {{/str}}
 </button>
