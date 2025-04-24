@@ -23,8 +23,6 @@ use editor_tiny\plugin_with_buttons;
 use editor_tiny\plugin_with_configuration;
 use editor_tiny\plugin_with_menuitems;
 
-use function DI\string;
-
 /**
  * Tiny media manager plugin.
  *
@@ -46,7 +44,7 @@ class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menu
         ];
     }
 
-    public static function get_style_and_source() {
+    public static function get_style_and_source(bool $setting = true) {
         global $CFG;
 
         $target = $CFG->dirroot . '/lib/editor/tiny/plugins/bibliography/amd/src/bibliography/styles';
@@ -65,7 +63,16 @@ class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menu
             $pluginStyle = self::add_prefix($style);
             $styleSources[$pluginStyle] = [];
             $sourceTarget = $target . '/' . $style .'/sources';
-            if (file_exists($sourceTarget)) {
+
+            $styleinstalled = self::remove_prefix(get_config(
+                plugin: 'tiny_bibliography',
+                name: $style,
+            ));
+            if ($setting) {
+                $styleinstalled = true;
+            }
+
+            if (file_exists($sourceTarget) && $styleinstalled) {
                 $targetDir = new \DirectoryIterator($sourceTarget);
                 $totalsourcefiles = 0;
                 foreach ($targetDir as $file) {
@@ -97,7 +104,7 @@ class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menu
 
     public static function get_style_default_source() {
         $defaultsources = [];
-        $styles = array_keys(plugininfo::get_style_and_source());
+        $styles = array_keys(plugininfo::get_style_and_source(false));
         foreach ($styles as $style) {
             $style = self::remove_prefix($style);
             $defaultsources[$style] = self::remove_prefix(
@@ -133,8 +140,16 @@ class plugininfo extends plugin implements plugin_with_buttons, plugin_with_menu
         ));
         $defaultsource = self::get_style_default_source();
 
+        $enabledstyles = self::get_style_and_source(false);
+        $keys = array_keys($enabledstyles);
+        $updatedkeys = [];
+        foreach($keys as $style) {
+            $updatedkeys[] = self::remove_prefix($style);
+        }
+
         $data = [
-            'params' => self::get_style_and_source(),
+            'stylesAndSource' => $enabledstyles,
+            'defaultStyleNotEnabled' => (!in_array($defaultstyle, $updatedkeys)),
             'default' => [
                 'style' => $defaultstyle,
                 'sources' => $defaultsource,

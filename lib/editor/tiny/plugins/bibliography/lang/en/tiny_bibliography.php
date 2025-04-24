@@ -56,15 +56,21 @@ $string['style:no_resources'] = '{$a} style has no sources yet.<br>If you think 
 
 
 $string['label:allfields'] = 'Show all fields';
+$string['stylestatus'] = 'Status';
+$string['notinstalled'] = '<i class="text-danger">Not installed</i><br><span>Please press "Save changes" button to install this style.</span>';
+$string['installed'] = '<span class="text-success">Installed</span>';
+$string['noenabledstyles'] = '<i class="text-danger">No enabled styles</i><br><span>Please enable at least one style.</span>';
 
 $string['button:reset'] = 'Reset';
 $string['button:delete'] = 'Delete';
+$string['button:deletebibliography'] = 'Delete bibliography';
 $string['button:save'] = 'Save as new';
 $string['button:edit'] = 'Edit';
 $string['button:ok'] = 'Ok';
 $string['button:cancel'] = 'Cancel';
 $string['button:generate'] = 'Generate';
 $string['button:update'] = 'Update';
+$string['button:back'] = 'Back';
 
 $string['field:pageTitle'] = 'Page title';
 $string['field:websiteTitle'] = 'Website title';
@@ -128,9 +134,9 @@ $string['update'] = 'Update';
 $string['delete'] = 'Delete';
 $string['nobibliographyyet'] = 'No bibliography yet';
 $string['fieldsrequired'] = 'You need to fill all the default fields or if you enable "All fields" are the ones with *';
-$string['alert:warning'] = 'Warning!';
 $string['stylenotavailable'] = '<b><i>{$a}</b></i> style is not available yet';
-$string['sourcenotavailable'] = '<b><i>{$a}</b></i> source is not available yet';
+
+$string['unmatchedstyle'] = 'Your existing bibliography\'s style is "{$a}" and is not listed in style selections.';
 
 $string['settings:general'] = 'Style default setting';
 
@@ -140,3 +146,21 @@ $string['preparing'] = 'Preparing bibliography';
 $string['modalTitle:insert'] = 'Insert bibliography';
 $string['modalTitle:citation'] = 'Insert citation';
 $string['modalTitle:bibliography'] = 'Bibliography';
+$string['modalTitle:update'] = 'Update bibliography';
+$string['modalTitle:defaultstylenotenabled'] = 'Default style not available';
+$string['modalTitle:usedstylenotavailable'] = 'Used style not available';
+$string['modalTitle:usedstylenotselected'] = 'Used style not being selected';
+
+$string['modalWarning:usedstylenotavailable'] = '
+    Your existing bibliography is using <b><i>"{$a}"</i></b> style that is not available!
+    <br><br>If you wish to continue adding more bibliography of the same used style, please contact your site administration to enable <b><i>"{$a}"</i></b> style.
+    Otherwise, you can remove the existing bibliography and start creating new ones with the available styles.
+';
+$string['modalWarning:defaultstylenotenabled'] = '
+    Your current default style is <b><i>"{$a}"</i></b> but is not available.
+    <br>If you wish to crate a bibliography, please contact your site administrator to enable <b><i>"{$a}"</i></b> style.
+';
+$string['modalWarning:usedstylenotselected'] = '
+    Your existing bibliography is using <b><i>"{$a}"</i></b> style.<br>Therefore, you cannot use other styles that can break your existing bibliography.
+    <br><br>Style selection has been set back to <b><i>"{$a}"</i></b>.
+';

@@ -40,22 +40,22 @@
 {{^heading}}
     <div class="bl-container" id="id-{{id}}">
         <div class="bibliography-list d-flex mb-1" id={{id}} data-index={{index}} data-action="edit-bibliography">
-            <span class="d-flex mb-0">
+            <span class="d-flex mb-0 mr-2">
                 {{{bio}}}
             </span>
+            <button class="btn btn-sm btn-outline-success bibliography-list-buttons"
+                data-action="cite-this"
+                data-id="{{id}}"
+                data-index="{{index}}"
+                data-object='{{dataobject}}'>
+                <i class="fa fa-solid fa-quote-right"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger ml-1 bibliography-list-buttons"
+                data-action="delete-bibliography"
+                data-target-id="{{id}}"
+                data-index="{{index}}">
+                <i class="fa fa-solid fa-trash"></i>
+            </button>
         </div>
-        <button class="btn btn-sm btn-outline-success"
-            data-action="cite-this"
-            data-id="{{id}}"
-            data-index="{{index}}"
-            data-object='{{dataobject}}'>
-            <i class="fa fa-solid fa-quote-right"></i>
-        </button>
-        <button class="btn btn-sm btn-outline-danger ml-1"
-            data-action="delete-bibliography"
-            data-target-id="{{id}}"
-            data-index="{{index}}">
-            <i class="fa fa-solid fa-trash"></i>
-        </button>
     </div>
 {{/heading}}

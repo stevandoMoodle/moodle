@@ -37,19 +37,18 @@ span.hide-ori-data {
 }
 .bibliography-list {
     padding: 10px 0;
-    border-radius: 3px;
-    margin-bottom: 2px;
     cursor: pointer;
     margin-top: 2px;
     transition: 0.1s;
 }
 .bibliography-list:hover {
-    background-color: #6e6e6e;
-    /* box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.654); */
+    box-shadow: 0 4px 2px -2px gray;
     transition: 0.1s;
-    color: white;
 }
 
 .bl-container {
     margin-bottom: -2px;
+}
+.bibliography-list button.bibliography-list-buttons {
+    height: 30px;
 }

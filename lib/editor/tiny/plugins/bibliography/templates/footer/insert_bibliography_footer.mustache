@@ -29,7 +29,7 @@
 
 }}
 <div class="row">
-    <div class="col-md-6 align-items-center p-0">
+    <div class="col-md-4 align-items-center p-0">
         <div class="checkbox {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" id="show-all-field-container">
             <input type="checkbox" id="id_other_fields" data-action="show-other-fields">
             <label for="id_other_fields">
@@ -37,10 +37,18 @@
             </label>
         </div>
     </div>
-    <div class="col-md-6 text-right md-0 p-0" id="id-button-container">
-        <button type="button" class="btn btn-secondary" data-action="cancel">{{#str}} cancel, moodle {{/str}}</button>
-        <button class="btn btn-primary {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" id="generate-bibliography-list" data-action="generate-list">
-            {{> tiny_bibliography/generate_label }}
+    <div class="col-md-8 text-right md-0 p-0" id="id-button-container">
+        <button type="button" class="btn btn-secondary" data-action="cancel">
+            {{#str}} cancel, moodle {{/str}}
+        </button>
+        <button class="btn btn-warning" data-action="reset-bibliography-form">
+            {{#str}} button:reset, tiny_bibliography {{/str}}
+        </button>
+        <button class="btn btn-secondary" data-action="back-to-bibliography-list">
+            {{#str}} modalTitle:bibliography, tiny_bibliography {{/str}}
+        </button>
+        <button class="btn btn-primary {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" data-action="generate-list">
+            {{#str}} button:generate, tiny_bibliography {{/str}}
         </button>
     </div>
 </div>
