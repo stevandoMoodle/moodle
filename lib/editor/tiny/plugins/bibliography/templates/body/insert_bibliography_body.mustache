@@ -15,24 +15,24 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template tiny_bibliography/bibliography_form
+    @template tiny_bibliography/body/insert_bibliography_body
 
     Display a bibliography form
 }}
 
 <div class="tab-content row mt-2" id="{{id}}_tiny_bibliography_form_container">
-    <div class="col-md-12 {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" id="bibliography-form-container">
+    <div class="col-12 {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" id="bibliography-form-container">
         <form id="bibliography-form" onsubmit="return false;">
             {{> tiny_bibliography/style_resource }}
-            <div class="biblio-pannel" id="main-input-fields">
+            <div class="biblio-pannel p-2" id="main-input-fields">
                 {{> tiny_bibliography/forms/field }}
             </div>
         </form>
     </div>
-    <div class="col-md-12">
-        <div class="biblio-pannel biblio-bottom-pannel mt-3 {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" id="bibliography-ie-panel"></div>
+    <div class="col-12">
+        <div class="biblio-pannel p-2 biblio-bottom-pannel mt-3 {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" id="bibliography-ie-panel"></div>
     </div>
-    <div class="col-md-12 {{#isInsertBibliography}}d-none{{/isInsertBibliography}}" id="bibliography-list-outer-modal-container">
+    <div class="col-12 {{#isInsertBibliography}}d-none{{/isInsertBibliography}}" id="bibliography-list-outer-modal-container">
         <div class="biblio-list-container" id="bibliography-list-modal-container">
             <h3 class="mb-4">
                 <span>{{#str}} pluginname, tiny_bibliography {{/str}}</span>

@@ -20,16 +20,16 @@
     Display input fields of style_resource source
 }}
 
-<div class="biblio-pannel mb-3">
-    <div class="form-group row fitem">
-        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
-            <label class="d-inline word-break " for="id_style">
-                {{#str}} style, tiny_bibliography {{/str}}
+<div class="biblio-pannel p-2 mb-3">
+    <div class="row fitem p-2">
+        <div class="col-3 col-form-label d-flex pb-0 pe-0">
+            <label class="d-inline word-break " for="id_bibliography_style">
+                {{#str}} label:style, tiny_bibliography {{/str}}
             </label>
         </div>
 
-        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-            <select class="custom-select" data-name="style" data-action="select-style" id="id_bibliography_style" style="width: 100%;">
+        <div class="col-9 align-items-start felement" data-fieldtype="text">
+            <select class="form-select w-100" data-name="style" data-action="select-style" id="id_bibliography_style">
                 {{#styles}}
                     <option value="{{name}}" {{#isSetDefault}}selected{{/isSetDefault}}>{{label}}</option>
                 {{/styles}}
@@ -37,15 +37,15 @@
         </div>
     </div>
 
-    <div class="form-group row fitem">
-        <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+    <div class="row fitem p-2 mt-2">
+        <div class="col-3 col-form-label d-flex pb-0 pe-0">
             <label class="d-inline word-break " for="id_bibliography_source">
-                {{#str}} source, tiny_bibliography {{/str}}
+                {{#str}} label:source, tiny_bibliography {{/str}}
             </label>
         </div>
 
-        <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-            <select class="custom-select" data-name="source" data-action="select-source" id="id_bibliography_source" style="width: 100%;">
+        <div class="col-9 align-items-start felement" data-fieldtype="text">
+            <select class="form-select w-100" data-name="source" data-action="select-source" id="id_bibliography_source">
                 {{#sources}}
                     <option value="{{name}}" {{#isSetDefault}}selected{{/isSetDefault}}>{{label}}</option>
                 {{/sources}}

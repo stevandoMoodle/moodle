@@ -29,7 +29,7 @@
     {{$body}}
         <form class="tiny_bibliography_form" id="{{id}}_tiny_bibliography_form">
             <div role="alert" class="d-none alert alert-warning mb-1 tiny_bibliography_warning">
-                <label>{{#str}} modalWarning:defaultstylenotenabled, tiny_bibliography, {{defaultStyle}} {{/str}}</label>
+                <label>{{#str}} modal_warning:default_style_not_enabled, tiny_bibliography, {{defaultStyle}} {{/str}}</label>
             </div>
             <div role="progressbar" class="d-none tiny_bibliography_loader lead border rounded text-center">
                 <div class="tiny_bibliography_loader_container d-flex flex-column justify-content-center">
@@ -46,14 +46,14 @@
     {{$footer}}
         <div class="tiny_bibliography_footer_template container">
             <div class="row">
-                <div class="col-md-6"></div>
-                <div class="col-md-6 text-right p-0">
+                <div class="col-6"></div>
+                <div class="col-6 text-end p-0">
                     <button type="button" class="btn btn-secondary" data-action="cancel">
                         {{#str}} cancel, moodle {{/str}}
                     </button>
                     {{#usedStyleNotAvailable}}
                         <button type="button" class="btn btn-primary" data-action="delete-all-bibliography">
-                            {{#str}} button:deletebibliography, tiny_bibliography {{/str}}
+                            {{#str}} button:delete_bibliography, tiny_bibliography {{/str}}
                         </button>
                     {{/usedStyleNotAvailable}}
                 </div>

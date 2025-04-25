@@ -21,20 +21,19 @@
 }}
 
 {{#show}}
-<div class="form-group row fitem">
-    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+<div class="row fitem p-2">
+    <div class="col-3 col-form-label d-flex pb-0 pe-md-0">
         <label class="d-inline word-break" for="id_bibliography_{{field}}">
             {{label}} {{#required}}*{{/required}}
         </label>
     </div>
 
-    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
+    <div class="col-9 align-items-start felement" data-fieldtype="text">
         <select
-            class="custom-select"
+            class="form-select w-100"
             data-type="bibliography-info-example"
             data-name="{{field}}"
             id="id_bibliography_{{field}}"
-            style="width: 100%;"
         >
             {{#options}}
                 <option value="{{name}}">{{label}}</option>

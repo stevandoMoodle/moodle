@@ -73,7 +73,7 @@ if ($ADMIN->fulltree) {
         $settings->add(
             new admin_setting_heading(
                 name: 'tiny_bibliography/settings',
-                heading: get_string('settings:general', $component),
+                heading: get_string('setting:general', $component),
                 information: '',
             )
         );
@@ -81,9 +81,9 @@ if ($ADMIN->fulltree) {
         if (count($enabledstyles) < 1) {
             $settings->add(
                 new admin_setting_description(
-                    'tiny_bibliography_status/' . $style . $key,
-                    get_string('style:default_style', $component),
-                    get_string('noenabledstyles', $component),
+                    'tiny_bibliography_status/' . str_replace(':', '_', $style) . $key,
+                    get_string('setting:default_style', $component),
+                    get_string('setting:no_enabled_styles', $component),
                 )
             );
         }
@@ -91,7 +91,7 @@ if ($ADMIN->fulltree) {
         $settings->add(
             new admin_setting_configselect(
                 "tiny_bibliography/defaultstyle",
-                get_string('style:default_style', $component),
+                get_string('setting:default_style', $component),
                 null,
                 'ieee',
                 $enabledstyles
@@ -119,7 +119,7 @@ if ($ADMIN->fulltree) {
             $settings->add(
                 new admin_setting_heading(
                     name: 'tiny_bibliography/settings' . $style . $key,
-                    heading: get_string('settings:default_source', $component, $ucstyle),
+                    heading: get_string('setting:default_source', $component, $ucstyle),
                     information: '',
                 )
             );
@@ -128,7 +128,7 @@ if ($ADMIN->fulltree) {
                 $settings->add(
                     new admin_setting_configcheckbox(
                         'tiny_bibliography/' . $style,
-                        get_string('style:enable', $component),
+                        get_string('setting:enable_style', $component),
                         null,
                         1,
                     )
@@ -137,7 +137,7 @@ if ($ADMIN->fulltree) {
                 $settings->add(
                     new admin_setting_configselect(
                         'tiny_bibliography/' . $style . $key,
-                        get_string('source:default', $component, $ucstyle),
+                        get_string('setting:default', $component, $ucstyle),
                         null,
                         $default,
                         $options,
@@ -148,22 +148,22 @@ if ($ADMIN->fulltree) {
                     $settings->add(
                         new admin_setting_description(
                             'tiny_bibliography_status/' . $style . $key,
-                            get_string('stylestatus', $component),
-                            get_string('notinstalled', $component),
+                            get_string('setting:style_status', $component),
+                            get_string('setting:not_installed', $component),
                         )
                     );
                 } else {
                     $settings->add(
                         new admin_setting_description(
                             'tiny_bibliography_status/' . $style . $key,
-                            get_string('stylestatus', $component),
-                            get_string('installed', $component),
+                            get_string('setting:style_status', $component),
+                            get_string('setting:installed', $component),
                         )
                     );
                 }
             } else {
                 \core\notification::add(
-                    message: get_string('style:no_resources', $component, $ucstyle),
+                    message: get_string('setting:no_resources', $component, $ucstyle),
                     level: \core\notification::WARNING
                 );
             }
@@ -173,7 +173,7 @@ if ($ADMIN->fulltree) {
         $PAGE->requires->js_call_amd('tiny_bibliography/bibliography/ui_source_selector', 'init', [$styles, $currentstyle]);
     } else {
         \core\notification::add(
-            message: get_string('no_styles', $component, $ucstyle),
+            message: get_string('setting:no_styles', $component, $ucstyle),
             level: \core\notification::WARNING
         );
     }

@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template tiny_accessibilitychecker/warning_content
+    @template tiny_bibliography/forms/fields/author
 
     Display a content warning message
 
@@ -36,15 +36,15 @@
 }}
 
 {{#show}}
-<div id="full-{{field}}-holder" class="form-group row fitem bibliography-field">
-    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+<div id="full-{{field}}-holder" class="row fitem bibliography-field p-2">
+    <div class="col-3 col-form-label d-flex pb-0 pe-md-0">
         <label class="d-inline word-break " for="id_bibliography_{{field}}">
             {{label}} {{#required}}*{{/required}}
         </label>
     </div>
 
-    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-        <div class="col-8 col-form-label d-flex pb-0 pr-md-0" style="padding-left: unset;">
+    <div class="col-9 d-flex justify-content-between" data-fieldtype="text">
+        <div class="col-8 col-form-label d-flex pb-0 pe-md-0" style="padding-left: unset;">
             <textarea
                 type="text"
                 class="form-control"
@@ -57,70 +57,62 @@
                 style="width: 100%;"
             >{{data}}</textarea>
         </div>
-        <div class="col-md-4 col-form-label pb-0 pr-md-0 form-button">
+        <div class="col-4 col-form-label pb-0 pe-md-0 form-button">
             <button class="btn btn-primary" data-field="{{field}}" id="id-custom-{{field}}" data-action="custom-bibliography-author">
                 <span>{{#str}} button:edit, tiny_bibliography {{/str}}</span>
             </button>
         </div>
     </div>
 </div>
-<div id="custom-{{field}}-holder" class="form-group row fitem d-none">
-    <div class="col-md-3 col-form-label d-flex pb-0 pr-md-0">
+<div id="custom-{{field}}-holder" class="row fitem d-none p-2">
+    <div class="col-3 col-form-label d-flex pb-0 pe-md-0">
         <label class="d-inline word-break">
             {{label}} {{#required}}*{{/required}}
         </label>
     </div>
 
-    <div class="col-md-9 form-inline align-items-start felement" data-fieldtype="text">
-        <div class="col-md-4">
-            <div class="form-group row fitem">
-                <div class="col-form-label d-flex pr-2">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="id_bibliography_{{field}}_surename"
-                        data-name="{{field}}-surename"
-                        placeholder="{{#str}} field:surename, tiny_bibliography {{/str}}"
-                        style="width: 100%;">
-                </div>
+    <div class="col-9 align-items-start" data-fieldtype="text">
+        <div class="row fitem">
+            <div class="col-12">
+                <input
+                    type="text"
+                    class="form-control w-100 mb-2"
+                    id="id_bibliography_{{field}}_surename"
+                    data-name="{{field}}-surename"
+                    placeholder="{{#str}} field:sure_name, tiny_bibliography {{/str}}"
+                >
+            </div>
+
+            <div class="col-12">
+                <input
+                    type="text"
+                    class="form-control w-100 mb-2"
+                    id="id_bibliography_{{field}}_firstname"
+                    data-name="{{field}}-firstname"
+                    placeholder="{{#str}} field:first_name, tiny_bibliography {{/str}}"
+                >
+            </div>
+
+            <div class="col-12">
+                <input
+                    type="text"
+                    class="form-control w-100"
+                    id="id_bibliography_{{field}}_middlename"
+                    data-name="{{field}}-middlename"
+                    placeholder="{{#str}} field:middle_name, tiny_bibliography {{/str}}"
+                >
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="form-group row fitem">
-                <div class="col-form-label d-flex">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="id_bibliography_{{field}}_firstname"
-                        data-name="{{field}}-firstname"
-                        placeholder="{{#str}} field:firstname, tiny_bibliography {{/str}}"
-                        style="width: 100%;">
-                </div>
+        <hr>
+        <div class="row fitem">
+            <div class="col d-flex justify-content-between">
+                <button class="btn btn-outline-secondary" id="id-cancel-custom-{{field}}" data-field="{{field}}" data-action="cancel-custom-bibliography-author">
+                    <span>{{#str}} button:cancel, tiny_bibliography {{/str}}</span>
+                </button>
+                <button class="btn btn-primary" id="id-ok-custom-{{field}}" data-field="{{field}}" data-action="ok-custom-bibliography-author">
+                    <span>{{#str}} button:ok, tiny_bibliography {{/str}}</span>
+                </button>
             </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="form-group row fitem">
-                <div class="col-form-label d-flex pl-2">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="id_bibliography_{{field}}_middlename"
-                        data-name="{{field}}-middlename"
-                        placeholder="{{#str}} field:middlename, tiny_bibliography {{/str}}"
-                        style="width: 100%;">
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12 col-form-label pb-0 pr-md-0 form-button">
-            <button class="btn btn-outline-danger" id="id-cancel-custom-{{field}}" data-field="{{field}}" data-action="cancel-custom-bibliography-author">
-                <span>{{#str}} button:cancel, tiny_bibliography {{/str}}</span>
-            </button>
-            <button class="btn btn-primary" id="id-ok-custom-{{field}}" data-field="{{field}}" data-action="ok-custom-bibliography-author">
-                <span>{{#str}} button:ok, tiny_bibliography {{/str}}</span>
-            </button>
         </div>
     </div>
 </div>
