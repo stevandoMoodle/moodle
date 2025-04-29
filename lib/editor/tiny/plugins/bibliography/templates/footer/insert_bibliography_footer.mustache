@@ -42,11 +42,14 @@
             <button type="button" class="btn btn-secondary" data-action="cancel">
                 {{#str}} button:cancel, tiny_bibliography {{/str}}
             </button>
-            <button class="btn btn-warning" data-action="reset-bibliography-form">
+            <button class="btn btn-warning d-none" data-action="reset-bibliography-form">
                 {{#str}} button:reset, tiny_bibliography {{/str}}
             </button>
-            <button class="btn btn-secondary" data-action="back-to-bibliography-list">
+            <button class="btn btn-secondary {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" data-action="back-to-bibliography-list">
                 {{#str}} modal_title:bibliography, tiny_bibliography {{/str}}
+            </button>
+            <button class="btn btn-primary {{^isBibliography}}d-none{{/isBibliography}}" data-action="add-bibliography">
+                {{#str}} button:add_bibliography, tiny_bibliography {{/str}}
             </button>
             <button class="btn btn-primary {{^isInsertBibliography}}d-none{{/isInsertBibliography}}" data-action="generate-list">
                 {{#str}} button:generate, tiny_bibliography {{/str}}

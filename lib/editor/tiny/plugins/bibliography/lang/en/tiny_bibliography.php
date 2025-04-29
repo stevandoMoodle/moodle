@@ -21,9 +21,11 @@
  * @copyright  2022, Stevani Andolo <stevani@hotmail.com.au>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 $string['pluginname'] = 'Bibliography';
 $string['citation'] = 'Citation';
+
+$string['command:add_bibliography'] = 'Add bibliography';
+$string['command:bibliography_list'] = 'Bibliography list';
 
 $string['alert:oops'] = 'Oops!';
 $string['alert:style_not_available'] = '<b><i>{$a}</b></i> style is not available yet';
@@ -52,6 +54,7 @@ $string['button:generate'] = 'Generate';
 $string['button:generate_list'] = 'Generate list';
 $string['button:update'] = 'Update';
 $string['button:back'] = 'Back';
+$string['button:add_bibliography'] = 'Add bibliography';
 
 $string['field:pageTitle'] = 'Page title';
 $string['field:websiteTitle'] = 'Website title';
@@ -129,6 +132,7 @@ $string['modal_warning:used_style_not_selected'] = '
     Your existing bibliography is using <b><i>"{$a}"</i></b> style.<br>Therefore, you cannot use other styles that can break your existing bibliography.
     <br><br>Style selection has been set back to <b><i>"{$a}"</i></b>.
 ';
+$string['modal_warning:no_selected_citation'] = 'You have not selected a citation to view.';
 
 $string['option:yes'] = 'Yes';
 $string['option:no'] = 'No';
