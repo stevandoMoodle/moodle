@@ -26,9 +26,12 @@ $string['citation'] = 'Citation';
 
 $string['command:add_bibliography'] = 'Add bibliography';
 $string['command:bibliography_list'] = 'Bibliography list';
+$string['command:remove_citation'] = 'Delete citation';
+$string['command:edit_citation'] = 'Edit citation';
 
 $string['alert:oops'] = 'Oops!';
 $string['alert:style_not_available'] = '<b><i>{$a}</b></i> style is not available yet';
+$string['alert:invalid_citation'] = 'The selected citation is not valid!';
 
 $string['style:ieee'] = 'IEEE';
 $string['style:apa'] = 'APA';
@@ -38,6 +41,9 @@ $string['source:book'] = 'Book';
 $string['source:book_translated'] = 'Book translated';
 $string['source:book_with_chapter_title'] = 'Book with chapter title';
 $string['source:website'] = 'Website';
+
+$string['message:remove_in_text_citation'] = 'Do you want to remove the selected in-text citation?';
+$string['message:remove_citation'] = 'Do you want to remove the following selected citation?<br>{$a}';
 
 $string['label:style'] = 'Style';
 $string['label:source'] = 'Source';
@@ -111,6 +117,7 @@ $string['setting:style_status'] = 'Status';
 $string['setting:not_installed'] = '<i class="text-danger">Not installed</i><br><span>Please press "Save changes" button to install this style.</span>';
 $string['setting:installed'] = '<span class="text-success">Installed</span>';
 
+$string['modal_title:confirmation'] = 'Confirmation';
 $string['modal_title:insert'] = 'Insert bibliography';
 $string['modal_title:citation'] = 'Insert citation';
 $string['modal_title:bibliography'] = 'Bibliography';

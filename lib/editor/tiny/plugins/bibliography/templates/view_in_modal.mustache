@@ -38,24 +38,34 @@
     <h3 class="mb-4">{{{bio}}}</h3>
 {{/heading}}
 {{^heading}}
-    <div class="bl-container" id="id-{{id}}">
+    <div class="bl-container d-flex align-items-stretch" id="id-{{id}}">
         <div class="bibliography-list d-flex mb-1" id={{id}} data-index={{index}} data-action="edit-bibliography">
             <span class="d-flex mb-0 me-2">
                 {{{bio}}}
             </span>
-            <button class="btn btn-sm btn-outline-success bibliography-list-buttons"
+        </div>
+        {{#buttons}}
+        <div class="d-flex flex-grow-1 mt-2">
+            <button
+                class="btn btn-sm btn-outline-success bibliography-list-buttons align-self-start"
+                type="button"
                 data-action="cite-this"
                 data-id="{{id}}"
                 data-index="{{index}}"
-                data-object='{{dataobject}}'>
+                data-object='{{dataobject}}'
+            >
                 <i class="fa fa-solid fa-quote-right"></i>
             </button>
-            <button class="btn btn-sm btn-outline-danger ms-1 bibliography-list-buttons"
+            <button
+                class="btn btn-sm btn-outline-danger ms-1 bibliography-list-buttons align-self-start"
+                type="button"
                 data-action="delete-bibliography"
                 data-target-id="{{id}}"
-                data-index="{{index}}">
+                data-index="{{index}}"
+            >
                 <i class="fa fa-solid fa-trash"></i>
             </button>
         </div>
+        {{/buttons}}
     </div>
 {{/heading}}
