@@ -127,7 +127,7 @@ class core_renderer extends \core_renderer {
                         )
                     );
 
-                    if ($USER->id != $user->id) {
+                    if ($USER->id != $user->id && \core_message\api::can_create_contact($USER->id, $user->id)) {
                         $iscontact = \core_message\api::is_contact($USER->id, $user->id);
                         $isrequested = \core_message\api::get_contact_requests_between_users($USER->id, $user->id);
                         $contacturlaction = '';
