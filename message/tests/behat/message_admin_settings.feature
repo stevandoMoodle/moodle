@@ -6,11 +6,13 @@ Feature: Message admin settings
 
   Background:
     Given the following "users" exist:
-      | username | firstname | lastname | email |
-      | user1 | User | One | one@example.com |
+      | username | firstname | lastname | email           |
+      | user1    | User     | One      | one@example.com |
+      | user2    | User     | Two      | two@example.com |
     And the following "courses" exist:
       | fullname | shortname | category | groupmode |
       | Course 1 | C1        | 0        | 1         |
+      | Course 2 | C2        | 0        | 1         |
 
   Scenario: enable site messaging
     Given the following config values are set as admin:
@@ -20,7 +22,7 @@ Feature: Message admin settings
     And I navigate to "Users > Accounts > Browse list of users" in site administration
     And I should see "User One"
     And I follow "User One"
-    And "Add to contacts" "link" should exist
+    And "Add to contacts" "link" should not exist
     And I am on "Course 1" course homepage
     And I navigate to course participants
     And the "With selected users..." select box should contain "Send a message"
@@ -37,3 +39,43 @@ Feature: Message admin settings
     And I am on "Course 1" course homepage
     And I navigate to course participants
     And the "With selected users..." select box should not contain "Send a message"
+
+  Scenario: Enable site messaging with messagingallusers disabled
+    Given the following config values are set as admin:
+      | messaging         | 1 |
+      | messagingallusers | 0 |
+    When I log in as "admin"
+    Then "Toggle messaging drawer" "button" should exist
+    And I navigate to "Users > Accounts > Browse list of users" in site administration
+    And I should see "User One"
+    And I follow "User One"
+    And "Add to contacts" "link" should not exist
+
+  Scenario: Enable site messaging with messagingallusers enabled
+    Given the following config values are set as admin:
+      | messaging         | 1 |
+      | messagingallusers | 1 |
+    When I log in as "admin"
+    Then "Toggle messaging drawer" "button" should exist
+    And I navigate to "Users > Accounts > Browse list of users" in site administration
+    And I should see "User One"
+    And I follow "User One"
+    And "Add to contacts" "link" should exist
+
+  Scenario: Enable site messaging with messagingallusers disabled and user enrolled in course
+    Given the following config values are set as admin:
+      | messaging         | 1 |
+      | messagingallusers | 0 |
+    When I log in as "admin"
+    And I navigate to "Users > Accounts > Browse list of users" in site administration
+    And I should see "User Two"
+    And I follow "User Two"
+    Then "Add to contacts" "link" should not exist
+    And the following "course enrolments" exist:
+      | user  | course | role           |
+      | admin | C2     | editingteacher |
+      | user2 | C2     | student        |
+    And I navigate to "Users > Accounts > Browse list of users" in site administration
+    And I should see "User Two"
+    And I follow "User Two"
+    Then "Add to contacts" "link" should exist
