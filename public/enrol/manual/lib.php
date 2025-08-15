@@ -532,9 +532,9 @@ class enrol_manual_plugin extends enrol_plugin {
         $members = $DB->get_fieldset_sql($sql, $params);
         foreach ($members as $userid) {
             $this->enrol_user($instance, $userid, $roleid, $timestart, $timeend, $status, $recovergrades);
-            if ($group){ 
+            if ($group){
                 groups_add_member($group, $userid);
-            }            
+            }
         }
         return count($members);
     }
