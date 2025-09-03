@@ -619,6 +619,14 @@ class manager {
                     'capitalization',
                 ],
             ],
+            'suggestededits' => [
+                'buttons' => [
+                    'suggestededits',
+                ],
+                'menuitems' => [
+                    'suggestededits',
+                ],
+            ],
         ];
     }
 }
