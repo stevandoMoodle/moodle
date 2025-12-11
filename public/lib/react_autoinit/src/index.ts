@@ -252,7 +252,7 @@ const unmountOne = (el) => {
 const scanAndMount = async (root) => {
     const scope = root || document;
     scope.querySelectorAll(SELECTOR).forEach(
-        (el) => {
+        async (el) => {
             // We only mount into HTMLElements.
             await mountOne(/** @type {HTMLElement} */ (el));
         }
