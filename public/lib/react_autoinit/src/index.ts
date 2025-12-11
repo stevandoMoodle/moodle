@@ -400,3 +400,5 @@ export const unmount = (selectorOrRoot) => {
     const root = resolveRoot(selectorOrRoot);
     scanAndUnmount(root);
 };
+
+init();
