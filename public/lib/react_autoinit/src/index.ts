@@ -41,6 +41,7 @@
  */
 
 import { React, ReactDOM } from '@moodle/core/react';
+import components from './component.json' assert { type: 'json' };
 
 const SELECTOR = '[data-react-component]';
 const MOUNTED_FLAG = 'reactMounted';
@@ -48,6 +49,8 @@ const MOUNTED_FLAG = 'reactMounted';
 // For each DOM element we mount into, we keep a function that knows how
 // to unmount its React component later.
 const reactUnmountMap = new WeakMap();
+
+let jsFilePath = null;
 
 /**
  * Run code once the DOM is ready.
@@ -168,15 +171,15 @@ const resolveComponent = async (name) => {
     if (!name) return null;
 
     try {
-        // const url = new URL(
-        //     `../build/components/${name}.js`,
-        //     import.meta.url
-        // ).href;
+        const component = components[name] ?? null;
+        if (jsFilePath === null && component === null) {
+            return null;
+        }
+
         const url = new URL(
-            `../../../mod/book/react/build/mustache_test.js`,
+            component ?? jsFilePath,
             import.meta.url
         ).href;
-
 
         const module = await import(url);
         return module.default || module;
@@ -376,13 +379,13 @@ const resolveRoot = (selectorOrRoot) => {
  *   init();               // whole document
  *   init('#region-main'); // or a specific container
  *
- * @param {string|HTMLElement|Document|null} selectorOrRoot
+ * @param {string|HTMLElement|Document|null} selector
  * @return {Promise<void>}
  */
-export const init = async (selectorOrRoot) => {
+export const init = async (selector = null) => {
     await domReady();
 
-    const root = resolveRoot(selectorOrRoot);
+    const root = resolveRoot(selector);
     await scanAndMount(root);
 
     // Lazy-install the observer so we only pay the cost once.
@@ -394,11 +397,26 @@ export const init = async (selectorOrRoot) => {
 /**
  * Unmount React components inside a given region.
  *
- * @param {string|HTMLElement|Document|null} selectorOrRoot
+ * @param {string|HTMLElement|Document|null} selector
  */
-export const unmount = (selectorOrRoot) => {
-    const root = resolveRoot(selectorOrRoot);
+export const unmount = (selector) => {
+    const root = resolveRoot(selector);
     scanAndUnmount(root);
 };
 
+// Initiates react initiator.
 init();
+
+/**
+ * Initiates react from a template with specific selector and its js file.
+ *
+ * @param {string} selector
+ * @param {string} jsPath
+ */
+export const initFromTemplate = (selector = null, jsPath = null) => {
+    if (selector !== null && jsPath !== null) {
+        jsFilePath = jsPath;
+        init(selector);
+    }
+}
+window.ReactInTemplate = initFromTemplate;

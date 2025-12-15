@@ -7,9 +7,18 @@ var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require
 
 // public/lib/react_autoinit/src/index.ts
 import { React, ReactDOM } from "../../react/build/react.js";
+
+// public/lib/react_autoinit/src/component.json
+var component_default = {
+  "@moodle/react/components/Button": "../../react/build/components/Button.js",
+  "@moodle/react/components/Input": "../../react/build/components/Input.js"
+};
+
+// public/lib/react_autoinit/src/index.ts
 var SELECTOR = "[data-react-component]";
 var MOUNTED_FLAG = "reactMounted";
 var reactUnmountMap = /* @__PURE__ */ new WeakMap();
+var jsFilePath = null;
 var domReady = () => {
   new Promise(
     // @ts-ignore TS can't infer resolve's type in JS
@@ -74,8 +83,12 @@ var normalizeHandlers = (props) => {
 var resolveComponent = async (name) => {
   if (!name) return null;
   try {
+    const component = component_default[name] ?? null;
+    if (jsFilePath === null && component === null) {
+      return null;
+    }
     const url = new URL(
-      `../build/components/${name}.js`,
+      component ?? jsFilePath,
       import.meta.url
     ).href;
     const module = await import(url);
@@ -208,20 +221,29 @@ var resolveRoot = (selectorOrRoot) => {
   }
   return selectorOrRoot;
 };
-var init = async (selectorOrRoot) => {
+var init = async (selector = null) => {
   await domReady();
-  const root = resolveRoot(selectorOrRoot);
+  const root = resolveRoot(selector);
   await scanAndMount(root);
   if (!observer) {
     observer = installObserver();
   }
 };
-var unmount = (selectorOrRoot) => {
-  const root = resolveRoot(selectorOrRoot);
+var unmount = (selector) => {
+  const root = resolveRoot(selector);
   scanAndUnmount(root);
 };
+init();
+var initFromTemplate = (selector = null, jsPath = null) => {
+  if (selector !== null && jsPath !== null) {
+    jsFilePath = jsPath;
+    init(selector);
+  }
+};
+window.ReactInTemplate = initFromTemplate;
 export {
   init,
+  initFromTemplate,
   unmount
 };
 /**

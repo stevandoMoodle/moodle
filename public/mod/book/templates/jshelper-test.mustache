@@ -1,7 +1,11 @@
-<div>
+<div id="test-react">
     {{#react}}
     {
         "component": "@mod_book/mustache_test"
     }
     {{/react}}
 </div>
+
+{{#js}}
+    ReactInTemplate('#test-react', '../../../mod/book/react/build/mustache_test.js');
+{{/js}}

@@ -62,3 +62,4 @@ UPGRADING-CURRENT.md
 .phpunit.cache
 /public/lib/react/node_modules
 /public/lib/react/package-lock.json
+/public/lib/react_autoinit/src/component.js

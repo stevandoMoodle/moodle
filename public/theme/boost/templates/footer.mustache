@@ -36,6 +36,165 @@
 }}
 
 <footer id="page-footer" class="footer-popover bg-white">
+    <div class="container my-4">
+        <form class="d-flex flex-column gap-3">
+            <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
+                <div class="flex-fill">
+                    {{#react}}
+                        {
+                        "component": "@moodle/react/components/Input",
+                        "props": {
+                            "name": "input1",
+                            "placeholder": "input 1",
+                            "className": "form-control",
+                            "label": "Input 1",
+                        }
+                    }
+                    {{/react}}
+                </div>
+                <div class="flex-fill">
+                    {{#react}}
+                    {
+                        "component": "@moodle/react/components/Input",
+                        "props": {
+                            "name": "input2",
+                            "placeholder": "input 2",
+                            "className": "form-control",
+                            "label": "Input 2",
+                        }
+                    }
+                    {{/react}}
+                </div>
+                <div class="flex-fill">
+                    {{#react}}
+                    {
+                        "component": "@moodle/react/components/Input",
+                        "props": {
+                            "name": "input3",
+                            "placeholder": "input 3",
+                            "className": "form-control",
+                            "label": "Input 3",
+                        }
+                    }
+                    {{/react}}
+                </div>
+                <div class="flex-fill">
+                    {{#react}}
+                    {
+                        "component": "@moodle/react/components/Input",
+                        "props": {
+                            "name": "input4",
+                            "placeholder": "input 4",
+                            "className": "form-control",
+                            "label": "Input 4",
+                        }
+                    }
+                    {{/react}}
+                </div>
+                <div class="flex-fill">
+                    {{#react}}
+                    {
+                        "component": "@moodle/react/components/Input",
+                        "props": {
+                            "name": "input5",
+                            "placeholder": "input 5",
+                            "className": "form-control",
+                            "label": "Input 5",
+                        }
+                    }
+                    {{/react}}
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-md-row gap-3 align-items-md-center">
+                <div class="flex-fill">
+                    {{#react}}
+                    {
+                        "component": "@moodle/react/components/Button",
+                        "props": {
+                            "label": "Button 1",
+                            "className": "btn btn-primary",
+                            "onClick": "require(['core/notification'], n => n.alert('Button 1', 'Clicked!'))"
+                        },
+                        "id": "button1"
+                    }
+                    <p>Loading...</p>
+                    {{/react}}
+                </div>
+                <div class="flex-fill">
+                    {{#react}}
+                    {
+                        "component": "@moodle/react/components/Button",
+                        "props": {
+                            "label": "Button 2",
+                            "className": "btn btn-secondary",
+                            "onClick": {
+                                "amd": "core/notification",
+                                "method": "alert",
+                                "args": ["Button 2", "Clicked!"]
+                            }
+                        },
+                        "id": "button2"
+                    }
+                    <p>Loading...</p>
+                    {{/react}}
+                </div>
+                <div class="flex-fill">
+                    {{#react}}
+                    {
+                        "component": "@moodle/react/components/Button",
+                        "props": {
+                            "label": "Button 3",
+                            "className": "btn btn-warning",
+                            "onClick": {
+                                "amd": "core/notification",
+                                "method": "alert",
+                                "args": ["Button 3", "Clicked!"]
+                            }
+                        },
+                        "id": "button3"
+                    }
+                    <p>Loading...</p>
+                    {{/react}}
+                </div>
+                <div class="flex-fill">
+                    {{#react}}
+                    {
+                        "component": "@moodle/react/components/Button",
+                        "props": {
+                            "label": "Button 4",
+                            "className": "btn btn-success",
+                            "onClick": {
+                                "amd": "core/notification",
+                                "method": "alert",
+                                "args": ["Button 4", "Clicked!"]
+                            }
+                        },
+                        "id": "button4"
+                    }
+                    <p>Loading...</p>
+                    {{/react}}
+                </div>
+                <div class="flex-fill">
+                    {{#react}}
+                    {
+                        "component": "@moodle/react/components/Button",
+                        "props": {
+                            "label": "Button 5",
+                            "className": "btn btn-info",
+                            "onClick": {
+                                "amd": "core/notification",
+                                "method": "alert",
+                                "args": ["Button 5", "Clicked!"]
+                            }
+                        },
+                        "id": "button5"
+                    }
+                    <p>Loading...</p>
+                    {{/react}}
+                </div>
+            </div>
+        </form>
+    </div>
     <div data-region="footer-container-popover">
         {{#output.has_communication_links}}
             <button onclick="window.open('{{output.communication_url}}', '_blank', 'noreferrer')" class="btn btn-icon rounded-circle bg-primary text-white btn-footer-communication" aria-label="{{#str}}communicationroomlink, course{{/str}}">

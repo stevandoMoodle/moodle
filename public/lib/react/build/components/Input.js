@@ -1,0 +1,2 @@
+import{React as t}from"../react.js";function y(r){let{id:s,name:n,type:o="text",value:i,defaultValue:p,placeholder:u,disabled:d=!1,readOnly:m=!1,required:c=!1,label:e,className:f="",onChange:b,...h}=r,g=h,a=s||n||void 0,I=!!(e&&e.trim()!==""),l=t.createElement("input",{id:a,name:n,type:o,value:i,defaultValue:p,placeholder:u,disabled:d,readOnly:m,required:c,onChange:b,className:f,...g});return I?t.createElement("label",{htmlFor:a},t.createElement("span",null,e),l):l}export{y as default};
+//# sourceMappingURL=Input.js.map

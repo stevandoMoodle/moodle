@@ -2,6 +2,7 @@ import esbuild from "esbuild";
 import {glob} from "glob";
 import path from "path";
 import fs from "fs";
+import * as fsp from "fs/promises";
 import {createAliasPlugin} from "./.esbuild/aliases.mjs";
 import {externalsPlugin} from "./.esbuild/externals.mjs";
 
@@ -49,6 +50,35 @@ for (const entry of entryPoints) {
     const file = entry.split("/react/src/")[1];
 
     const output = path.join(part, "react", "build", file.replace(/\.tsx$/, ".js"));
+
+    // Record all the react components in './public/lib/react_autoinit/src/component.json'.
+    if (entry.includes('public/lib/react/src/components')) {
+        const jsonPath = path.resolve('./public/lib/react_autoinit/src/component.json');
+        const component = file.replace(/\.tsx$/, "");
+        const componentKey = `@moodle/react/${component}`;
+
+        let data = {};
+        try {
+            // Read existing JSON
+            const content = await fsp.readFile(jsonPath, 'utf8');
+            data = JSON.parse(content);
+        } catch (err) {
+            if (err.code !== 'ENOENT') {
+                throw err;
+            }
+
+            // File does not exist, start with empty object.
+            data = {};
+        }
+
+        data[componentKey] = output.replace(/public\/lib\//g, '../../');
+
+        await fsp.writeFile(
+            jsonPath,
+            JSON.stringify(data, null, 2),
+            'utf8'
+        );
+    }
 
     fs.mkdirSync(path.dirname(output), { recursive: true });
 
