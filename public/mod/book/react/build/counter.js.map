@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/counter.tsx"],
+  "sourcesContent": ["// import { useState } from \"react\";\nimport { React } from \"@moodle/core/react\";\n\nexport function Counter() {\n  const [count, setCount] = React.useState(0);\n\n  return (\n    <button onClick={() => setCount(c => c + 1)}>\n      Count: {count}\n    </button>\n  );\n}\n"],
+  "mappings": ";;;;AACA,SAAS,aAAa;AAEf,SAAS,UAAU;AACxB,QAAM,CAAC,OAAO,QAAQ,IAAI,MAAM,SAAS,CAAC;AAE1C,SACE,oCAAC,YAAO,SAAS,MAAM,SAAS,OAAK,IAAI,CAAC,KAAG,WACnC,KACV;AAEJ;AARgB;",
+  "names": []
+}

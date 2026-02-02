@@ -1,0 +1,14 @@
+{
+  "require": [
+    "jsdom-global/register",
+    "esbuild-register",
+    "source-map-support/register",
+    ".mocha/setup.ts"
+  ],
+  "extension": ["ts", "tsx"],
+  "spec": "public/**/tests/react/**/*.test.@(ts|tsx)",
+  "watch-files": ["public/**/tests/react/**/*.test.@(ts|tsx)"],
+  "recursive": true,
+  "timeout": 5000,
+  "color": true
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../src/service.ts"],
+  "sourcesContent": ["// src/service.ts\nimport { fetchUser } from 'external-lib';\n\nexport async function getUserName(id: string) {\n  const user = await fetchUser(id);\n  return user.name;\n}\n"],
+  "mappings": ";;;;AACA,SAAS,iBAAiB;AAE1B,eAAsB,YAAY,IAAY;AAC5C,QAAM,OAAO,MAAM,UAAU,EAAE;AAC/B,SAAO,KAAK;AACd;AAHsB;",
+  "names": []
+}
