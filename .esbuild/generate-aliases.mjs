@@ -122,7 +122,11 @@ export function generateAliases() {
 
 
     const tsconfig = {
-        compilerOptions: { paths: tsPaths },
+        compilerOptions: {
+            paths: tsPaths,
+            resolveJsonModule: true,
+            esModuleInterop: true,
+        },
     };
 
     // If tsconfig paths didn't change, skip regeneration

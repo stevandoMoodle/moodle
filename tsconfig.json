@@ -10,5 +10,5 @@
     "skipLibCheck": true
   },
 
-  "include": ["public/**/react/src/**/*"]
+  "include": ["public/**/react/src/**/*", "public/**/tests/react/**/*"]
 }
