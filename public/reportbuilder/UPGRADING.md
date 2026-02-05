@@ -22,6 +22,12 @@
 
   For more information see [MDL-86699](https://tracker.moodle.org/browse/MDL-86699)
 
+### Changed
+
+- The order in which `$entitynames` are passed to the datasource `add_all_from_entities()` method is now observed, taking precedence over the order in which they were already added to the report
+
+  For more information see [MDL-87263](https://tracker.moodle.org/browse/MDL-87263)
+
 ### Deprecated
 
 - The following `user_filter_manager` methods have been deprecated:
@@ -37,6 +43,12 @@
   * `enrolment_values()`
 
   For more information see [MDL-87000](https://tracker.moodle.org/browse/MDL-87000)
+
+### Removed
+
+- - The `\core_reportbuilder\local\helpers\audience::get_all_audiences_menu_types()` has been removed from `public/reportbuilder/classes/local/helpers/audience.php`. - The `\core_reportbuilder\local\entities\base::get_default_table_aliases()` has been removed from `public/reportbuilder/classes/local/entities/base.php`. - The `\core_reportbuilder\local\helpers\report::get_available_columns()` has been removed from `public/reportbuilder/classes/local/helpers/report.php`.
+
+  For more information see [MDL-87425](https://tracker.moodle.org/browse/MDL-87425)
 
 ## 5.1
 
