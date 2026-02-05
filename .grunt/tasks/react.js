@@ -1,106 +1,172 @@
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-/* jshint node: true, browser: false */
-/* eslint-env node */
 // @ts-nocheck
-
-/**
- * Grunt tasks for building React components.
- *
- * @copyright  Meirza <meirza.arson@moodle.com>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+const path = require('path');
+const fs = require('fs');
 
 module.exports = grunt => {
+
+    grunt.registerTask('reactsrc', ['eslint:react', 'reactbuild']);
+
     /**
-     * Register react task — build or watch React components.
-     *
-     * Modes:
-     *   grunt react          — production build
-     *   grunt react:dev      — development build (sourcemaps, no minification)
-     *   grunt react:watch    — esbuild native watch (dev mode, incremental context)
-     *
-     * Note: react:watch uses esbuild's own context.watch() and is intentionally
-     * separate from grunt-contrib-watch. This keeps esbuild's incremental build
-     * graph alive between rebuilds rather than restarting from scratch on each change.
+     * Build a single React component using esbuild needed by the reactbuild task for watch mode.
+     * Watch mode only builds single files that have changed in development mode.
      */
-    grunt.registerTask('react', 'Build all React components', function(mode) {
-        const done = this.async();
-        const isWatch = mode === 'watch';
-        const isDev = isWatch || mode === 'dev';
+    const buildSingleComponent = async (filePath) => {
+        const esbuild = require('esbuild');
 
-        if (isWatch) {
-            const path = require('path');
-            const {spawn} = require('child_process');
+        try {
+            const aliasPlugin = await import('../../.esbuild/aliases.mjs');
+            const externals = await import('../../.esbuild/externals.mjs');
 
-            // Run ESLint on the rebuilt source files in check-only mode (no --fix)
-            // to avoid writing changes that would re-trigger esbuild.
-            const eslintBin = path.join(grunt.moodleEnv.gruntFilePath, 'node_modules', '.bin', 'eslint');
-            const onRebuild = (srcFiles) => {
-                if (srcFiles.length === 0) {
-                    return;
-                }
-                const absSrcFiles = srcFiles.map(f => path.join(grunt.moodleEnv.gruntFilePath, f));
-                spawn(eslintBin, absSrcFiles, {stdio: 'inherit'})
-                    .on('error', err => grunt.log.error(`ESLint: ${err.message}`));
+            const sharedDefine = {
+                'process.env.NODE_ENV': '"development"',
             };
 
-            (async() => {
-                try {
-                    const {watchComponents} = await import('../../.esbuild/plugin/plugincomponents.mjs');
+            const buildConfig = {
+                bundle: true,
+                format: "esm",
+                loader: {
+                    ".tsx": "tsx",
+                    ".ts": "ts",
+                    ".jsx": "jsx",
+                    ".js": "js",
+                },
+                resolveExtensions: [".tsx", ".ts", ".jsx", ".js"],
+                external: ["react", "react-dom", "react-dom/client"],
+                jsx: "automatic",
+                jsxImportSource: "@moodle/core/react",
+                minify: false,
+                sourcemap: true,
+                jsxDev: true,
+                keepNames: true,
+                treeShaking: false,
+                plugins: [aliasPlugin.createAliasPlugin(), externals.externalsPlugin],
+                define: sharedDefine,
+            };
 
-                    const ctx = await watchComponents(true, onRebuild);
+            let output;
+            const entry = filePath;
 
-                    if (!ctx) {
-                        grunt.log.warn('No React source files found. Nothing to watch.');
-                        done();
-                        return;
-                    }
+            if (entry.includes('/react/src/') && !entry.includes('/lib/react/src/components/')) {
+                const part = entry.split("/react/src/")[0];
+                const filename = entry.split("/react/src/")[1];
+                output = path.join(part, "react", "build", filename.replace(/\.tsx$/, ".js").replace(/\.ts$/, ".js"));
+            } else if (entry.includes('/lib/react/src/components/')) {
+                const relativePath = entry.replace('public/lib/react/src/components/', '');
+                output = path.join('public/lib/react/build/components', relativePath.replace(/\.tsx$/, ".js").replace(/\.ts$/, ".js"));
+            } else {
+                grunt.log.error('Unknown path pattern: ' + entry);
+                return false;
+            }
 
-                    grunt.log.ok('esbuild is watching for React changes. Press Ctrl+C to stop.');
+            const dir = path.dirname(output);
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
 
-                    // Keep the process alive until the user interrupts. done() is intentionally
-                    // not called here — grunt's async mechanism holds the process open.
-                    process.on('SIGINT', async() => {
-                        await ctx.dispose();
-                        done();
-                    });
-                } catch (err) {
-                    grunt.log.error(err.message);
-                    done(false);
-                }
-            })();
+            const now = new Date().toLocaleTimeString();
 
+            await esbuild.build({
+                ...buildConfig,
+                entryPoints: [entry],
+                outfile: output,
+            });
+
+            const stats = fs.statSync(output);
+            grunt.log.ok(`[${now}] ${path.basename(output)}`);
+            return true;
+        } catch (error) {
+            grunt.log.error('Build error:', error.message);
+            return false;
+        }
+    };
+
+    /**
+     * Register reactbuild task - for watch to call
+     */
+    grunt.registerTask('reactbuild', 'Build React file', function() {
+        const files = grunt.moodleEnv.files;
+
+        if (!files || files.length === 0) {
+            grunt.log.error('No files provided to reactbuild');
             return;
         }
 
-        grunt.log.writeln(`Building React components in ${isDev ? 'DEVELOPMENT' : 'PRODUCTION'} mode...`);
+        const done = this.async();
 
-        (async() => {
-            try {
-                const {generateAliases} = await import('../../.esbuild/generate-aliases.mjs');
-                const {buildPluginComponents} = await import('../../.esbuild/plugin/plugincomponents.mjs');
-
-                generateAliases();
-                await buildPluginComponents(isDev);
-                done();
-            } catch (err) {
-                grunt.log.error(err.message);
-                done(false);
+        (async () => {
+            for (const file of files) {
+                if (file.match(/\/react\/src\/.*\.(ts|tsx)$/)) {
+                    await buildSingleComponent(file);
+                }
             }
+            done();
         })();
     });
 
+    /**
+     * Register react task - Build all
+     */
+    grunt.registerTask('react', 'Build all React components', function(mode) {
+        const done = this.async();
+        const spawn = require('child_process').spawn;
+
+        const isDev = mode === 'dev';
+        const buildScript = path.join('.esbuild', 'build.mjs');
+        const args = isDev ? [buildScript, '--dev'] : [buildScript];
+
+        grunt.log.writeln(`Building React components in ${isDev ? 'DEVELOPMENT' : 'PRODUCTION'} mode...`);
+
+        const build = spawn('node', args, {
+            stdio: 'inherit',
+            cwd: grunt.moodleEnv.cwd,
+        });
+
+        build.on('close', (code) => {
+            if (code !== 0) {
+                grunt.fail.warn('React build failed');
+                done(false);
+            } else {
+                grunt.log.ok('React build complete!');
+                done();
+            }
+        });
+    });
+
+    /**
+     * Configure watch
+     */
+    grunt.config.merge({
+        watch: {
+            react: {
+                files: grunt.moodleEnv.reactSrc,
+                tasks: ['reactsrc'],
+                options: {
+                    spawn: false,
+                }
+            }
+        }
+    });
+
+    /**
+     * On watch, set files for reactbuild task.
+     */
+    let changedFiles = Object.create(null);
+    const onChange = grunt.util._.debounce(function() {
+        const files = Object.keys(changedFiles);
+
+        // Ensure other tasks can see the changed file list in non-Watchman mode.
+        grunt.moodleEnv.files = files;
+        grunt.config('moodleEnv.files', files);
+        grunt.config('eslint.react.src', files);
+
+        changedFiles = Object.create(null);
+    }, 200);
+
+    grunt.event.on('watch', (action, filepath) => {
+        changedFiles[filepath] = action;
+        onChange();
+    });
+
+    // Add the 'react' task as a startup task.
+    grunt.moodleEnv.startupTasks.push('react');
 };
