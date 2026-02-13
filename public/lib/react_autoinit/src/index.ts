@@ -156,11 +156,11 @@ const resolveComponent = async (componentName: string): Promise<any> => {
         } else if (namespace.startsWith("block_")) {
             // @block_html/settings to ../../../blocks/html/react/build/settings.js.
             const blockName = namespace.replace("block_", "");
-            relativePath = `../../../blocks/${blockName}/react/build/${componentPath}.js`;
+            relativePath = `../../../blocks/${blockName}/js/react/build/${componentPath}.js`;
         } else if (namespace.startsWith("local_")) {
-            // @local_multiplereact/foo to ../../../local/multiplereact/react/build/foo.js.
+            // @local_reactdemo/foo to ../../../local/reactdemo/react/build/foo.js.
             const localName = namespace.replace("local_", "");
-            relativePath = `../../../local/${localName}/react/build/${componentPath}.js`;
+            relativePath = `../../../local/${localName}/js/react/build/${componentPath}.js`;
         } else {
             // Generic: @calendar/event to ../../../calendar/react/build/event.js.
             relativePath = `../../../${namespace}/react/build/${componentPath}.js`;

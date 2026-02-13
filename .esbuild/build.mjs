@@ -44,5 +44,5 @@ const sharedDefine = {
 };
 
 await buildReactAutoInit();
-await buildMoodleDesignSystem();
+// await buildMoodleDesignSystem();
 await buildPluginComponents(isDev, sharedDefine, isWatch);
