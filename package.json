@@ -62,5 +62,9 @@
     "not op_mini all",
     "not Opera > 0",
     "not dead"
-  ]
+  ],
+  "dependencies": {
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
+  }
 }
