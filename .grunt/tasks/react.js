@@ -92,8 +92,10 @@ module.exports = grunt => {
             try {
                 const {generateAliases} = await import('../../.esbuild/generate-aliases.mjs');
                 const {buildPluginComponents} = await import('../../.esbuild/plugin/plugincomponents.mjs');
+                const {buildMoodleDesignSystem} = await import('../../.esbuild/platform/moodle_design_system.mjs');
 
                 generateAliases();
+                await buildMoodleDesignSystem();
                 await buildPluginComponents(isDev);
                 done();
             } catch (err) {
