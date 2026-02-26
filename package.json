@@ -62,5 +62,8 @@
     "not op_mini all",
     "not Opera > 0",
     "not dead"
-  ]
+  ],
+  "dependencies": {
+    "@moodlehq/design-system": "^1.0.0"
+  }
 }

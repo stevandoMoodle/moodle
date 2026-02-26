@@ -881,4 +881,22 @@ All rights reserved.</copyright>
       <licenseversion>2.0</licenseversion>
       <repository>https://github.com/googleapis/google-api-php-client-services</repository>
   </library>
+  <library>
+      <location>platform_bundles/moodle-design-system/1.0.0/index.js</location>
+      <name>MDS (moodle-design-system) js</name>
+      <description>Core js for MDS components</description>
+      <version>1.0.0</version>
+      <license>GPL</license>
+      <licenseversion></licenseversion>
+      <repository>https://github.com/moodlehq/design-system/releases/tag/design-system-v1.0.0</repository>
+  </library>
+  <library>
+      <location>platform_bundles/moodle-design-system/1.0.0/index.css</location>
+      <name>MDS (moodle-design-system) css</name>
+      <description>Core style for MDS components</description>
+      <version>1.0.0</version>
+      <license>GPL</license>
+      <licenseversion></licenseversion>
+      <repository>https://github.com/moodlehq/design-system/releases/tag/design-system-v1.0.0</repository>
+  </library>
 </libraries>
