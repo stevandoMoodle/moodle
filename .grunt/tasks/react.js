@@ -45,16 +45,16 @@ module.exports = grunt => {
             const path = require('path');
             const {spawn} = require('child_process');
 
-            // Run ESLint on the rebuilt source files in check-only mode (no --fix)
+            // Run XOlint on the rebuilt source files in check-only mode (no --fix)
             // to avoid writing changes that would re-trigger esbuild.
-            const eslintBin = path.join(grunt.moodleEnv.gruntFilePath, 'node_modules', '.bin', 'eslint');
+            const XOlintBin = path.join(grunt.moodleEnv.gruntFilePath, 'node_modules', '.bin', 'xo');
             const onRebuild = (srcFiles) => {
                 if (srcFiles.length === 0) {
                     return;
                 }
                 const absSrcFiles = srcFiles.map(f => path.join(grunt.moodleEnv.gruntFilePath, f));
-                spawn(eslintBin, absSrcFiles, {stdio: 'inherit'})
-                    .on('error', err => grunt.log.error(`ESLint: ${err.message}`));
+                spawn(XOlintBin, absSrcFiles, {stdio: 'inherit'})
+                    .on('error', err => grunt.log.error(`XOlint: ${err.message}`));
             };
 
             (async() => {
